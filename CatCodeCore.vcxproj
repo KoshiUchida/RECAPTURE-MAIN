@@ -188,7 +188,7 @@
     <ClInclude Include="CCC\Objects\MainScene\PawnLeader\PawnLeaderParameter.h" />
     <ClInclude Include="CCC\Objects\MainScene\Pawn\PawnParameter.h" />
     <ClInclude Include="CCC\DX\ReadData.h" />
-    <ClInclude Include="Framework\DisplayInfo.h" />
+    <ClInclude Include="Main\DisplayInfo.h" />
     <ClInclude Include="CCC\Interfaces\IState.h" />
     <ClInclude Include="CCC\Managers\InputManager.h" />
     <ClInclude Include="CCC\Managers\ComponentManager.h" />
@@ -206,7 +206,7 @@
     <ClInclude Include="CCC\Debug\DebugCamera.h" />
     <ClInclude Include="CCC\Debug\DebugFont.h" />
     <ClInclude Include="DeviceResources.h" />
-    <ClInclude Include="Framework\Game.h" />
+    <ClInclude Include="Main\Game.h" />
     <ClInclude Include="CCC\Interfaces\IObject.h" />
     <ClInclude Include="CCC\Interfaces\IScene.h" />
     <ClInclude Include="CCC\Interfaces\IResource.h" />
@@ -254,9 +254,9 @@
     <ClCompile Include="CCC\Debug\DebugCamera.cpp" />
     <ClCompile Include="CCC\Debug\DebugFont.cpp" />
     <ClCompile Include="DeviceResources.cpp" />
-    <ClCompile Include="Framework\Game.cpp" />
+    <ClCompile Include="Main\Game.cpp" />
     <ClCompile Include="CCC\ResourceClasses\GeometryShaderResource.cpp" />
-    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Main\Main.cpp" />
     <ClCompile Include="CCC\ResourceClasses\ModelWithBoneResource.cpp" />
     <ClCompile Include="CCC\Objects\MainScene\MainCamera\MainCamera.cpp" />
     <ClCompile Include="CCC\Managers\SceneManager.cpp" />

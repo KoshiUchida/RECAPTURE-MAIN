@@ -6,7 +6,7 @@
 #include "Game.h"
 
 // ディスプレイ情報
-#include <Framework/DisplayInfo.h>
+#include <Main/DisplayInfo.h>
 
 // 管理クラスのインクルード
 #include <CCC/Managers/SceneManager.h>

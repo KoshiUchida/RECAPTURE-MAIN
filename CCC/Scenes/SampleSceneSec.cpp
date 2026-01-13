@@ -17,7 +17,7 @@ void SampleSceneSec::Update(float elapsedTime)
 	elapsedTime;
 
 	if (DirectX::Keyboard::Get().GetState().O)
-		ChangeScene("SampleScene");
+		ChangeScene("MainScene");
 }
 
 void SampleSceneSec::Render()

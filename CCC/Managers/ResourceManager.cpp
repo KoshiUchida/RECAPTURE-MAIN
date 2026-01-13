@@ -5,7 +5,7 @@
  *
  * @author CatCode
  *
- * @date   2026/01/08
+ * @date   2026/01/13
  * 
  * 使用を行うには必ずSetResource関数を行う必要がある。
  * 
@@ -24,13 +24,16 @@
  * 
  * 2026/01/09
  * シェーダリソースの追加
+ * 
+ * 2026/01/13
+ * UI関連のシェーダリソースを追加
  */
 
 #include "pch.h"
 #include "ResourceManager.h"
 
 // Gameクラスの前方宣言
-#include <Framework/Game.h>
+#include <Main/Game.h>
 
  // リソースクラス
 #include <CCC/ResourceClasses/ModelResource.h>

@@ -144,7 +144,7 @@ void MainScene::Update(float elapsedTime)
 	// ƒV[ƒ“‚ÌØ‚è‘Ö‚¦
 	if (DirectX::Keyboard::Get().GetState().I)
 	{
-		ChangeScene("MainSceneSec");
+		ChangeScene("SampleSceneSec");
 		DirectX::Mouse::Get().SetMode(DirectX::Mouse::MODE_ABSOLUTE);
 	}
 }

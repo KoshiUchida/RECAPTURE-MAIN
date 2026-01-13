@@ -3,7 +3,7 @@
 //
 
 #include "pch.h"
-#include <Framework/Game.h>
+#include <Main/Game.h>
 
 using namespace DirectX;
 
@@ -101,9 +101,8 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
         GetClientRect(hwnd, &rc);
 
-        DirectX::Mouse& mouse = DirectX::Mouse::Get();
-        mouse.SetWindow(hwnd);
-        mouse.SetMode(DirectX::Mouse::MODE_ABSOLUTE);
+        DirectX::Mouse::Get().SetWindow(hwnd);
+        DirectX::Mouse::Get().SetMode(DirectX::Mouse::MODE_ABSOLUTE);
 
 
         g_game->Initialize(hwnd, rc.right - rc.left, rc.bottom - rc.top);

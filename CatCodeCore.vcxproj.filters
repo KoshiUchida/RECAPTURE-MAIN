@@ -17,9 +17,6 @@
     <Filter Include="Scenes">
       <UniqueIdentifier>{39c3a0be-d17d-4e5e-ab58-a04ba047e501}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scenes\SampleScene">
-      <UniqueIdentifier>{141a2f69-747a-4910-8689-58a8948372fe}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scenes\SampleSceneSec">
       <UniqueIdentifier>{84175788-592d-49d8-ad38-b2cdba7fa9b2}</UniqueIdentifier>
     </Filter>
@@ -38,10 +35,18 @@
     <Filter Include="Components">
       <UniqueIdentifier>{40a286c3-ab8c-44c8-86b6-41347a9ce71c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{9c0187e2-1f42-486f-a75e-f830a3d8dcee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main">
+      <UniqueIdentifier>{a773641b-5933-4b43-be78-38a5216b1c4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes\MainScene">
+      <UniqueIdentifier>{141a2f69-747a-4910-8689-58a8948372fe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="Framework\Game.h" />
     <ClInclude Include="StepTimer.h">
       <Filter>Common</Filter>
     </ClInclude>
@@ -55,7 +60,7 @@
       <Filter>Bases</Filter>
     </ClInclude>
     <ClInclude Include="CCC\Scenes\MainScene.h">
-      <Filter>Scenes\SampleScene</Filter>
+      <Filter>Scenes\MainScene</Filter>
     </ClInclude>
     <ClInclude Include="CCC\Scenes\SampleSceneSec.h">
       <Filter>Scenes\SampleSceneSec</Filter>
@@ -88,7 +93,7 @@
       <Filter>Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="CCC\Objects\MainScene\MainCamera\MainCamera.h">
-      <Filter>Scenes\SampleScene</Filter>
+      <Filter>Scenes\MainScene</Filter>
     </ClInclude>
     <ClInclude Include="CCC\ResourceClasses\ModelWithBoneResource.h">
       <Filter>ResourceClasses</Filter>
@@ -103,12 +108,11 @@
       <Filter>Animation</Filter>
     </ClInclude>
     <ClInclude Include="CCC\Objects\MainScene\Floor.h">
-      <Filter>Scenes\SampleScene</Filter>
+      <Filter>Scenes\MainScene</Filter>
     </ClInclude>
     <ClInclude Include="CCC\Managers\ObjectManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
-    <ClInclude Include="Framework\DisplayInfo.h" />
     <ClInclude Include="CCC\Managers\InputManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
@@ -139,33 +143,75 @@
     <ClInclude Include="CCC\Components\Transform.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="CCC\Interfaces\IState.h" />
-    <ClInclude Include="CCC\Objects\MainScene\Pawn\Pawn.h" />
-    <ClInclude Include="CCC\Objects\MainScene\Pawn\PawnParameter.h" />
-    <ClInclude Include="CCC\Common\Easings.h" />
     <ClInclude Include="CCC\Managers\RandomManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
-    <ClInclude Include="CCC\Objects\PawnBase.h" />
-    <ClInclude Include="CCC\Objects\MainScene\PawnLeader\PawnLeader.h" />
-    <ClInclude Include="CCC\Objects\MainScene\Pawn\States\PawnState.h" />
-    <ClInclude Include="CCC\Objects\MainScene\Pawn\States\PawnIdle.h" />
-    <ClInclude Include="CCC\Objects\MainScene\Pawn\States\PawnMove.h" />
-    <ClInclude Include="CCC\Objects\MainScene\Pawn\States\PawnAttack.h" />
-    <ClInclude Include="CCC\Objects\MainScene\MainCamera\MainCameraParameter.h" />
-    <ClInclude Include="CCC\Objects\MainScene\PawnLeader\PawnLeaderParameter.h" />
-    <ClInclude Include="CCC\Objects\MainScene\UI\StabilityUI.h" />
-    <ClInclude Include="CCC\Objects\SkyDome.h" />
-    <ClInclude Include="CCC\Objects\MainScene\UI\SkillGaugeUI.h" />
-    <ClInclude Include="CCC\ResourceClasses\VertexShaderResource.h" />
-    <ClInclude Include="CCC\DX\ReadData.h" />
-    <ClInclude Include="CCC\ResourceClasses\GeometryShaderResource.h" />
-    <ClInclude Include="CCC\ResourceClasses\PixelShaderResource.h" />
+    <ClInclude Include="CCC\Common\Easings.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Main\Game.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="CCC\Objects\MainScene\Pawn\Pawn.h">
+      <Filter>Scenes\MainScene</Filter>
+    </ClInclude>
+    <ClInclude Include="CCC\Objects\MainScene\Pawn\States\PawnAttack.h">
+      <Filter>Scenes\MainScene</Filter>
+    </ClInclude>
+    <ClInclude Include="CCC\Objects\PawnBase.h">
+      <Filter>Scenes\MainScene</Filter>
+    </ClInclude>
+    <ClInclude Include="CCC\Objects\MainScene\Pawn\States\PawnIdle.h">
+      <Filter>Scenes\MainScene</Filter>
+    </ClInclude>
+    <ClInclude Include="CCC\Objects\MainScene\PawnLeader\PawnLeader.h">
+      <Filter>Scenes\MainScene</Filter>
+    </ClInclude>
+    <ClInclude Include="CCC\Objects\MainScene\PawnLeader\PawnLeaderParameter.h">
+      <Filter>Scenes\MainScene</Filter>
+    </ClInclude>
+    <ClInclude Include="CCC\Objects\MainScene\Pawn\States\PawnMove.h">
+      <Filter>Scenes\MainScene</Filter>
+    </ClInclude>
+    <ClInclude Include="CCC\Objects\MainScene\Pawn\PawnParameter.h">
+      <Filter>Scenes\MainScene</Filter>
+    </ClInclude>
+    <ClInclude Include="CCC\Objects\MainScene\Pawn\States\PawnState.h">
+      <Filter>Scenes\MainScene</Filter>
+    </ClInclude>
+    <ClInclude Include="CCC\ResourceClasses\VertexShaderResource.h">
+      <Filter>ResourceClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="CCC\ResourceClasses\PixelShaderResource.h">
+      <Filter>ResourceClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="CCC\ResourceClasses\GeometryShaderResource.h">
+      <Filter>ResourceClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="CCC\Objects\MainScene\UI\StabilityUI.h">
+      <Filter>Scenes\MainScene</Filter>
+    </ClInclude>
+    <ClInclude Include="CCC\Objects\MainScene\UI\SkillGaugeUI.h">
+      <Filter>Scenes\MainScene</Filter>
+    </ClInclude>
+    <ClInclude Include="CCC\Objects\SkyDome.h">
+      <Filter>Scenes\MainScene</Filter>
+    </ClInclude>
+    <ClInclude Include="CCC\DX\ReadData.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="CCC\Objects\MainScene\MainCamera\MainCameraParameter.h">
+      <Filter>Scenes\MainScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Main\DisplayInfo.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="CCC\Interfaces\IState.h">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="Framework\Game.cpp" />
-    <ClCompile Include="Main.cpp" />
     <ClCompile Include="DeviceResources.cpp">
       <Filter>Common</Filter>
     </ClCompile>
@@ -176,7 +222,7 @@
       <Filter>Bases</Filter>
     </ClCompile>
     <ClCompile Include="CCC\Scenes\MainScene.cpp">
-      <Filter>Scenes\SampleScene</Filter>
+      <Filter>Scenes\MainScene</Filter>
     </ClCompile>
     <ClCompile Include="CCC\Scenes\SampleSceneSec.cpp">
       <Filter>Scenes\SampleSceneSec</Filter>
@@ -200,7 +246,7 @@
       <Filter>ResourceClasses</Filter>
     </ClCompile>
     <ClCompile Include="CCC\Objects\MainScene\MainCamera\MainCamera.cpp">
-      <Filter>Scenes\SampleScene</Filter>
+      <Filter>Scenes\MainScene</Filter>
     </ClCompile>
     <ClCompile Include="CCC\ResourceClasses\ModelWithBoneResource.cpp">
       <Filter>ResourceClasses</Filter>
@@ -215,7 +261,7 @@
       <Filter>Animation</Filter>
     </ClCompile>
     <ClCompile Include="CCC\Objects\MainScene\Floor.cpp">
-      <Filter>Scenes\SampleScene</Filter>
+      <Filter>Scenes\MainScene</Filter>
     </ClCompile>
     <ClCompile Include="CCC\Managers\ObjectManager.cpp">
       <Filter>Managers</Filter>
@@ -244,22 +290,54 @@
     <ClCompile Include="CCC\Components\Transform.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="CCC\Objects\MainScene\Pawn\Pawn.cpp" />
     <ClCompile Include="CCC\Managers\RandomManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
-    <ClCompile Include="CCC\Objects\PawnBase.cpp" />
-    <ClCompile Include="CCC\Objects\MainScene\PawnLeader\PawnLeader.cpp" />
-    <ClCompile Include="CCC\Objects\MainScene\Pawn\States\PawnState.cpp" />
-    <ClCompile Include="CCC\Objects\MainScene\Pawn\States\PawnIdle.cpp" />
-    <ClCompile Include="CCC\Objects\MainScene\Pawn\States\PawnMove.cpp" />
-    <ClCompile Include="CCC\Objects\MainScene\Pawn\States\PawnAttack.cpp" />
-    <ClCompile Include="CCC\Objects\MainScene\UI\StabilityUI.cpp" />
-    <ClCompile Include="CCC\Objects\SkyDome.cpp" />
-    <ClCompile Include="CCC\Objects\MainScene\UI\SkillGaugeUI.cpp" />
-    <ClCompile Include="CCC\ResourceClasses\VertexShaderResource.cpp" />
-    <ClCompile Include="CCC\ResourceClasses\GeometryShaderResource.cpp" />
-    <ClCompile Include="CCC\ResourceClasses\PixelShaderResource.cpp" />
+    <ClCompile Include="Main\Game.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="CCC\Objects\MainScene\Pawn\Pawn.cpp">
+      <Filter>Scenes\MainScene</Filter>
+    </ClCompile>
+    <ClCompile Include="CCC\Objects\MainScene\Pawn\States\PawnAttack.cpp">
+      <Filter>Scenes\MainScene</Filter>
+    </ClCompile>
+    <ClCompile Include="CCC\Objects\PawnBase.cpp">
+      <Filter>Scenes\MainScene</Filter>
+    </ClCompile>
+    <ClCompile Include="CCC\Objects\MainScene\Pawn\States\PawnIdle.cpp">
+      <Filter>Scenes\MainScene</Filter>
+    </ClCompile>
+    <ClCompile Include="CCC\Objects\MainScene\PawnLeader\PawnLeader.cpp">
+      <Filter>Scenes\MainScene</Filter>
+    </ClCompile>
+    <ClCompile Include="CCC\Objects\MainScene\Pawn\States\PawnMove.cpp">
+      <Filter>Scenes\MainScene</Filter>
+    </ClCompile>
+    <ClCompile Include="CCC\Objects\MainScene\Pawn\States\PawnState.cpp">
+      <Filter>Scenes\MainScene</Filter>
+    </ClCompile>
+    <ClCompile Include="CCC\ResourceClasses\VertexShaderResource.cpp">
+      <Filter>ResourceClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="CCC\ResourceClasses\PixelShaderResource.cpp">
+      <Filter>ResourceClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="CCC\ResourceClasses\GeometryShaderResource.cpp">
+      <Filter>ResourceClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="CCC\Objects\MainScene\UI\SkillGaugeUI.cpp">
+      <Filter>Scenes\MainScene</Filter>
+    </ClCompile>
+    <ClCompile Include="CCC\Objects\SkyDome.cpp">
+      <Filter>Scenes\MainScene</Filter>
+    </ClCompile>
+    <ClCompile Include="CCC\Objects\MainScene\UI\StabilityUI.cpp">
+      <Filter>Scenes\MainScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Main\Main.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -276,12 +354,22 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Shaders\Common.hlsli" />
+    <None Include="Shaders\Common.hlsli">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shaders\DefaultVS.hlsl" />
-    <FxCompile Include="Shaders\DisplayGS.hlsl" />
-    <FxCompile Include="Shaders\GaugePS.hlsl" />
-    <FxCompile Include="Shaders\WarningPS.hlsl" />
+    <FxCompile Include="Shaders\DefaultVS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\DisplayGS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\GaugePS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\WarningPS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

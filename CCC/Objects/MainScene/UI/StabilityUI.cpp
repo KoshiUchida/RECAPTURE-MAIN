@@ -14,7 +14,7 @@
 #include <SpriteBatch.h>
 
 
-#include <Framework/DisplayInfo.h>
+#include <Main/DisplayInfo.h>
 #include <CCC/Common/Easings.h>
 
 // リソースクラス
