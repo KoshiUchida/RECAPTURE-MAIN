@@ -1,0 +1,353 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <RootNamespace>CatCodeCore</RootNamespace>
+    <ProjectGuid>{c1a12142-04f2-4a90-a3ce-5cc460753e2c}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <Manifest>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
+    </Manifest>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;d3dcompiler.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <Manifest>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
+    </Manifest>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <Manifest>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
+    </Manifest>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <GuardEHContMetadata>true</GuardEHContMetadata>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <Manifest>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
+    </Manifest>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="CCC\Animation\AnimationStateBace.h" />
+    <ClInclude Include="CCC\Common\Easings.h" />
+    <ClInclude Include="CCC\Managers\RandomManager.h" />
+    <ClInclude Include="CCC\Objects\MainScene\MainCamera\MainCameraParameter.h" />
+    <ClInclude Include="CCC\Objects\MainScene\PawnLeader\PawnLeaderParameter.h" />
+    <ClInclude Include="CCC\Objects\MainScene\Pawn\PawnParameter.h" />
+    <ClInclude Include="CCC\DX\ReadData.h" />
+    <ClInclude Include="Framework\DisplayInfo.h" />
+    <ClInclude Include="CCC\Interfaces\IState.h" />
+    <ClInclude Include="CCC\Managers\InputManager.h" />
+    <ClInclude Include="CCC\Managers\ComponentManager.h" />
+    <ClInclude Include="CCC\Components\Camera.h" />
+    <ClInclude Include="CCC\Managers\CameraManager.h" />
+    <ClInclude Include="CCC\Components\ComponentBase.h" />
+    <ClInclude Include="CCC\Components\UpdataComponentBase.h" />
+    <ClInclude Include="CCC\Interfaces\IComponent.h" />
+    <ClInclude Include="CCC\Interfaces\IUpdataComponent.h" />
+    <ClInclude Include="CCC\Managers\ObjectManager.h" />
+    <ClInclude Include="CCC\Objects\ObjectBase.h" />
+    <ClInclude Include="CCC\Objects\MainScene\Floor.h" />
+    <ClInclude Include="CCC\ResourceClasses\AnimationResource.h" />
+    <ClInclude Include="CCC\Animation\AnimationPlayer.h" />
+    <ClInclude Include="CCC\Debug\DebugCamera.h" />
+    <ClInclude Include="CCC\Debug\DebugFont.h" />
+    <ClInclude Include="DeviceResources.h" />
+    <ClInclude Include="Framework\Game.h" />
+    <ClInclude Include="CCC\Interfaces\IObject.h" />
+    <ClInclude Include="CCC\Interfaces\IScene.h" />
+    <ClInclude Include="CCC\Interfaces\IResource.h" />
+    <ClInclude Include="CCC\ResourceClasses\ModelWithBoneResource.h" />
+    <ClInclude Include="CCC\Objects\MainScene\MainCamera\MainCamera.h" />
+    <ClInclude Include="CCC\Managers\SceneManager.h" />
+    <ClInclude Include="CCC\ResourceClasses\ResourceBase.h" />
+    <ClInclude Include="CCC\ResourceClasses\ModelResource.h" />
+    <ClInclude Include="CCC\Objects\MainScene\Pawn\Pawn.h" />
+    <ClInclude Include="CCC\Objects\PawnBase.h" />
+    <ClInclude Include="CCC\Objects\MainScene\PawnLeader\PawnLeader.h" />
+    <ClInclude Include="CCC\Objects\MainScene\Pawn\States\PawnState.h" />
+    <ClInclude Include="CCC\Objects\MainScene\Pawn\States\PawnIdle.h" />
+    <ClInclude Include="CCC\Objects\MainScene\Pawn\States\PawnMove.h" />
+    <ClInclude Include="CCC\Objects\MainScene\Pawn\States\PawnAttack.h" />
+    <ClInclude Include="CCC\ResourceClasses\GeometryShaderResource.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="CCC\Managers\ResourceManager.h" />
+    <ClInclude Include="CCC\Scenes\SampleSceneSec.h" />
+    <ClInclude Include="CCC\Scenes\MainScene.h" />
+    <ClInclude Include="CCC\Scenes\SceneBase.h" />
+    <ClInclude Include="CCC\Objects\MainScene\UI\StabilityUI.h" />
+    <ClInclude Include="CCC\Objects\SkyDome.h" />
+    <ClInclude Include="CCC\Objects\MainScene\UI\SkillGaugeUI.h" />
+    <ClInclude Include="CCC\ResourceClasses\PixelShaderResource.h" />
+    <ClInclude Include="StepTimer.h" />
+    <ClInclude Include="CCC\ResourceClasses\TextureResource.h" />
+    <ClInclude Include="CCC\Components\Transform.h" />
+    <ClInclude Include="CCC\ResourceClasses\VertexShaderResource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CCC\Animation\AnimationStateBace.cpp" />
+    <ClCompile Include="CCC\Managers\RandomManager.cpp" />
+    <ClCompile Include="CCC\Managers\InputManager.cpp" />
+    <ClCompile Include="CCC\Managers\ComponentManager.cpp" />
+    <ClCompile Include="CCC\Components\Camera.cpp" />
+    <ClCompile Include="CCC\Managers\CameraManager.cpp" />
+    <ClCompile Include="CCC\Components\ComponentBase.cpp" />
+    <ClCompile Include="CCC\Components\UpdataComponentBase.cpp" />
+    <ClCompile Include="CCC\Managers\ObjectManager.cpp" />
+    <ClCompile Include="CCC\Objects\ObjectBase.cpp" />
+    <ClCompile Include="CCC\Objects\MainScene\Floor.cpp" />
+    <ClCompile Include="CCC\ResourceClasses\AnimationResource.cpp" />
+    <ClCompile Include="CCC\Animation\AnimationPlayer.cpp" />
+    <ClCompile Include="CCC\Debug\DebugCamera.cpp" />
+    <ClCompile Include="CCC\Debug\DebugFont.cpp" />
+    <ClCompile Include="DeviceResources.cpp" />
+    <ClCompile Include="Framework\Game.cpp" />
+    <ClCompile Include="CCC\ResourceClasses\GeometryShaderResource.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="CCC\ResourceClasses\ModelWithBoneResource.cpp" />
+    <ClCompile Include="CCC\Objects\MainScene\MainCamera\MainCamera.cpp" />
+    <ClCompile Include="CCC\Managers\SceneManager.cpp" />
+    <ClCompile Include="CCC\ResourceClasses\ResourceBase.cpp" />
+    <ClCompile Include="CCC\ResourceClasses\ModelResource.cpp" />
+    <ClCompile Include="CCC\Objects\MainScene\Pawn\Pawn.cpp" />
+    <ClCompile Include="CCC\Objects\PawnBase.cpp" />
+    <ClCompile Include="CCC\Objects\MainScene\PawnLeader\PawnLeader.cpp" />
+    <ClCompile Include="CCC\Objects\MainScene\Pawn\States\PawnState.cpp" />
+    <ClCompile Include="CCC\Objects\MainScene\Pawn\States\PawnIdle.cpp" />
+    <ClCompile Include="CCC\Objects\MainScene\Pawn\States\PawnMove.cpp" />
+    <ClCompile Include="CCC\Objects\MainScene\Pawn\States\PawnAttack.cpp" />
+    <ClCompile Include="pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="CCC\Managers\ResourceManager.cpp" />
+    <ClCompile Include="CCC\Scenes\SampleSceneSec.cpp" />
+    <ClCompile Include="CCC\Scenes\MainScene.cpp" />
+    <ClCompile Include="CCC\Scenes\SceneBase.cpp" />
+    <ClCompile Include="CCC\ResourceClasses\TextureResource.cpp" />
+    <ClCompile Include="CCC\Components\Transform.cpp" />
+    <ClCompile Include="CCC\Objects\MainScene\UI\StabilityUI.cpp" />
+    <ClCompile Include="CCC\Objects\SkyDome.cpp" />
+    <ClCompile Include="CCC\Objects\MainScene\UI\SkillGaugeUI.cpp" />
+    <ClCompile Include="CCC\ResourceClasses\VertexShaderResource.cpp" />
+    <ClCompile Include="CCC\ResourceClasses\PixelShaderResource.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="directx.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="settings.manifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Shaders\Common.hlsli" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shaders\DefaultVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Resources\Shaders\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Resources\Shaders\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Shaders\DisplayGS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Resources\Shaders\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Resources\Shaders\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Shaders\GaugePS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Resources\Shaders\%(Filename).cso</ObjectFileOutput>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Resources\Shaders\%(Filename).cso</ObjectFileOutput>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\WarningPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Resources\Shaders\%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Resources\Shaders\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="packages\directxtk_desktop_2019.2025.10.28.2\build\native\directxtk_desktop_2019.targets" Condition="Exists('packages\directxtk_desktop_2019.2025.10.28.2\build\native\directxtk_desktop_2019.targets')" />
+  </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>このプロジェクトは、このコンピューター上にない NuGet パッケージを参照しています。それらのパッケージをダウンロードするには、[NuGet パッケージの復元] を使用します。詳細については、http://go.microsoft.com/fwlink/?LinkID=322105 を参照してください。見つからないファイルは {0} です。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\directxtk_desktop_2019.2025.10.28.2\build\native\directxtk_desktop_2019.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\directxtk_desktop_2019.2025.10.28.2\build\native\directxtk_desktop_2019.targets'))" />
+  </Target>
+</Project>

@@ -1,0 +1,12 @@
+# Visual Studio のキャッシュ類
+.vs/
+x64/
+ipch/
+packages/
+*.ipch
+*.pch
+*.vc.db
+*.nupkg
+
+# リソースは Git で管理しない
+Resources/
