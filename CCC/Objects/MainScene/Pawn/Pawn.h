@@ -25,6 +25,8 @@
 #include <CCC/Objects/PawnBase.h>
 #include "States/PawnState.h"
 
+#include <CCC/Objects/TeamID.h>
+
 // ‘O•ûéŒ¾
 namespace CCC
 {
@@ -34,12 +36,13 @@ namespace CCC
     }
 }
 class Paladin;
+class PawnManager;
 
 class Pawn :
     public CCC::Bases::PawnBase
 {
 public:
-	Pawn();
+	Pawn(const TeamID& teamID, PawnManager* p_PawnManager);
 	~Pawn();
 
 	void Initialize() override final;

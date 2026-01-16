@@ -22,45 +22,45 @@ void PawnMove::Update(float elapsedTime)
 {
 	std::string animation;
 
-	DirectX::SimpleMath::Vector3    targetPosition = GetTarget()->GetPosition();
-	DirectX::SimpleMath::Quaternion targetRotation = GetTarget()->GetTransform()->GetQuaternion();
+	DirectX::SimpleMath::Vector3    targetPosition = this->GetTarget()->GetPosition();
+	DirectX::SimpleMath::Quaternion targetRotation = this->GetTarget()->GetTransform()->GetQuaternion();
 	DirectX::SimpleMath::Vector3    worldOffset =
-		DirectX::SimpleMath::Vector3::Transform(GetOffset(), targetRotation);
+		DirectX::SimpleMath::Vector3::Transform(this->GetOffset(), targetRotation);
 
-	float distanceToTarget = ((targetPosition + worldOffset) - GetPosition()).Length();
+	float distanceToTarget = ((targetPosition + worldOffset) - this->GetPosition()).Length();
 
 	if (distanceToTarget > PawnParameter::RUN_RADIUS)
 	{
-		GetOwner()->SetRunning(true);
+		this->GetOwner()->SetRunning(true);
 		animation = "Paladin_Run";
 	}
 	else
 	{
-		GetOwner()->SetRunning(false);
+		this->GetOwner()->SetRunning(false);
 		animation = "Paladin_Walk";
 	}
 
 
 	// 隊列位置へ到着するように移動
 	// 陣形安定度のパーセンテージによって、ワンダーの影響度が入る
-	float stability = GetOwner()->GetFormationStability();
+	float stability = this->GetOwner()->GetFormationStability();
 	DirectX::SimpleMath::Vector3 steering
-		= GetOwner()->Arrive(GetOwner()->Pursuit(targetPosition + worldOffset, GetTarget()->GetVelocity()) * stability + GetOwner()->Wander() * (1.0f - stability));
+		= this->GetOwner()->Arrive(this->GetOwner()->Pursuit(targetPosition + worldOffset, this->GetTarget()->GetVelocity()) * stability + this->GetOwner()->Wander() * (1.0f - stability));
 
-	GetOwner()->AddVelocity(steering * elapsedTime);
+	this->GetOwner()->AddVelocity(steering * elapsedTime);
 
-	RequestAnimationChange(animation, 0.5f);
+	this->RequestAnimationChange(animation, 0.5f);
 
 
-	if (!GetTarget() || distanceToTarget < PawnParameter::STOP_RADIUS)
+	if (this->GetOwner()->GetTarget()->IsAttacking())
 	{
-		GetOwner()->RequestStateChange("Idle");
+		this->GetOwner()->RequestStateChange("Attack");
 		return;
 	}
 
-	if (mp_InputManager->GetInputAs<bool>("Attack"))
+	if (!this->GetTarget() || distanceToTarget < PawnParameter::STOP_RADIUS)
 	{
-		GetOwner()->RequestStateChange("Attack");
+		this->GetOwner()->RequestStateChange("Idle");
 		return;
 	}
 }

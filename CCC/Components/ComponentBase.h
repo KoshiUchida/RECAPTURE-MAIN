@@ -5,11 +5,17 @@
  *
  * @author CatCode
  *
- * @date   2025/12/11
+ * @date   2026/01/14
  *
  * コンポネートの基底クラス
  * 
  * すべてのコンポネートはこのクラスから継承されていなければならない
+ * 
+ * 2025/12/11
+ * 作成
+ * 
+ * 2026/01/14
+ * オーナーの取得を定数ポインタからポインタを取得するように修正
  */
 
 #pragma once
@@ -35,7 +41,7 @@ namespace CCC
 		public:
 			ComponentBase(CCC::Interfaces::IObject* p_Owner) noexcept;
 			virtual ~ComponentBase() noexcept;
-			const CCC::Interfaces::IObject* GetOwner() override {
+			CCC::Interfaces::IObject* GetOwner() override {
 				return mp_Owner;
 			}
 
@@ -45,7 +51,7 @@ namespace CCC
 			// メンバ変数
 			// ---------------------------------------------------------------------- //
 		private:
-			const CCC::Interfaces::IObject* mp_Owner;
+			CCC::Interfaces::IObject* mp_Owner;
 		};
 	}
 }

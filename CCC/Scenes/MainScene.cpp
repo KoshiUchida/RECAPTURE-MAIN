@@ -34,7 +34,9 @@
 
 #include <CCC/Objects/MainScene/MainCamera/MainCamera.h>
 #include <CCC/Objects/MainScene/Floor.h>
+#include <CCC/Objects/PawnManager.h>
 #include <CCC/Objects/MainScene/PawnLeader/PawnLeader.h>
+#include <CCC/Objects/MainScene/EnemyPawnLeader/EnemyPawnLeader.h>
 #include <CCC/Objects/MainScene/UI/StabilityUI.h>
 #include <CCC/Objects/MainScene/UI/SkillGaugeUI.h>
 
@@ -91,9 +93,15 @@ void MainScene::Initialize()
 	// 床の生成
 	p_om->CreateObject<Floor>("Floor");
 
+	// ポーンマネージャの生成
+	PawnManager* p_PawnManager = p_om->CreateObject<PawnManager>("PawnManager");
+
 	// リーダーポーンの生成
-	mp_PawnLeader = p_om->CreateObject<PawnLeader>("PawnLeader");
+	mp_PawnLeader = p_om->CreateObject<PawnLeader>("PawnLeader", p_PawnManager);
 	mp_PawnLeader->SetPosition(DirectX::SimpleMath::Vector3(0.0f, 0.0f, 5.0f));
+
+	// 敵リーダーポーンの生成
+	p_om->CreateObject<EnemyPawnLeader>("EnemyLeader", DirectX::SimpleMath::Vector3(10.0f, 0.0f, -10.0f), p_PawnManager);
 	
 	// カメラの生成
 	p_om->CreateObject<MainCamera>("MainCamera")->SetTarget(mp_PawnLeader);
@@ -145,7 +153,6 @@ void MainScene::Update(float elapsedTime)
 	if (DirectX::Keyboard::Get().GetState().I)
 	{
 		ChangeScene("SampleSceneSec");
-		DirectX::Mouse::Get().SetMode(DirectX::Mouse::MODE_ABSOLUTE);
 	}
 }
 
@@ -241,6 +248,11 @@ void MainScene::Render()
 		break;
 	}
 	m_DebugFont->AddString(0, 350, DirectX::Colors::White, L"SkillState : %s\nSkillGauge : %.2f", skillStateEvaluation.c_str(), skillGauge);
+
+
+	// 攻撃状態かをデバッグ憑依
+	bool isAttack = mp_PawnLeader->IsAttacking();
+	m_DebugFont->AddString(0, 420, DirectX::Colors::White, L"IsAttack : %s", isAttack ? L"TRUE" : L"FALSE");
 
 	//	デバッグフォントの描画
 	m_DebugFont->Render(mp_ResourceManager->GetCommonStates());

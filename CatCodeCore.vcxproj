@@ -184,10 +184,13 @@
     <ClInclude Include="CCC\Animation\AnimationStateBace.h" />
     <ClInclude Include="CCC\Common\Easings.h" />
     <ClInclude Include="CCC\Managers\RandomManager.h" />
+    <ClInclude Include="CCC\Objects\MainScene\EnemyPawnLeader\EnemyPawnLeaderParameter.h" />
     <ClInclude Include="CCC\Objects\MainScene\MainCamera\MainCameraParameter.h" />
     <ClInclude Include="CCC\Objects\MainScene\PawnLeader\PawnLeaderParameter.h" />
     <ClInclude Include="CCC\Objects\MainScene\Pawn\PawnParameter.h" />
     <ClInclude Include="CCC\DX\ReadData.h" />
+    <ClInclude Include="CCC\Objects\MainScene\EnemyPawnLeader\EnemyPawnLeader.h" />
+    <ClInclude Include="CCC\Objects\TeamID.h" />
     <ClInclude Include="Main\DisplayInfo.h" />
     <ClInclude Include="CCC\Interfaces\IState.h" />
     <ClInclude Include="CCC\Managers\InputManager.h" />
@@ -223,6 +226,8 @@
     <ClInclude Include="CCC\Objects\MainScene\Pawn\States\PawnMove.h" />
     <ClInclude Include="CCC\Objects\MainScene\Pawn\States\PawnAttack.h" />
     <ClInclude Include="CCC\ResourceClasses\GeometryShaderResource.h" />
+    <ClInclude Include="CCC\Objects\PawnCollider.h" />
+    <ClInclude Include="CCC\Objects\PawnManager.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="CCC\Managers\ResourceManager.h" />
     <ClInclude Include="CCC\Scenes\SampleSceneSec.h" />
@@ -254,6 +259,7 @@
     <ClCompile Include="CCC\Debug\DebugCamera.cpp" />
     <ClCompile Include="CCC\Debug\DebugFont.cpp" />
     <ClCompile Include="DeviceResources.cpp" />
+    <ClCompile Include="CCC\Objects\MainScene\EnemyPawnLeader\EnemyPawnLeader.cpp" />
     <ClCompile Include="Main\Game.cpp" />
     <ClCompile Include="CCC\ResourceClasses\GeometryShaderResource.cpp" />
     <ClCompile Include="Main\Main.cpp" />
@@ -269,6 +275,8 @@
     <ClCompile Include="CCC\Objects\MainScene\Pawn\States\PawnIdle.cpp" />
     <ClCompile Include="CCC\Objects\MainScene\Pawn\States\PawnMove.cpp" />
     <ClCompile Include="CCC\Objects\MainScene\Pawn\States\PawnAttack.cpp" />
+    <ClCompile Include="CCC\Objects\PawnCollider.cpp" />
+    <ClCompile Include="CCC\Objects\PawnManager.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

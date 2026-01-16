@@ -1,56 +1,45 @@
 /**
- * @file   PawnLeader.cpp
+ * @file   EnemyPawnLeader.cpp
  *
- * @brief  ポーンリーダーオブジェクトクラスのソースファイル
+ * @brief  敵ポーンリーダーオブジェクトクラスのソースファイル
  *
  * @author CatCode
  *
- * @date   2026/01/10
- * 
- * 2026/01/05
- * 隊員の陣形所定位置平均を求める機能の実装
- * パラメータファイルを作成したため、定数群を移動
- * 
- * 2026/01/06
- * 陣形安定度の評価方法を変更
- * 
- * 2026/01/10
- * 移動していると唐突に止まる問題の解決
+ * @date   2026/01/13
+ *
+ * 敵部隊を指揮する敵ポーンリーダーオブジェクトクラス
+ *
+ * 2026/01/13
+ * 作成
+ *
  */
 
 #include "pch.h"
-#include "PawnLeader.h"
+#include "EnemyPawnLeader.h"
 
 // パラメータ
-#include "PawnLeaderParameter.h"
+#include "EnemyPawnLeaderParameter.h"
+
+// コンポーネント
+#include <CCC/Objects/PawnCollider.h>
 
  // 管理クラス
-#include <CCC/Managers/InputManager.h>
 #include <CCC/Managers/ObjectManager.h>
-#include <CCC/Managers/CameraManager.h>
 
 // 関係のあるオブジェクトクラス
 #include <CCC/Objects/MainScene/Pawn/Pawn.h>
 #include <CCC/Objects/PawnManager.h>
 
-// コンポネート
-#include <CCC/Components/Transform.h>
-#include <CCC/Objects/PawnCollider.h>
-
 #include <CCC/Objects/TeamID.h>
-
-
 
  // ---------------------------------------------------------------------- //
  // パブリック関数
  // ---------------------------------------------------------------------- //
 
-PawnLeader::PawnLeader(PawnManager* p_PawnManager) :
-	PawnBase(TeamID::Player),
-	mp_InputManager (CCC::Managers::InputManager::GetInstance()),
-	mp_CameraManager(CCC::Managers::CameraManager::GetInstance()),
-	mp_CameraTransform(nullptr),
-	mp_PawnManager(p_PawnManager),
+EnemyPawnLeader::EnemyPawnLeader(const DirectX::SimpleMath::Vector3& spawnPosition, PawnManager* p_Manager) :
+	PawnBase(TeamID::Enemy),
+	mp_PawnManager(p_Manager),
+	m_Attack(0),
 	m_AverageUnitDiff(0.0f),
 	m_StabilityState(StabilityStates::Stable),
 	m_IsBroken(false),
@@ -60,18 +49,19 @@ PawnLeader::PawnLeader(PawnManager* p_PawnManager) :
 	m_SkillGauge(0.0f),
 	m_IsMove(false)
 {
-	this->AddComponent<CCC::Components::PawnCollider>("Collider", this, 1.0f, p_PawnManager);
+	this->AddComponent<CCC::Components::PawnCollider>("Collider", this, 1.0f, p_Manager);
+
+	this->SetPosition(spawnPosition);
 }
 
-PawnLeader::~PawnLeader() = default;
+EnemyPawnLeader::~EnemyPawnLeader() = default;
 
-void PawnLeader::Initialize()
+void EnemyPawnLeader::Initialize()
 {
 	// モデルステートにアニメーションプレイヤーを追加
 	AddAnimationPlayer("Paladin_Idle");
 	AddAnimationPlayer("Paladin_Walk");
 	AddAnimationPlayer("Paladin_Run");
-	AddAnimationPlayer("Paladin_Slash");
 
 	// サイズを0.02に設定
 	SetScale(0.02);
@@ -81,14 +71,14 @@ void PawnLeader::Initialize()
 	// ---------------------------------------------------------------------- //
 	// 部隊の生成
 	// ---------------------------------------------------------------------- //
-	
+
 	// オブジェクト管理クラスの取得
 	CCC::Managers::ObjectManager* p_om = CCC::Managers::ObjectManager::GetInstance();
 
 	for (int i = 0; i < PawnLeaderParameter::NUMBER_PAWN; i++)
 	{
 		// ポーンの生成
-		Pawn* p_Pawn = p_om->CreateObject<Pawn>("Pawn" + std::to_string(i), TeamID::Player, mp_PawnManager);
+		Pawn* p_Pawn = p_om->CreateObject<Pawn>("EnemyPawn" + std::to_string(i), TeamID::Enemy, mp_PawnManager);
 		p_Pawn->SetTarget(this);
 
 		// ポーンポインタ配列に追加
@@ -102,42 +92,28 @@ void PawnLeader::Initialize()
 	PawnsPositionReset();
 }
 
-void PawnLeader::Process(float elapsedTime)
+void EnemyPawnLeader::Process(float elapsedTime)
 {
-	// ---------------------------------------------------------------------- //
-	// 攻撃処理
-	// ---------------------------------------------------------------------- //
-
-	if (this->IsAttacking())
-	{
-		if (this->EndCurrentAnimation())
-			this->SetIsAttack(false);
-	}
-	else if (mp_InputManager->GetInputAs<bool>("Attack"))
-	{
-		this->SetIsAttack(true);
-	}
-
 	// ---------------------------------------------------------------------- //
 	// 陣形スキル
 	// ---------------------------------------------------------------------- //
 	switch (m_SkillState)
 	{
-	case PawnLeader::SkillStates::Inactive:
+	case EnemyPawnLeader::SkillStates::Inactive:
 
-		if (!this->IsAttacking() && mp_InputManager->GetInputAs<bool>("Skill") && m_StabilityState == StabilityStates::Stable)
-		{
-			m_SkillState = SkillStates::Active;
-			FormationWedge(PawnLeaderParameter::SPACING_BETWEEN_PAWN);
-			this->SetIsSkillActive(true);
+		//if (mp_InputManager->GetInputAs<bool>("Skill") && m_StabilityState == StabilityStates::Stable)
+		//{
+		//	m_SkillState = SkillStates::Active;
+		//	FormationWedge(PawnLeaderParameter::SPACING_BETWEEN_PAWN);
+		//	this->SetIsSkillActive(true);
 
 
-			float x = this->GetTransform()->GetRotateX();
-			m_SkillAngle = DirectX::SimpleMath::Vector3(-std::sinf(x), 0.0f, -std::cosf(x));
-		}
+		//	float x = this->GetTransform()->GetRotateX();
+		//	m_SkillAngle = DirectX::SimpleMath::Vector3(-std::sinf(x), 0.0f, -std::cosf(x));
+		//}
 
 		break;
-	case PawnLeader::SkillStates::Active:
+	case EnemyPawnLeader::SkillStates::Active:
 
 		m_SkillGauge -= PawnLeaderParameter::SkillGauge::CONSUMPTION_RATE * elapsedTime;
 
@@ -150,7 +126,7 @@ void PawnLeader::Process(float elapsedTime)
 		}
 
 		break;
-	case PawnLeader::SkillStates::Recovering:
+	case EnemyPawnLeader::SkillStates::Recovering:
 
 		m_SkillGauge += PawnLeaderParameter::SkillGauge::RECOVERY_RATE * this->GetFormationStability() * elapsedTime;
 
@@ -161,10 +137,10 @@ void PawnLeader::Process(float elapsedTime)
 		}
 
 		break;
-	case PawnLeader::SkillStates::Count:
+	case EnemyPawnLeader::SkillStates::Count:
 	default:
 		// 通常ならありえない処理
-		m_SkillState = PawnLeader::SkillStates::Inactive;
+		m_SkillState = EnemyPawnLeader::SkillStates::Inactive;
 		break;
 	}
 
@@ -173,75 +149,71 @@ void PawnLeader::Process(float elapsedTime)
 	// 移動機能
 	// ---------------------------------------------------------------------- //
 
-	if (!this->IsAttacking())
-	{
-
-		// もし、操作が入ったら現在の回転からベロシティを設定する
-		bool moveInput = mp_InputManager->GetInputAs<bool>("MoveInput");
-		if (!m_IsMove && moveInput)
-		{
-			float rotationX = this->GetTransform()->GetRotateX();
-			SetVelocity(DirectX::SimpleMath::Vector3(-std::sinf(rotationX), 0.0f, -std::cosf(rotationX)));
-			m_IsMove = true;
-		}
-		else if (m_IsMove && !moveInput)
-		{
-			m_IsMove = false;
-		}
+	//// もし、操作が入ったら現在の回転からベロシティを設定する
+	//bool moveInput = mp_InputManager->GetInputAs<bool>("MoveInput");
+	//if (!m_IsMove && moveInput)
+	//{
+	//	float rotationX = this->GetTransform()->GetRotateX();
+	//	SetVelocity(DirectX::SimpleMath::Vector3(-std::sinf(rotationX), 0.0f, -std::cosf(rotationX)));
+	//	m_IsMove = true;
+	//}
+	//else if (m_IsMove && !moveInput)
+	//{
+	//	m_IsMove = false;
+	//}
 
 
-		// 入力方向の取得
-		const float horizontal = DirectX::XM_PI * static_cast<float>(mp_InputManager->GetInputAs<int>("Horizontal"));
-		const float vertical = DirectX::XM_PI * static_cast<float>(mp_InputManager->GetInputAs<int>("Vertical"));
+	//// 入力方向の取得
+	//const float horizontal = DirectX::XM_PI * static_cast<float>(mp_InputManager->GetInputAs<int>("Horizontal"));
+	//const float vertical = DirectX::XM_PI * static_cast<float>(mp_InputManager->GetInputAs<int>("Vertical"));
 
-		float forwardInput = -static_cast<float>(vertical);
-		float rightInput = static_cast<float>(horizontal);
+	//float forwardInput = -static_cast<float>(vertical);
+	//float rightInput = static_cast<float>(horizontal);
 
-		// もし、スキル発動中なら自動で前進する
-		if (this->IsSkillActive())
-		{
-			forwardInput = 1.0f;
-			rightInput   = 0.0f;
-		}
+	//// もし、スキル発動中なら自動で前進する
+	//if (this->IsSkillActive())
+	//{
+	//	forwardInput = 1.0f;
+	//	m_SkillAngle += DirectX::SimpleMath::Vector3(-std::sinf(rightInput), 0.0f, -std::cosf(rightInput)) * elapsedTime;
+	//}
 
 
-		// カメラ基準ベクトル取得
-		const DirectX::SimpleMath::Vector3 forward = mp_CameraManager->GetForwardXZ();
-		const DirectX::SimpleMath::Vector3 right = mp_CameraManager->GetRightXZ();
+	//// カメラ基準ベクトル取得
+	//const DirectX::SimpleMath::Vector3 forward = mp_CameraManager->GetForwardXZ();
+	//const DirectX::SimpleMath::Vector3 right = mp_CameraManager->GetRightXZ();
 
-		DirectX::SimpleMath::Vector3 direction = DirectX::SimpleMath::Vector3::Zero;
-		if (this->IsSkillActive())
-			direction = m_SkillAngle * forwardInput;
-		else
-			direction = forward * forwardInput;
+	//DirectX::SimpleMath::Vector3 direction = DirectX::SimpleMath::Vector3::Zero;
+	//if (this->IsSkillActive())
+	//	direction = m_SkillAngle * forwardInput;
+	//else
+	//	direction = forward * forwardInput;
 
-		// もし、スキル発動中または陣形安定度が崩壊しているのだったら旋回速度にデバフ
-		if (this->IsSkillActive() || m_StabilityState == StabilityStates::Broken)
-			direction += right * rightInput * PawnLeaderParameter::SkillGauge::ROTATION_DEBUFF;
-		else
-			direction += right * rightInput;
+	//// もし、スキル発動中または陣形安定度が崩壊しているのだったら旋回速度にデバフ
+	//if (this->IsSkillActive() || m_StabilityState == StabilityStates::Broken)
+	//	direction += right * rightInput * PawnLeaderParameter::SkillGauge::ROTATION_DEBUFF;
+	//else
+	//	direction += right * rightInput;
 
-		direction.Normalize();
+	//direction.Normalize();
 
-		// 目標ベロシティ
-		DirectX::SimpleMath::Vector3 DesiredVelocity = direction;
+	//// 目標ベロシティ
+	//DirectX::SimpleMath::Vector3 DesiredVelocity = direction;
 
-		// 速度の設定
-		if (this->IsSkillActive() || mp_InputManager->GetInputAs<bool>("Dash"))
-			DesiredVelocity *= PawnLeaderParameter::RUN_SPEED;
-		else
-			DesiredVelocity *= PawnLeaderParameter::MOVE_SPEED;
+	//// 速度の設定
+	//if (this->IsSkillActive() || mp_InputManager->GetInputAs<bool>("Dash"))
+	//	DesiredVelocity *= PawnLeaderParameter::RUN_SPEED;
+	//else
+	//	DesiredVelocity *= PawnLeaderParameter::MOVE_SPEED;
 
-		// もし、仕切る発動中なら速度にバフ
-		if (this->IsSkillActive())
-			DesiredVelocity *= PawnLeaderParameter::SkillGauge::SPEED_BUFF;
+	//// もし、仕切る発動中なら速度にバフ
+	//if (this->IsSkillActive())
+	//	DesiredVelocity *= PawnLeaderParameter::SkillGauge::SPEED_BUFF;
 
-		// ベロシティの変更
-		if ((DesiredVelocity - GetVelocity()).Length() > PawnLeaderParameter::STOP_RADIUS)
-			AddVelocity((DesiredVelocity - GetVelocity()) * PawnLeaderParameter::VELOCITY_CHANGE_SPEED * elapsedTime);
-		else
-			SetVelocity(DesiredVelocity);
-	}
+	//// ベロシティの変更
+	//if ((DesiredVelocity - GetVelocity()).Length() > PawnLeaderParameter::STOP_RADIUS)
+	//	AddVelocity((DesiredVelocity - GetVelocity()) * PawnLeaderParameter::VELOCITY_CHANGE_SPEED * elapsedTime);
+	//else
+	//	SetVelocity(DesiredVelocity);
 
 
 
@@ -252,20 +224,14 @@ void PawnLeader::Process(float elapsedTime)
 
 	// アニメーションの設定
 	std::string animation;
-
-	// 攻撃中
-	if (this->IsAttacking())
-	{
-		animation = "Paladin_Slash";
-	}
 	// 方向ベクトルがゼロでなければ移動中
-	else if (this->GetVelocity() != DirectX::SimpleMath::Vector3::Zero)
+	if (this->GetVelocity() != DirectX::SimpleMath::Vector3::Zero)
 	{
 		// ダッシュ中かどうかでアニメーションを変更
-		if (this->IsSkillActive() || mp_InputManager->GetInputAs<bool>("Dash"))
-			animation = "Paladin_Run";
-		else
-			animation = "Paladin_Walk";
+		//if (this->IsSkillActive() || mp_InputManager->GetInputAs<bool>("Dash"))
+		//	animation = "Paladin_Run";
+		//else
+		//	animation = "Paladin_Walk";
 	}
 	else
 	{
@@ -273,7 +239,7 @@ void PawnLeader::Process(float elapsedTime)
 	}
 
 	// アニメーションの変更要求
-	this->RequestAnimationChange(animation, 0.3f);
+	RequestAnimationChange(animation, 0.3f);
 
 
 
@@ -365,15 +331,8 @@ void PawnLeader::Process(float elapsedTime)
 	}
 }
 
-void PawnLeader::SetCameraTransform(CCC::Bases::ObjectBase* p_Camera)
+float EnemyPawnLeader::GetFormationStability() const
 {
-	// オブジェクトからトランスフォームコンポネートを取得する
-	mp_CameraTransform = p_Camera->GetComponent<CCC::Components::Transform>("Transform");
-}
-
-float PawnLeader::GetFormationStability() const
-{
-	// もし、安定度の状態が死んでいたら0を返す
 	if (m_StabilityState == StabilityStates::Death)
 		return 0.0f;
 
@@ -397,15 +356,15 @@ float PawnLeader::GetFormationStability() const
 // 陣形の設定
 // ---------------------------------------------------------------------- //
 
-void PawnLeader::PawnsPositionReset()
+void EnemyPawnLeader::PawnsPositionReset()
 {
 	for (PawnBase* p_Pawn : m_PawnPointers)
 	{
-		p_Pawn->SetPosition(static_cast<Pawn*>(p_Pawn)->GetOffset());
+		p_Pawn->SetPosition(this->GetPosition() + static_cast<Pawn*>(p_Pawn)->GetOffset());
 	}
 }
 
-void PawnLeader::FormationSquare(float between)
+void EnemyPawnLeader::FormationSquare(float between)
 {
 	// 陣形の一辺を求める
 	int size = static_cast<int>(m_PawnPointers.size());
@@ -458,7 +417,7 @@ void PawnLeader::FormationSquare(float between)
 	}
 }
 
-void PawnLeader::FormationWedge(float between)
+void EnemyPawnLeader::FormationWedge(float between)
 {
 	// ポーンのインデックス
 	int count = 0;

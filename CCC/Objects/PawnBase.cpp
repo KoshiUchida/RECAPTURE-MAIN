@@ -43,10 +43,12 @@ float FastAtan2(float y, float x)
 
 namespace CCC::Bases
 {
-	PawnBase::PawnBase() :
+	PawnBase::PawnBase(const TeamID& teamID) :
 		ObjectBase(),
 		mp_Transform(),
-		m_IsSkillActive(false)
+		m_IsSkillActive(false),
+		m_IsAttacking(false),
+		m_TeamID(teamID)
 	{
 		// トランスフォームコンポネートの生成
 		mp_Transform = AddComponent<CCC::Components::Transform>("Transform", this);

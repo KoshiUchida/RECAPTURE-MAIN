@@ -14,6 +14,8 @@
 #include "ObjectBase.h"
 #include <CCC/Animation/AnimationStateBace.h>
 
+#include "TeamID.h"
+
 namespace CCC
 {
 	// 前方宣言
@@ -28,7 +30,7 @@ namespace CCC
 			public ObjectBase
 		{
 		public:
-			PawnBase();
+			PawnBase(const TeamID& teamID);
 			virtual ~PawnBase();
 
 			virtual void Initialize() = 0;
@@ -73,6 +75,12 @@ namespace CCC
 			// 現在スキル発動中か
 			bool m_IsSkillActive;
 
+			// 現在攻撃中か
+			bool m_IsAttacking;
+
+			// 自身のチーム
+			TeamID m_TeamID;
+
 
 
 		public:
@@ -91,6 +99,11 @@ namespace CCC
 				m_IsSkillActive = is;
 			}
 
+			void SetIsAttack(bool is)
+			{
+				m_IsAttacking = is;
+			}
+
 
 
 		public:
@@ -100,8 +113,16 @@ namespace CCC
 
 			DirectX::SimpleMath::Vector3 GetVelocity() const;
 
+			TeamID GetTeamID()const {
+				return m_TeamID;
+			}
+
 			bool IsSkillActive() const {
 				return m_IsSkillActive;
+			}
+
+			bool IsAttacking() const {
+				return m_IsAttacking;
 			}
 
 

@@ -209,6 +209,11 @@
     <ClInclude Include="CCC\Interfaces\IState.h">
       <Filter>Interfaces</Filter>
     </ClInclude>
+    <ClInclude Include="CCC\Objects\MainScene\EnemyPawnLeader\EnemyPawnLeader.h" />
+    <ClInclude Include="CCC\Objects\MainScene\EnemyPawnLeader\EnemyPawnLeaderParameter.h" />
+    <ClInclude Include="CCC\Objects\PawnCollider.h" />
+    <ClInclude Include="CCC\Objects\TeamID.h" />
+    <ClInclude Include="CCC\Objects\PawnManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -338,6 +343,9 @@
     <ClCompile Include="Main\Main.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="CCC\Objects\MainScene\EnemyPawnLeader\EnemyPawnLeader.cpp" />
+    <ClCompile Include="CCC\Objects\PawnCollider.cpp" />
+    <ClCompile Include="CCC\Objects\PawnManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

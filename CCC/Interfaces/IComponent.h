@@ -11,6 +11,12 @@
  * すべてのコンポネートクラスはこのインターフェースから実装がなされていなければならない
  * 
  * オーナ－の取得関数を必ず実装しなければならない
+ * 
+ * 2025/12/11
+ * 作成
+ * 
+ * 2026/01/14
+ * オーナーの取得を定数ポインタからポインタを取得するように修正
  */
 
 #pragma once
@@ -38,7 +44,7 @@ namespace CCC
 			/// <summary>
 			/// このコンポネートを保持するオブジェクトを取得する
 			/// </summary>
-			virtual const CCC::Interfaces::IObject* GetOwner() = 0;
+			virtual CCC::Interfaces::IObject* GetOwner() = 0;
 		};
 	}
 }

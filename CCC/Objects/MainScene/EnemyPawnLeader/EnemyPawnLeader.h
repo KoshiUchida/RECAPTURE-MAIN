@@ -1,44 +1,27 @@
 /**
- * @file   PawnLeader.h
+ * @file   EnemyPawnLeader.h
  *
- * @brief  ポーンリーダーオブジェクトクラスのヘッダファイル
+ * @brief  敵ポーンリーダーオブジェクトクラスのヘッダファイル
  *
  * @author CatCode
  *
- * @date   2026/01/07
- * 
- * 部隊を指揮するポーンリーダーオブジェクトクラス
- * 
- * 2026/01/05
- * 隊員の陣形所定位置差分の平均値を保持
- * 陣形密度の安定度が取得できる関数を実装
- * 
- * 
- * 2026/01/06
- * 安定度を評価するためのEnumクラスを追加
- * 正方形に陣形を設定する関数の追加
- * 
- * 2026/01/07
- * スキルの状態を実装
+ * @date   2026/01/13
+ *
+ * 敵部隊を指揮する敵ポーンリーダーオブジェクトクラス
+ *
+ * 2026/01/13
+ * 作成
+ *
  */
 
 #pragma once
 
- // 基底クラス
+// 基底クラス
 #include <CCC/Objects/PawnBase.h>
 
- // 前方宣言
-namespace CCC::Managers
-{
-	class InputManager;
-	class CameraManager;
-}
 class PawnManager;
 
-/// <summary>
-/// ポーンリーダーオブジェクトクラス
-/// </summary>
-class PawnLeader :
+class EnemyPawnLeader :
 	public CCC::Bases::PawnBase
 {
 	// ---------------------------------------------------------------------- //
@@ -48,12 +31,12 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	PawnLeader(PawnManager* p_PawnManager);
+	EnemyPawnLeader(const DirectX::SimpleMath::Vector3& spawnPosition, PawnManager* p_Manager);
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~PawnLeader();
+	~EnemyPawnLeader();
 
 	/// <summary>
 	/// 初期化処理
@@ -67,31 +50,21 @@ public:
 	void Process(float elapsedTime) override final;
 
 	/// <summary>
-	/// カメラのトランスフォームへのポインタを設定する
-	/// </summary>
-	void SetCameraTransform(CCC::Bases::ObjectBase* p_Camera);
-
-	/// <summary>
 	/// 陣形安定度の取得
 	/// </summary>
 	float GetFormationStability() const;
+
 
 
 	// ---------------------------------------------------------------------- //
 	// メンバ変数
 	// ---------------------------------------------------------------------- //
 private:
-	// 入力管理クラスへのポインタ
-	CCC::Managers::InputManager* mp_InputManager;
-
-	// カメラ管理クラスへのポインタ
-	CCC::Managers::CameraManager* mp_CameraManager;
-
 	// ポーンオブジェクト郡へのポインタ配列
 	std::vector<CCC::Bases::PawnBase*> m_PawnPointers;
 
-	// カメラのトランスフォーム
-	CCC::Components::Transform* mp_CameraTransform;
+	// 攻撃の状態
+	int m_Attack;
 
 	// 移動しているか
 	bool m_IsMove;
@@ -224,3 +197,4 @@ public:
 		return m_SkillGauge;
 	}
 };
+

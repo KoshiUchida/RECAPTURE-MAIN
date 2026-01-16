@@ -25,7 +25,9 @@
 #include "Pawn.h"
 #include "PawnParameter.h"
 
+ // コンポネート
 #include <CCC/Components/Transform.h>
+#include <CCC/Objects/PawnCollider.h>
 
 #include <CCC/Managers/RandomManager.h>
 
@@ -35,7 +37,8 @@
 #include "States/PawnMove.h"
 #include "States/PawnAttack.h"
 
-Pawn::Pawn() :
+Pawn::Pawn(const TeamID& teamID, PawnManager* p_PawnManager) :
+	PawnBase(teamID),
 	m_Speed(PawnParameter::MAX_SPEED),
 	m_Theta(0.0f),
 	mp_Target(nullptr),
@@ -43,6 +46,7 @@ Pawn::Pawn() :
 	m_DiffToTarget(0.0f),
 	m_FormationStability(1.0f)
 {
+	this->AddComponent<CCC::Components::PawnCollider>("Collider", this, 1.0f, p_PawnManager);
 }
 
 Pawn::~Pawn() = default;
@@ -97,6 +101,10 @@ void Pawn::Process(float elapsedTime)
 
 	// 現在の座標との差分を保存する
 	m_DiffToTarget = (targetPosition - GetPosition()).Length();
+
+	DirectX::SimpleMath::Vector3 outSide = this->GetComponent<CCC::Components::PawnCollider>("Collider")->GetOutsideForce();
+	if (outSide != DirectX::SimpleMath::Vector3::Zero)
+		this->SetVelocity(outSide);
 
 	
 	

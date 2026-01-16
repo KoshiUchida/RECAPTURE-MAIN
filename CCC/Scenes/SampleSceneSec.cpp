@@ -10,6 +10,7 @@ SampleSceneSec::~SampleSceneSec() = default;
 
 void SampleSceneSec::Initialize()
 {
+	DirectX::Mouse::Get().SetMode(DirectX::Mouse::MODE_ABSOLUTE);
 }
 
 void SampleSceneSec::Update(float elapsedTime)

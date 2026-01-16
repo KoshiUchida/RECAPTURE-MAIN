@@ -1,0 +1,11 @@
+#pragma once
+
+/// <summary>
+/// É`Å[ÉÄID
+/// </summary>
+enum class TeamID
+{
+	Player,
+	Enemy,
+	Other
+};
