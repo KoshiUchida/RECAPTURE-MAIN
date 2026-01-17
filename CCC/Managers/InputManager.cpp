@@ -11,6 +11,9 @@
 #include "pch.h"
 #include "InputManager.h"
 
+#include <CCC/Messenger/MessageType.h>
+#include <CCC/Messenger/MessengerHub.h>
+
 namespace CCC::Managers
 {
 	// ---------------------------------------------------------------------- //
@@ -55,6 +58,15 @@ namespace CCC::Managers
 
 		// キーボードの状態を取得する
 		m_KeyboardState = mp_Keyboard->GetState();
+
+
+		if (m_MouseState.leftButton)
+		{
+			CCC::Messenger::MessengerHub::GetInstance()->Receive(
+				CCC::Messenger::MessageType::INPUT_ATTACK,
+				CCC::Messenger::MessengerHub::PayLoad{true}
+			);
+		}
 	}
 
 

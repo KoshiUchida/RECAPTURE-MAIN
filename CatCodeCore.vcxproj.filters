@@ -214,6 +214,8 @@
     <ClInclude Include="CCC\Objects\PawnCollider.h" />
     <ClInclude Include="CCC\Objects\TeamID.h" />
     <ClInclude Include="CCC\Objects\PawnManager.h" />
+    <ClInclude Include="CCC\Messenger\MessengerHub.h" />
+    <ClInclude Include="CCC\Messenger\MessageType.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -346,6 +348,7 @@
     <ClCompile Include="CCC\Objects\MainScene\EnemyPawnLeader\EnemyPawnLeader.cpp" />
     <ClCompile Include="CCC\Objects\PawnCollider.cpp" />
     <ClCompile Include="CCC\Objects\PawnManager.cpp" />
+    <ClCompile Include="CCC\Messenger\MessengerHub.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

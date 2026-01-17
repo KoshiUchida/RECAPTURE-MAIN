@@ -29,6 +29,10 @@
 #include <CCC/Managers/ObjectManager.h>
 #include <CCC/Managers/CameraManager.h>
 
+// メッセンジャー
+#include <CCC/Messenger/MessengerHub.h>
+#include <CCC/Messenger/MessageType.h>
+
 // 関係のあるオブジェクトクラス
 #include <CCC/Objects/MainScene/Pawn/Pawn.h>
 #include <CCC/Objects/PawnManager.h>
@@ -100,6 +104,24 @@ void PawnLeader::Initialize()
 
 	// 位置リセット
 	PawnsPositionReset();
+
+
+
+	// ---------------------------------------------------------------------- //
+	// メッセージの作成
+	// ---------------------------------------------------------------------- //
+
+	auto* messenger = CCC::Messenger::MessengerHub::GetInstance();
+
+
+	messenger->Subscribe(CCC::Messenger::MessageType::INPUT_ATTACK,
+		[this](const CCC::Messenger::MessengerHub::PayLoad& is) {
+			if (auto p = std::any_cast<bool>(&is.item))
+			{
+				if (*p) this->SetIsAttack(true);
+			}
+		}
+	);
 }
 
 void PawnLeader::Process(float elapsedTime)
@@ -113,10 +135,10 @@ void PawnLeader::Process(float elapsedTime)
 		if (this->EndCurrentAnimation())
 			this->SetIsAttack(false);
 	}
-	else if (mp_InputManager->GetInputAs<bool>("Attack"))
-	{
-		this->SetIsAttack(true);
-	}
+	//else if (mp_InputManager->GetInputAs<bool>("Attack"))
+	//{
+	//	this->SetIsAttack(true);
+	//}
 
 	// ---------------------------------------------------------------------- //
 	// 陣形スキル

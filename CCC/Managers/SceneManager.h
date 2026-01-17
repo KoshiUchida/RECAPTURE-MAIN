@@ -10,17 +10,21 @@
  * シーンの一元管理
  * m_IsEnd（ゲームの終了のフラグ）を
  * TRUEにするには、End関数を実行
+ * 
+ * 2025/11/14
+ * 作成
+ * 
+ * 2026/01/16
+ * インクルードガードの記述ルールにより、修正
  */
 
-#pragma once
+// インクルードガード
 #ifndef SCENE_MANAGER_DEFINED
 #define SCENE_MANAGER_DEFINED
 
+// C++標準ライブラリ
 #include <string>
 #include <memory>
-
-// TODO:後にObjectManagerを実装したら修正
-//#include "ObjectManager.h"
 
 namespace CCC
 {
@@ -28,6 +32,7 @@ namespace CCC
 	{
 		/// <summary>
 		/// シーン管理クラス
+		/// シングルトン構造のため、GetInstance関数を使って実体を取得しなければならない
 		/// </summary>
 		class SceneManager final
 		{
@@ -61,7 +66,7 @@ namespace CCC
 			// 前方宣言
 			struct Impl;
 
-			// 定義をCPPにて行う
+			// 実装をCPPにて行う
 			std::unique_ptr<Impl> m_Impl;
 
 
