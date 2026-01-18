@@ -45,14 +45,19 @@ namespace CCC::Managers
 	// ---------------------------------------------------------------------- //
 	// パブリック関数
 	// ---------------------------------------------------------------------- //
-	ComponentManager::~ComponentManager()
-	{
-	}
+	ComponentManager::~ComponentManager() = default;
 
 	void ComponentManager::Update(float elapsedTime)
 	{
 		// 更新処理を持つコンポネート群を更新する
 		for (CCC::Interfaces::IUpdataComponent* component : mp_UpdataComponets)
 			component->Update(elapsedTime);
+	}
+
+
+	void ComponentManager::SubUpdataComponent(CCC::Interfaces::IUpdataComponent* p_Component)
+	{
+		std::vector<CCC::Interfaces::IUpdataComponent*>& v = mp_UpdataComponets;
+		v.erase(std::remove(v.begin(), v.end(), p_Component), v.end());
 	}
 }

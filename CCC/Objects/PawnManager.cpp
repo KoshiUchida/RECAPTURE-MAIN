@@ -24,6 +24,9 @@ void PawnManager::Update(float elapsedTime)
 		// すでに外力が入力されていたらコンティニュー
 		if (p_ICollider->IsSetOutsideForce()) continue;
 
+		// アクティブ状態に無かったらコンティニュー
+		if (!p_ICollider->GetActive()) continue;
+
 		for (int j = 0; j < m_PawnColliders.size(); j++)
 		{
 			// 同じインデックスだったらコンティニュー
@@ -35,6 +38,9 @@ void PawnManager::Update(float elapsedTime)
 
 			// すでに外力が入力されていたらコンティニュー
 			if (p_JCollider->IsSetOutsideForce()) continue;
+
+			// アクティブ状態に無かったらコンティニュー
+			if (!p_JCollider->GetActive()) continue;
 
 			// 同じチームIDだったらコンティニュー
 			if (p_ICollider->GetTeamID() == p_JCollider->GetTeamID()) continue;

@@ -21,5 +21,8 @@ namespace CCC::Bases
 	{
 	}
 
-	ObjectBase::~ObjectBase() = default;
+	ObjectBase::~ObjectBase()
+	{
+		m_Components.clear();
+	}
 }

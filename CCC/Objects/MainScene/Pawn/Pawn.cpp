@@ -36,6 +36,8 @@
 #include "States/PawnIdle.h"
 #include "States/PawnMove.h"
 #include "States/PawnAttack.h"
+#include "States/PawnKnockback.h"
+#include "States/PawnStandUp.h"
 
 Pawn::Pawn(const TeamID& teamID, PawnManager* p_PawnManager) :
 	PawnBase(teamID),
@@ -58,6 +60,8 @@ void Pawn::Initialize()
 	AddAnimationPlayer("Paladin_Walk");
 	AddAnimationPlayer("Paladin_Run");
 	AddAnimationPlayer("Paladin_Slash");
+	AddAnimationPlayer("Paladin_FallingBackDeath");
+	AddAnimationPlayer("Paladin_StandUp");
 
 	// サイズを0.02に設定
 	SetScale(0.02);
@@ -76,6 +80,14 @@ void Pawn::Initialize()
 
 	m_Factories["Attack"] = [this]() {
 		return std::make_unique<PawnAttack>(this);
+		};
+
+	m_Factories["Knockback"] = [this]() {
+		return std::make_unique<PawnKnockback>(this);
+		};
+
+	m_Factories["StandUp"] = [this]() {
+		return std::make_unique<PawnStandUp>(this);
 		};
 
 	// ステートマシンの初期化
@@ -104,7 +116,10 @@ void Pawn::Process(float elapsedTime)
 
 	DirectX::SimpleMath::Vector3 outSide = this->GetComponent<CCC::Components::PawnCollider>("Collider")->GetOutsideForce();
 	if (outSide != DirectX::SimpleMath::Vector3::Zero)
+	{
 		this->SetVelocity(outSide);
+		this->RequestStateChange("Knockback");
+	}
 
 	
 	

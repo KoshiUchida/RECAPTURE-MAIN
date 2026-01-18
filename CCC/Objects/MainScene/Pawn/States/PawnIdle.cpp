@@ -4,6 +4,8 @@
 #include <CCC/Components/Transform.h>
 #include <CCC/Managers/InputManager.h>
 
+#include <CCC/Objects/PawnCollider.h>
+
 #include "../Pawn.h"
 #include "../PawnParameter.h"
 

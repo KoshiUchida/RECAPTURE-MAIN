@@ -5,7 +5,7 @@
  *
  * @author CatCode
  *
- * @date   2026/01/13
+ * @date   2026/01/17
  * 
  * 使用を行うには必ずSetResource関数を行う必要がある。
  * 
@@ -27,9 +27,16 @@
  * 
  * 2026/01/13
  * UI関連のシェーダリソースを追加
+ * 
+ * 2026/01/17
+ * Paladinモデル用のアニメーションの追加
+ * ・ぶっ飛んで死ぬアニメーション
  */
 
+// プリコンパイル済みヘッダー
 #include "pch.h"
+
+// クラス定義元
 #include "ResourceManager.h"
 
 // Gameクラスの前方宣言
@@ -73,15 +80,17 @@ namespace CCC::Managers
 		// ---------------------------------------------------------------------- //
 		
 		// パラディンのリソース
-		CreateResource<CCC::Resources::ModelWithBoneResource>("Paladin"       , L"Resources/Models/Paladin/Paladin.sdkmesh"                       , "MainScene");
-		CreateResource<CCC::Resources::AnimationResource>("Paladin_Idle"      , L"Resources/Models/Paladin/Animations/Idle.sdkmesh_anim"          , "MainScene");
-		CreateResource<CCC::Resources::AnimationResource>("Paladin_Walk"      , L"Resources/Models/Paladin/Animations/Walk.sdkmesh_anim"          , "MainScene");
-		CreateResource<CCC::Resources::AnimationResource>("Paladin_Walk_Left" , L"Resources/Models/Paladin/Animations/SideWalk_Left.sdkmesh_anim" , "MainScene");
-		CreateResource<CCC::Resources::AnimationResource>("Paladin_Walk_Right", L"Resources/Models/Paladin/Animations/SideWalk_Right.sdkmesh_anim", "MainScene");
-		CreateResource<CCC::Resources::AnimationResource>("Paladin_Walk_Back" , L"Resources/Models/Paladin/Animations/BackWalk.sdkmesh_anim"      , "MainScene");
-		CreateResource<CCC::Resources::AnimationResource>("Paladin_Run"       , L"Resources/Models/Paladin/Animations/Run.sdkmesh_anim"           , "MainScene");
-		CreateResource<CCC::Resources::AnimationResource>("Paladin_Slash"     , L"Resources/Models/Paladin/Animations/Slash.sdkmesh_anim"         , "MainScene");
-		CreateResource<CCC::Resources::AnimationResource>("Paladin_Death"     , L"Resources/Models/Paladin/Animations/Death.sdkmesh_anim"         , "MainScene");
+		CreateResource<CCC::Resources::ModelWithBoneResource>("Paladin"             , L"Resources/Models/Paladin/Paladin.sdkmesh"                         , "MainScene");
+		CreateResource<CCC::Resources::AnimationResource>("Paladin_Idle"            , L"Resources/Models/Paladin/Animations/Idle.sdkmesh_anim"            , "MainScene");
+		CreateResource<CCC::Resources::AnimationResource>("Paladin_Walk"            , L"Resources/Models/Paladin/Animations/Walk.sdkmesh_anim"            , "MainScene");
+		CreateResource<CCC::Resources::AnimationResource>("Paladin_Walk_Left"       , L"Resources/Models/Paladin/Animations/SideWalk_Left.sdkmesh_anim"   , "MainScene");
+		CreateResource<CCC::Resources::AnimationResource>("Paladin_Walk_Right"      , L"Resources/Models/Paladin/Animations/SideWalk_Right.sdkmesh_anim"  , "MainScene");
+		CreateResource<CCC::Resources::AnimationResource>("Paladin_Walk_Back"       , L"Resources/Models/Paladin/Animations/BackWalk.sdkmesh_anim"        , "MainScene");
+		CreateResource<CCC::Resources::AnimationResource>("Paladin_Run"             , L"Resources/Models/Paladin/Animations/Run.sdkmesh_anim"             , "MainScene");
+		CreateResource<CCC::Resources::AnimationResource>("Paladin_Slash"           , L"Resources/Models/Paladin/Animations/Slash.sdkmesh_anim"           , "MainScene");
+		CreateResource<CCC::Resources::AnimationResource>("Paladin_Death"           , L"Resources/Models/Paladin/Animations/Death.sdkmesh_anim"           , "MainScene");
+		CreateResource<CCC::Resources::AnimationResource>("Paladin_FallingBackDeath", L"Resources/Models/Paladin/Animations/FallingBackDeath.sdkmesh_anim", "MainScene");
+		CreateResource<CCC::Resources::AnimationResource>("Paladin_StandUp"         , L"Resources/Models/Paladin/Animations/StandUp.sdkmesh_anim"         , "MainScene");
 
 		// ゆかのリソース
 		CreateResource<CCC::Resources::ModelResource>("Floor", L"Resources/Models/Floor/Floor.sdkmesh", "MainScene");

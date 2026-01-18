@@ -13,7 +13,6 @@
  * TODO:描画関連の機能を実装
  */
 
-#pragma once
 #ifndef COMPONENT_MANAGER_DEFINED
 #define COMPONENT_MANAGER_DEFINED
 
@@ -90,23 +89,7 @@ namespace CCC
 			/// <summary>
 			/// 更新処理を持つコンポネートを解除する
 			/// </summary>
-			void SubUpdataComponent(CCC::Interfaces::IUpdataComponent* p_Component)
-			{
-				// 削除するインデックス
-				int deleteIndex = 0;
-
-				// 削除対象を配列から探す
-				while (mp_UpdataComponets[deleteIndex] != p_Component)
-				{
-					deleteIndex++;
-
-					// もし、インデックスがサイズを越えたら即時終了
-					if (mp_UpdataComponets.size() >= deleteIndex)
-						return;
-				}
-
-				mp_UpdataComponets.erase(mp_UpdataComponets.begin() + deleteIndex);
-			}
+			void SubUpdataComponent(CCC::Interfaces::IUpdataComponent* p_Component);
 
 
 

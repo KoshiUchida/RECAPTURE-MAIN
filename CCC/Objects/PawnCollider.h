@@ -31,7 +31,7 @@ namespace CCC
 			/// <summary>
 			/// デストラクタ
 			/// </summary>
-			virtual ~PawnCollider() noexcept;
+			virtual ~PawnCollider();
 
 			/// <summary>
 			/// 更新処理
@@ -53,6 +53,10 @@ namespace CCC
 		public:
 			void SetOutsideForce(const DirectX::SimpleMath::Vector3& force) {
 				m_OutsideForce = force;
+			}
+
+			void SetActive(bool active) {
+				m_Active = active;
 			}
 
 
@@ -77,7 +81,11 @@ namespace CCC
 			}
 
 			bool IsSetOutsideForce() const {
-				return m_CoolTime > 0.0f && m_OutsideForce != DirectX::SimpleMath::Vector3::Zero;
+				return m_Active && m_CoolTime > 0.0f && m_OutsideForce != DirectX::SimpleMath::Vector3::Zero;
+			}
+
+			bool GetActive() const {
+				return m_Active;
 			}
 
 
@@ -85,6 +93,8 @@ namespace CCC
 			// メンバ変数
 			// ---------------------------------------------------------------------- //
 		private:
+			// コライダーのアクティブ
+			bool m_Active;
 
 			// 座標
 			DirectX::SimpleMath::Vector2 m_Position;

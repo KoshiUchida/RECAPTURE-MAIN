@@ -1,22 +1,40 @@
+/**
+ * @file   PawnMove.cpp
+ *
+ * @brief  ポーンオブジェクトクラスの移動ステートのソースファイル
+ *
+ * @author CatCode
+ *
+ * @date    2026/01/17
+ *
+ * 2026/01/17
+ * コメントを追加
+ */
+
+// プリコンパイル済みヘッダー
 #include "pch.h"
+
+// クラス定義元
 #include "PawnMove.h"
 
+// 管理クラス
 #include <CCC/Managers/InputManager.h>
 
+// コンポネートクラス
 #include <CCC/Components/Transform.h>
 
+// このステートマシンを持つクラス
 #include "../Pawn.h"
 #include "../PawnParameter.h"
 
 PawnMove::PawnMove(Pawn* p_Owner) :
 	PawnState(p_Owner),
-	mp_InputManager(CCC::Managers::InputManager::GetInstance())
+	mp_InputManager(CCC::Managers::InputManager::GetInstance()),
+	m_HaveReached(false)
 {
 }
 
-PawnMove::~PawnMove()
-{
-}
+PawnMove::~PawnMove() = default;
 
 void PawnMove::Update(float elapsedTime)
 {
@@ -40,6 +58,9 @@ void PawnMove::Update(float elapsedTime)
 		animation = "Paladin_Walk";
 	}
 
+	// 目的地に到達したか
+	m_HaveReached = !this->GetTarget() || distanceToTarget < PawnParameter::STOP_RADIUS;
+
 
 	// 隊列位置へ到着するように移動
 	// 陣形安定度のパーセンテージによって、ワンダーの影響度が入る
@@ -49,16 +70,28 @@ void PawnMove::Update(float elapsedTime)
 
 	this->GetOwner()->AddVelocity(steering * elapsedTime);
 
+	// アニメーションの変更リクエスト
 	this->RequestAnimationChange(animation, 0.5f);
 
+	// 状態遷移
+	this->RequestStateTransition();
+}
 
+void PawnMove::RequestStateTransition()
+{
+	// ---------------------------------------------------------------------- //
+	// 状態遷移
+	// ---------------------------------------------------------------------- //
+
+	// 「攻撃」行き
 	if (this->GetOwner()->GetTarget()->IsAttacking())
 	{
 		this->GetOwner()->RequestStateChange("Attack");
 		return;
 	}
 
-	if (!this->GetTarget() || distanceToTarget < PawnParameter::STOP_RADIUS)
+	// 「待機」行き
+	if (m_HaveReached)
 	{
 		this->GetOwner()->RequestStateChange("Idle");
 		return;

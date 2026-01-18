@@ -7,12 +7,12 @@ namespace CCC::Components
 {
 	PawnCollider::PawnCollider(CCC::Bases::PawnBase* p_Owner, float colliderRadius, PawnManager* p_Manager) :
 		UpdataComponentBase(p_Owner),
+		m_Active(true),
 		m_Radius(colliderRadius),
 		m_TeamID(),
 		m_CoolTime(0.0f)
 	{
 		m_Position     = DirectX::SimpleMath::Vector2(p_Owner->GetPosition().x, p_Owner->GetPosition().z);
-		// TODO:チームIDをオーナーから取得
 		m_TeamID       = p_Owner->GetTeamID();
 		m_Velocity     = DirectX::SimpleMath::Vector3::Zero;
 		m_OutsideForce = DirectX::SimpleMath::Vector3::Zero;
@@ -21,7 +21,9 @@ namespace CCC::Components
 		p_Manager->AddPawnCollider(this);
 	}
 
-	PawnCollider::~PawnCollider() noexcept = default;
+	PawnCollider::~PawnCollider()
+	{
+	}
 
 	void PawnCollider::Update(float elapsedTime)
 	{
