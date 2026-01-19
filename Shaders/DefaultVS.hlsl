@@ -1,3 +1,18 @@
+/**
+ * @file   DefaultVS.hlsl
+ *
+ * @brief  デフォルト頂点シェーダのHLSLファイル
+ *
+ * @author CatCode
+ *
+ * @date   2026/01/18
+ * 標準頂点シェーダ
+ *
+ * 2026/01/18
+ * コメント追加
+ */
+
+// 共通定義
 #include "Common.hlsli"
 
 PS_INPUT main(VS_INPUT input)

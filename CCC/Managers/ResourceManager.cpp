@@ -5,7 +5,7 @@
  *
  * @author CatCode
  *
- * @date   2026/01/17
+ * @date   2026/01/19
  * 
  * 使用を行うには必ずSetResource関数を行う必要がある。
  * 
@@ -31,6 +31,15 @@
  * 2026/01/17
  * Paladinモデル用のアニメーションの追加
  * ・ぶっ飛んで死ぬアニメーション
+ * ・起き上がるアニメーション
+ * 
+ * 2026/01/18
+ * 標準ピクセルシェーダの追加
+ * 
+ * タイトルシーン用のテクスチャを追加
+ * 
+ * 2026/01/19
+ * リザルトシーン用のテクスチャを追加
  */
 
 // プリコンパイル済みヘッダー
@@ -70,10 +79,24 @@ namespace CCC::Managers
 		CreateResource<CCC::Resources::ModelResource>("SkyDome", L"Resources/Models/SkyDome/SkyDome.sdkmesh");
 
 		// シェーダ
+		CreateResource<CCC::Resources::PixelShaderResource   >("DefaultPS", L"Resources/Shaders/DefaultPS.cso");
 		CreateResource<CCC::Resources::VertexShaderResource  >("DefaultVS", L"Resources/Shaders/DefaultVS.cso");
 		CreateResource<CCC::Resources::GeometryShaderResource>("DisplayGS", L"Resources/Shaders/DisplayGS.cso");
-		CreateResource<CCC::Resources::PixelShaderResource   >("GaugePS"  , L"Resources/Shaders/GaugePS.cso");
+		CreateResource<CCC::Resources::PixelShaderResource   >("GaugePS"  , L"Resources/Shaders/GaugePS.cso"  );
 		CreateResource<CCC::Resources::PixelShaderResource   >("WarningPS", L"Resources/Shaders/WarningPS.cso");
+
+
+
+
+		// ---------------------------------------------------------------------- //
+		// タイトルシーンで使用するリソース
+		// ---------------------------------------------------------------------- //
+		
+		// UI
+		CreateResource<CCC::Resources::TextureResource>("NewGame" , L"Resources/Textures/NewGameButtom.png" );
+		CreateResource<CCC::Resources::TextureResource>("QuitGame", L"Resources/Textures/QuitGameButtom.png");
+		CreateResource<CCC::Resources::TextureResource>("Setting" , L"Resources/Textures/SettingButtom.png" );
+
 
 		// ---------------------------------------------------------------------- //
 		// メインシーンで使用するリソース
@@ -96,18 +119,30 @@ namespace CCC::Managers
 		CreateResource<CCC::Resources::ModelResource>("Floor", L"Resources/Models/Floor/Floor.sdkmesh", "MainScene");
 
 		// StabilityUIのリソース
-		CreateResource<CCC::Resources::TextureResource>("Stability_Label"    , L"Resources/Textures/StabilityUI/Label.png");
-		CreateResource<CCC::Resources::TextureResource>("Stability_Bar"      , L"Resources/Textures/StabilityUI/Bar.png");
-		CreateResource<CCC::Resources::TextureResource>("Stability_Frame"    , L"Resources/Textures/StabilityUI/Frame.png");
-		CreateResource<CCC::Resources::TextureResource>("Stability_Warning"  , L"Resources/Textures/StabilityUI/Warning.png");
-		CreateResource<CCC::Resources::TextureResource>("Stability_Broken"   , L"Resources/Textures/StabilityUI/Broken.png");
-		CreateResource<CCC::Resources::TextureResource>("Stability_Death"    , L"Resources/Textures/StabilityUI/Death.png");
+		CreateResource<CCC::Resources::TextureResource>("Stability_Label"    , L"Resources/Textures/StabilityUI/Label.png"  , "MainScene");
+		CreateResource<CCC::Resources::TextureResource>("Stability_Bar"      , L"Resources/Textures/StabilityUI/Bar.png"    , "MainScene");
+		CreateResource<CCC::Resources::TextureResource>("Stability_Frame"    , L"Resources/Textures/StabilityUI/Frame.png"  , "MainScene");
+		CreateResource<CCC::Resources::TextureResource>("Stability_Warning"  , L"Resources/Textures/StabilityUI/Warning.png", "MainScene");
+		CreateResource<CCC::Resources::TextureResource>("Stability_Broken"   , L"Resources/Textures/StabilityUI/Broken.png" , "MainScene");
+		CreateResource<CCC::Resources::TextureResource>("Stability_Death"    , L"Resources/Textures/StabilityUI/Death.png"  , "MainScene");
 
 		// SkillGaugeUIのリソース
-		CreateResource<CCC::Resources::TextureResource>("SkillGauge_Label_Gladius", L"Resources/Textures/SkillGaugeUI/Label_Gladius.png");
-		CreateResource<CCC::Resources::TextureResource>("SkillGauge_Bar"          , L"Resources/Textures/SkillGaugeUI/Bar.png");
-		CreateResource<CCC::Resources::TextureResource>("SkillGauge_Frame"        , L"Resources/Textures/SkillGaugeUI/Frame.png");
-		CreateResource<CCC::Resources::TextureResource>("SkillGauge_Bottom_Q"     , L"Resources/Textures/SkillGaugeUI/Bottom_Q.png");
+		CreateResource<CCC::Resources::TextureResource>("SkillGauge_Label_Gladius", L"Resources/Textures/SkillGaugeUI/Label_Gladius.png", "MainScene");
+		CreateResource<CCC::Resources::TextureResource>("SkillGauge_Bar"          , L"Resources/Textures/SkillGaugeUI/Bar.png"          , "MainScene");
+		CreateResource<CCC::Resources::TextureResource>("SkillGauge_Frame"        , L"Resources/Textures/SkillGaugeUI/Frame.png"        , "MainScene");
+		CreateResource<CCC::Resources::TextureResource>("SkillGauge_Bottom_Q"     , L"Resources/Textures/SkillGaugeUI/Bottom_Q.png"     , "MainScene");
+
+
+
+		// ---------------------------------------------------------------------- //
+		// リザルトシーンで使用するリソース
+		// ---------------------------------------------------------------------- //
+
+		// UI
+		CreateResource<CCC::Resources::TextureResource>("ResultSceneUI_BackToTitle", L"Resources/Textures/ResultScene/BackToTitle.png", "ResultScene");
+		CreateResource<CCC::Resources::TextureResource>("ResultSceneUI_QuitGame"   , L"Resources/Textures/ResultScene/QuitGame.png"   , "ResultScene");
+		CreateResource<CCC::Resources::TextureResource>("ResultSceneUI_Win"        , L"Resources/Textures/ResultScene/Win.png"        , "ResultScene");
+		CreateResource<CCC::Resources::TextureResource>("ResultSceneUI_Lose"       , L"Resources/Textures/ResultScene/Lose.png"       , "ResultScene");
 	}
 
 

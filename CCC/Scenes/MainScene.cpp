@@ -8,6 +8,7 @@
  * @date    2026/01/06
  * 
  * 2025/12/19
+ * 作成
  * ポーンオブジェクトクラスの追加
  * 
  * 2026/01/05
@@ -15,30 +16,54 @@
  * 
  * 2026/01/06
  * 陣形崩壊後の安定するまでの回復時間をデバッグ表示
+ * 
+ * 2026/01/18
+ * コメントを追加
  */
 
+// プリコンパイル済みヘッダー
 #include "pch.h"
+
+// クラス定義元
 #include "MainScene.h"
 
+
+// DirectXTK
+#include <VertexTypes.h> 
+
+
+// 管理クラス
 #include <CCC/Managers/ResourceManager.h>
 #include <CCC/Managers/CameraManager.h>
 #include <CCC/Managers/ObjectManager.h>
 #include <CCC/Managers/InputManager.h>
 #include <CCC/Managers/SceneManager.h>
 
-#include <VertexTypes.h> 
 
+// メッセンジャー
+#include <CCC/Messenger/MessengerHub.h>
+#include <CCC/Messenger/MessageType.h>
+
+// コンポネート
 #include <CCC/Components/Camera.h>
 
-#include <CCC/Objects/SkyDome.h>
 
+// このシーンで使用するオブジェクト
+#include <CCC/Objects/SkyDome.h>
+#include <CCC/Objects/PawnManager.h>
 #include <CCC/Objects/MainScene/MainCamera/MainCamera.h>
 #include <CCC/Objects/MainScene/Floor.h>
-#include <CCC/Objects/PawnManager.h>
 #include <CCC/Objects/MainScene/PawnLeader/PawnLeader.h>
 #include <CCC/Objects/MainScene/EnemyPawnLeader/EnemyPawnLeader.h>
 #include <CCC/Objects/MainScene/UI/StabilityUI.h>
 #include <CCC/Objects/MainScene/UI/SkillGaugeUI.h>
+
+
+
+
+// ---------------------------------------------------------------------- //
+// パブリック関数
+// ---------------------------------------------------------------------- //
 
 MainScene::MainScene() :
 	CCC::Bases::SceneBase(),
@@ -54,6 +79,10 @@ MainScene::~MainScene() = default;
 
 void MainScene::Initialize()
 {
+	// ---------------------------------------------------------------------- //
+	// 初期化処理
+	// ---------------------------------------------------------------------- //
+
 	using namespace DirectX;
 
 	// デバッグカメラの作成
@@ -80,6 +109,23 @@ void MainScene::Initialize()
 	// カメラモードを初期化
 	DirectX::Mouse::Get().SetMode(DirectX::Mouse::MODE_RELATIVE);
 
+
+
+
+	// ---------------------------------------------------------------------- //
+	// メッセンジャーに登録
+	// ---------------------------------------------------------------------- //
+
+	CCC::Messenger::MessengerHub* p_mh = CCC::Messenger::MessengerHub::GetInstance();
+	p_mh->Subscribe(CCC::Messenger::MessageType::Request_ResultScene,
+		[](const CCC::Messenger::MessengerHub::PayLoad& is)
+		{
+			if (const bool* p = std::any_cast<bool>(&is.item))
+			{
+				CCC::Managers::SceneManager* p_sm = CCC::Managers::SceneManager::GetInstance();
+				p_sm->RequestSceneChange("ResultScene");
+			}
+		});
 
 
 
@@ -132,6 +178,11 @@ void MainScene::Initialize()
 
 void MainScene::Update(float elapsedTime)
 {
+	// ---------------------------------------------------------------------- //
+	// 更新処理
+	// ---------------------------------------------------------------------- //
+
+	// 警告回避
 	elapsedTime;
 
 	// デバッグカメラの更新
@@ -148,16 +199,14 @@ void MainScene::Update(float elapsedTime)
 		m_CameraMode = CameraMode::Main;
 		DirectX::Mouse::Get().SetMode(DirectX::Mouse::MODE_RELATIVE);
 	}
-
-	// シーンの切り替え
-	if (DirectX::Keyboard::Get().GetState().I)
-	{
-		ChangeScene("SampleSceneSec");
-	}
 }
 
 void MainScene::Render()
 {
+	// ---------------------------------------------------------------------- //
+	// 描画処理
+	// ---------------------------------------------------------------------- //
+
 	using namespace DirectX;
 
 	// カメラ管理クラスの取得
@@ -262,4 +311,6 @@ void MainScene::Render()
 
 void MainScene::Finalize()
 {
+	CCC::Messenger::MessengerHub* p_mh = CCC::Messenger::MessengerHub::GetInstance();
+	p_mh->Unsubscribe(CCC::Messenger::MessageType::Request_ResultScene);
 }

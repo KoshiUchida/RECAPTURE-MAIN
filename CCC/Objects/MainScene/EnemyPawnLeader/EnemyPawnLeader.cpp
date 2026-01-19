@@ -5,16 +5,21 @@
  *
  * @author CatCode
  *
- * @date   2026/01/13
+ * @date   2026/01/18
  *
  * 敵部隊を指揮する敵ポーンリーダーオブジェクトクラス
  *
  * 2026/01/13
  * 作成
  *
+ * 2026/01/18
+ * 陣形が死ぬとリザルトシーンに遷移することを要求するように改修
  */
 
+// プリコンパイル済みヘッダー
 #include "pch.h"
+
+// クラス定義元
 #include "EnemyPawnLeader.h"
 
 // パラメータ
@@ -26,10 +31,15 @@
  // 管理クラス
 #include <CCC/Managers/ObjectManager.h>
 
+// メッセンジャー
+#include <CCC/Messenger/MessengerHub.h>
+#include <CCC/Messenger/MessageType.h>
+
 // 関係のあるオブジェクトクラス
 #include <CCC/Objects/MainScene/Pawn/Pawn.h>
 #include <CCC/Objects/PawnManager.h>
 
+// チームIDの数列
 #include <CCC/Objects/TeamID.h>
 
  // ---------------------------------------------------------------------- //
@@ -319,7 +329,15 @@ void EnemyPawnLeader::Process(float elapsedTime)
 
 		// もし、陣形所定位置との差分の平均値が上がりすぎると部隊は死ぬ
 		if (m_AverageUnitDiff > PawnLeaderParameter::DEATH_LIMIT)
+		{
 			m_StabilityState = StabilityStates::Death;
+
+			CCC::Messenger::MessengerHub::GetInstance()->
+				Receive(
+					CCC::Messenger::MessageType::Request_ResultScene,
+					CCC::Messenger::MessengerHub::PayLoad(true)
+				);
+		}
 	}
 	else if (stability > PawnLeaderParameter::StabilityState::STABLE)
 	{

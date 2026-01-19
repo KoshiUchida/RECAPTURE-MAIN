@@ -5,21 +5,32 @@
  *
  * @author CatCode
  *
- * @date    2026/01/05
+ * @date    2026/01/18
+ * 
+ * 2025/12/19
+ * 作成
  * 
  * 2026/01/05
  * デバッグ表示を追加
  * PawnLeaderの前方宣言
- * PawnLeaderオブジェクトへのポインタを帆s時するメンバ変数の追加
+ * PawnLeaderオブジェクトへのポインタを保持するメンバ変数の追加
+ * 
+ * 2026/01/18
+ * コメントを追加
  */
+
+// 多重インクルードガード
 #pragma once
+
 
 // 基底クラス
 #include <CCC/Scenes/SceneBase.h>
 
+
 // デバッグ機能
 #include <CCC/Debug/DebugCamera.h>
 #include <CCC/Debug/DebugFont.h>
+
 
 // 前方宣言
 namespace CCC::Managers
@@ -36,15 +47,46 @@ class PawnLeader;
 class MainScene :
     public CCC::Bases::SceneBase
 {
+    // ---------------------------------------------------------------------- //
+    // パブリック関数
+    // ---------------------------------------------------------------------- //
 public:
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
     MainScene();
-    ~MainScene();
 
-    void Initialize(                 ) override;
-    void Update    (float elapsedTime) override;
-    void Render    (                 ) override;
-    void Finalize  (                 ) override;
+    /// <summary>
+    /// デストラクタ
+    /// </summary>
+    virtual ~MainScene();
 
+    /// <summary>
+    /// 初期化処理
+    /// </summary>
+    void Initialize() override;
+
+    /// <summary>
+    /// 更新処理
+    /// </summary>
+    /// <param name="elapsedTime">経過時間</param>
+    void Update(float elapsedTime) override;
+
+    /// <summary>
+    /// 描画処理
+    /// </summary>
+    void Render() override;
+
+    /// <summary>
+    /// 終了処理
+    /// </summary>
+    void Finalize() override;
+
+
+
+    // ---------------------------------------------------------------------- //
+    // メンバ関数
+    // ---------------------------------------------------------------------- //
 private:
     // リソース管理クラスへのポインタ
     CCC::Managers::ResourceManager* mp_ResourceManager;

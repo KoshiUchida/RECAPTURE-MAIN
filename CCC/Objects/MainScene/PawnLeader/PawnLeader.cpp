@@ -5,7 +5,7 @@
  *
  * @author CatCode
  *
- * @date   2026/01/10
+ * @date   2026/01/18
  * 
  * 2026/01/05
  * 隊員の陣形所定位置平均を求める機能の実装
@@ -16,9 +16,15 @@
  * 
  * 2026/01/10
  * 移動していると唐突に止まる問題の解決
+ * 
+ * 2026/01/18
+ * 陣形が死ぬとリザルトシーンに遷移することを要求するように改修
  */
 
+// プリコンパイル済みヘッダー
 #include "pch.h"
+
+// クラス定義元
 #include "PawnLeader.h"
 
 // パラメータ
@@ -67,7 +73,11 @@ PawnLeader::PawnLeader(PawnManager* p_PawnManager) :
 	this->AddComponent<CCC::Components::PawnCollider>("Collider", this, 1.0f, p_PawnManager);
 }
 
-PawnLeader::~PawnLeader() = default;
+PawnLeader::~PawnLeader()
+{
+	//if (CCC::Messenger::MessengerHub* messenger = CCC::Messenger::MessengerHub::GetInstance())
+	//	messenger->Unsubscribe(CCC::Messenger::MessageType::INPUT_ATTACK);
+}
 
 void PawnLeader::Initialize()
 {
@@ -111,7 +121,7 @@ void PawnLeader::Initialize()
 	// メッセージの作成
 	// ---------------------------------------------------------------------- //
 
-	auto* messenger = CCC::Messenger::MessengerHub::GetInstance();
+	CCC::Messenger::MessengerHub* messenger = CCC::Messenger::MessengerHub::GetInstance();
 
 
 	messenger->Subscribe(CCC::Messenger::MessageType::INPUT_ATTACK,
@@ -375,7 +385,15 @@ void PawnLeader::Process(float elapsedTime)
 
 		// もし、陣形所定位置との差分の平均値が上がりすぎると部隊は死ぬ
 		if (m_AverageUnitDiff > PawnLeaderParameter::DEATH_LIMIT)
+		{
 			m_StabilityState = StabilityStates::Death;
+
+			CCC::Messenger::MessengerHub::GetInstance()->
+				Receive(
+					CCC::Messenger::MessageType::Request_ResultScene,
+					CCC::Messenger::MessengerHub::PayLoad(true)
+					);
+		}
 	}
 	else if (stability > PawnLeaderParameter::StabilityState::STABLE)
 	{

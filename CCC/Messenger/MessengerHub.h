@@ -5,11 +5,14 @@
  *
  * @author CatCode
  *
- * @date   2026/01/16
+ * @date   2026/01/18
  * メッセージを受信・送信するためのクラス
  *
  * 2026/01/16
  * 作成
+ * 
+ * 2026/01/18
+ * 登録を解除する関数を追加
  */
 
 // 多重インクルード阻止
@@ -81,14 +84,17 @@ namespace CCC
 			// メッセンジャーの送信先リスト
 			using Messege = std::function<void(PayLoad)>;
 			using MessageMap = std::unordered_map<CCC::Messenger::MessageType, std::list<Messege>>;
-			MessageMap m_Subscribers;
-
+			std::unique_ptr<MessageMap> m_Subscribers;
+			
 		public:
 			// 登録
 			void Subscribe(const CCC::Messenger::MessageType& type, std::function<void(PayLoad)> function);
 
 			// メッセンジャーの受信と処理
 			void Receive(const CCC::Messenger::MessageType& type, const PayLoad& payload);
+
+			// 解除
+			void Unsubscribe(const CCC::Messenger::MessageType& type);
 		};
 	}
 }

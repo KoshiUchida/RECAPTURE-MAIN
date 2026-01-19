@@ -5,7 +5,7 @@
  *
  * @author CatCode
  *
- * @date   2026/01/10
+ * @date   2026/01/18
  *
  * 2026/01/05
  * 作成
@@ -15,19 +15,31 @@
  * 
  * 2026/01/10
  * ピクセルシェーダリソースの追加
+ * 
+ * 2026/01/18
+ * コメントの修正
  */
 
+ // 多重インクルードガード
 #pragma once
+
+// 親クラス
+#include<CCC/Objects/ObjectBase.h>
+
+
+// C++標準ライブラリ
 #include <vector>
 #include <memory>
-#include <SimpleMath.h>
-#include <VertexTypes.h>
-#include <d3d11.h>
-#include <PrimitiveBatch.h>
 #include <wrl/client.h>
 
-// 基底クラス
-#include<CCC/Objects/ObjectBase.h>
+// DirectX11
+#include <d3d11.h>
+
+// DirectXTK
+#include <SimpleMath.h>
+#include <VertexTypes.h>
+#include <PrimitiveBatch.h>
+
 
 // 前方宣言
 namespace CCC
@@ -75,6 +87,7 @@ public:
 		DirectX::SimpleMath::Vector4 diffuse;
 	};
 
+	// インプットレイアウト
 	static const std::vector<D3D11_INPUT_ELEMENT_DESC> INPUT_LAYOUT;
 
 private:

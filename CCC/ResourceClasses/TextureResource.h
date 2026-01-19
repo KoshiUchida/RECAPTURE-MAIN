@@ -5,7 +5,7 @@
  *
  * @author CatCode
  *
- * @date   2026/01/12
+ * @date   2026/01/18
  * テクスチャを保持するクラス
  * m_UseScene扱うシーン名を保持できるようになっている
  * 
@@ -14,9 +14,12 @@
  * 
  * 2026/01/12
  * 画像サイズを保持取得する機能を実装
+ * 
+ * 2026/01/18
+ * 多重インクルードガードを修正
  */
 
-#pragma once
+// 多重インクルードガード	
 #ifndef TEXTURE_RESOURCE_DEFINED
 #define TEXTURE_RESOURCE_DEFINED
 

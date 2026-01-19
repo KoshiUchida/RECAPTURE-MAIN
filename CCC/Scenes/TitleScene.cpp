@@ -1,0 +1,118 @@
+/**
+ * @file   TitleScene.cpp
+ *
+ * @brief  タイトルシーンのソースファイル
+ *
+ * @author CatCode
+ *
+ * @date    2026/01/18
+ *
+ * 2026/01/18
+ * 作成
+ */
+
+// プリコンパイル済みヘッダー
+#include "pch.h"
+
+// クラス定義元
+#include "TitleScene.h"
+
+
+// 画面情報
+#include <Main/DisplayInfo.h>
+
+// 管理クラス
+#include <CCC/Managers/ObjectManager.h>
+#include <CCC/Managers/SceneManager.h>
+
+// メッセンジャー
+#include <CCC/Messenger/MessengerHub.h>
+#include <CCC/Messenger/MessageType.h>
+
+// このシーンで使用するオブジェクト
+#include <CCC/Objects//ButtomUIBase.h>
+
+
+
+// ---------------------------------------------------------------------- //
+// パブリック関数
+// ---------------------------------------------------------------------- //
+
+TitleScene::TitleScene() :
+	CCC::Bases::SceneBase()
+{
+}
+
+TitleScene::~TitleScene() = default;
+
+void TitleScene::Initialize()
+{
+	DirectX::Mouse::Get().SetMode(DirectX::Mouse::MODE_ABSOLUTE);
+
+	// ---------------------------------------------------------------------- //
+	// メッセンジャーに登録
+	// ---------------------------------------------------------------------- //
+
+	CCC::Messenger::MessengerHub* p_mh = CCC::Messenger::MessengerHub::GetInstance();
+	p_mh->Subscribe(CCC::Messenger::MessageType::Buttom_Start_Released,
+		[](const CCC::Messenger::MessengerHub::PayLoad& is)
+		{
+			if (const bool* p = std::any_cast<bool>(&is.item))
+			{
+				CCC::Managers::SceneManager* p_sm = CCC::Managers::SceneManager::GetInstance();
+				p_sm->RequestSceneChange("MainScene");
+			}
+		});
+	p_mh->Subscribe(CCC::Messenger::MessageType::Buttom_End_Released,
+		[](const CCC::Messenger::MessengerHub::PayLoad& is)
+		{
+			if (const bool* p = std::any_cast<bool>(&is.item))
+			{
+				CCC::Managers::SceneManager* p_sm = CCC::Managers::SceneManager::GetInstance();
+				p_sm->End();
+			}
+		});
+
+
+	// ---------------------------------------------------------------------- //
+	// オブジェクトの生成
+	// ---------------------------------------------------------------------- //
+
+	// オブジェクト管理クラスの取得
+	CCC::Managers::ObjectManager* p_om = CCC::Managers::ObjectManager::GetInstance();
+
+	p_om->CreateObject<CCC::Bases::ButtomUIBase>(
+		"StartButtom",
+		DirectX::SimpleMath::Vector2(DisplayInfo::Width * 0.5f, DisplayInfo::Height * 0.7f),
+		0.5f, "NewGame",
+		CCC::Messenger::MessageType::NONE,
+		CCC::Messenger::MessageType::NONE,
+		CCC::Messenger::MessageType::Buttom_Start_Released
+		);
+
+	p_om->CreateObject<CCC::Bases::ButtomUIBase>(
+		"EndButtom",
+		DirectX::SimpleMath::Vector2(DisplayInfo::Width * 0.5f, DisplayInfo::Height * 0.8f),
+		0.5f, "QuitGame",
+		CCC::Messenger::MessageType::NONE,
+		CCC::Messenger::MessageType::NONE,
+		CCC::Messenger::MessageType::Buttom_End_Released
+	);
+}
+
+void TitleScene::Update(float elapsedTime)
+{
+	// 警告回避
+	elapsedTime;
+}
+
+void TitleScene::Render()
+{
+}
+
+void TitleScene::Finalize()
+{
+	CCC::Messenger::MessengerHub* p_mh = CCC::Messenger::MessengerHub::GetInstance();
+	p_mh->Unsubscribe(CCC::Messenger::MessageType::Buttom_Start_Released);
+	p_mh->Unsubscribe(CCC::Messenger::MessageType::Buttom_End_Released);
+}

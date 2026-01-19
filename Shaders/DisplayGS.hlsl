@@ -1,5 +1,21 @@
+/**
+ * @file   DisplayGS.hlsl
+ *
+ * @brief  画面上のジオメトリシェーダのHLSLファイル
+ *
+ * @author CatCode
+ *
+ * @date   2026/01/18
+ * 画面上のジオメトリシェーダ
+ *
+ * 2026/01/18
+ * コメント追加
+ */
+
+// 共通定義
 #include "Common.hlsli"
 
+// 頂点数
 static const int vnum = 4;
 
 static const float4 offset_array[vnum] =

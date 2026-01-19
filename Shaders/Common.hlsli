@@ -1,3 +1,18 @@
+/**
+ * @file   Common.hlsli
+ *
+ * @brief  共通定義のHLSLIファイル
+ *
+ * @author CatCode
+ *
+ * @date   2026/01/18
+ * シェーダの共通定義
+ *
+ * 2026/01/18
+ * コメント追加
+ */
+
+// 定数バッファの定義
 cbuffer ConstBuffer : register(b0)
 {
     matrix matWorld;
@@ -14,6 +29,7 @@ cbuffer ConstBuffer : register(b0)
 // w : textureHeight
 
 
+// 頂点シェーダの入力定義
 struct VS_INPUT
 {
     float3 Pos   : POSITION;
@@ -21,6 +37,7 @@ struct VS_INPUT
     float2 Tex   : TEXCOORD;
 };
 
+// ピクセルシェーダの入力定義
 struct PS_INPUT
 {
     float4 position : SV_POSITION;

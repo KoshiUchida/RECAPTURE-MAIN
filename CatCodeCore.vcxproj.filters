@@ -218,6 +218,9 @@
     <ClInclude Include="CCC\Messenger\MessageType.h" />
     <ClInclude Include="CCC\Objects\MainScene\Pawn\States\PawnKnockback.h" />
     <ClInclude Include="CCC\Objects\MainScene\Pawn\States\PawnStandUp.h" />
+    <ClInclude Include="CCC\Scenes\TitleScene.h" />
+    <ClInclude Include="CCC\Objects\ButtomUIBase.h" />
+    <ClInclude Include="CCC\Scenes\ResultScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -353,6 +356,9 @@
     <ClCompile Include="CCC\Messenger\MessengerHub.cpp" />
     <ClCompile Include="CCC\Objects\MainScene\Pawn\States\PawnKnockback.cpp" />
     <ClCompile Include="CCC\Objects\MainScene\Pawn\States\PawnStandUp.cpp" />
+    <ClCompile Include="CCC\Scenes\TitleScene.cpp" />
+    <ClCompile Include="CCC\Objects\ButtomUIBase.cpp" />
+    <ClCompile Include="CCC\Scenes\ResultScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -386,5 +392,6 @@
     <FxCompile Include="Shaders\WarningPS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="Shaders\DefaultPS.hlsl" />
   </ItemGroup>
 </Project>

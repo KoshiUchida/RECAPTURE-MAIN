@@ -10,10 +10,16 @@
  * スキル発動中かの機能を実装
  */
 
+// 多重インクルードガード
 #pragma once
+
+// 親クラス
 #include "ObjectBase.h"
+
+// アニメーションのステートマシン
 #include <CCC/Animation/AnimationStateBace.h>
 
+// チームIDの数列
 #include "TeamID.h"
 
 namespace CCC
@@ -26,17 +32,52 @@ namespace CCC
 
 	namespace Bases
 	{
+		/// <summary>
+		/// ポーンの基底オブジェクトクラス
+		/// </summary>
 		class PawnBase :
 			public ObjectBase
 		{
+			// ---------------------------------------------------------------------- //
+			// パブリック関数
+			// ---------------------------------------------------------------------- //
 		public:
+			/// <summary>
+			/// コンストラクタ
+			/// </summary>
+			/// <param name="teamID">チームID</param>
 			PawnBase(const TeamID& teamID);
+
+			/// <summary>
+			/// デストラクタ
+			/// </summary>
 			virtual ~PawnBase();
 
+			/// <summary>
+			/// 初期化処理
+			/// </summary>
 			virtual void Initialize() = 0;
+
+			/// <summary>
+			/// 子クラスの更新処理
+			/// </summary>
+			/// <param name="elapsedTime">経過時間</param>
 			virtual void Process(float elapsedTime) = 0;
+
+			/// <summary>
+			/// 更新処理
+			/// </summary>
+			/// <param name="elapsedTime">経過時間</param>
 			void Update(float elapsedTime) override final;
+
+			/// <summary>
+			/// 描画処理
+			/// </summary>
 			void Render() override final;
+
+			/// <summary>
+			/// 終了処理
+			/// </summary>
 			void Finalize() override final;
 
 			void RequestAnimationChange(

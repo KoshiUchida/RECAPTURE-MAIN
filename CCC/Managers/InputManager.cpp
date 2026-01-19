@@ -5,7 +5,13 @@
  *
  * @author CatCode
  *
- * @date   2026/01/08
+ * @date   2026/01/18
+ * 
+ * 2026/01/08
+ * コメント追加
+ * 
+ * 2026/01/18
+ * 「Aボタン」の入力を追加
  */
 
 #include "pch.h"
@@ -60,11 +66,19 @@ namespace CCC::Managers
 		m_KeyboardState = mp_Keyboard->GetState();
 
 
-		if (m_MouseState.leftButton)
+		if (this->GetInputAs<bool>("Attack"))
 		{
 			CCC::Messenger::MessengerHub::GetInstance()->Receive(
 				CCC::Messenger::MessageType::INPUT_ATTACK,
 				CCC::Messenger::MessengerHub::PayLoad{true}
+			);
+		}
+
+		if (this->GetInputAs<bool>("A"))
+		{
+			CCC::Messenger::MessengerHub::GetInstance()->Receive(
+				CCC::Messenger::MessageType::INPUT_A,
+				CCC::Messenger::MessengerHub::PayLoad{ DirectX::SimpleMath::Vector2(m_MouseState.x, m_MouseState.y) }
 			);
 		}
 	}
@@ -144,6 +158,10 @@ namespace CCC::Managers
 
 		AddInputs("Skill", [this]() {
 			return m_KeyboardState.Q;
+			});
+
+		AddInputs("A", [this]() {
+			return m_MouseState.leftButton;
 			});
 	}
 

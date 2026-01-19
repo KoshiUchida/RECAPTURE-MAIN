@@ -1,4 +1,7 @@
+// 多重インクルードガード
 #pragma once
+
+// 親クラス
 #include <CCC/Scenes/SceneBase.h>
 
 class SampleSceneSec final:
@@ -6,7 +9,7 @@ class SampleSceneSec final:
 {
 public:
     SampleSceneSec();
-    ~SampleSceneSec();
+    virtual ~SampleSceneSec();
 
     void Initialize() override;
     void Update(float elapsedTime) override;

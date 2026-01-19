@@ -1,20 +1,34 @@
 // 01/06
 // 安定度の状態をターゲットから参照するように修正
 
+// プリコンパイル済みヘッダー	
 #include "pch.h"
+
+// クラス定義元
 #include "StabilityUI.h"
 
+
+// C++標準ライブラリ
 #include <cmath>
+
+// Windows API
 #include <Windows.h>
+
+// DirectX11
 #include <d3d11_1.h>
 #include <d3dcommon.h>
 #include <dxgiformat.h>
+
+// DirectXTK
 #include <DirectXColors.h>
 #include <DirectXMath.h>
 #include <SpriteBatch.h>
 
 
+// 画面情報
 #include <Main/DisplayInfo.h>
+
+// イージング関数
 #include <CCC/Common/Easings.h>
 
 // リソースクラス
@@ -117,7 +131,7 @@ void StabilityUI::Render()
 	DirectX::DX11::SpriteBatch* spriteBatch    = mp_ResourceManager->GetSpriteBatch();		// スプライトバッチの取得
 	PawnLeader::StabilityStates stabilityState = mp_Target->GetStabilityState();			// 安定度の状態を取得
 
-	auto* state = mp_ResourceManager->GetCommonStates();
+	DirectX::DX11::CommonStates* state = mp_ResourceManager->GetCommonStates();
 
 
 	// ---------------------------------------------------------------------- //
