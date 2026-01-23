@@ -5,22 +5,43 @@
  *
  * @author CatCode
  *
- * @date   2026/01/13
+ * @date   2026/01/23
  *
  * 敵部隊を指揮する敵ポーンリーダーオブジェクトクラス
  *
  * 2026/01/13
  * 作成
- *
+ * 
+ * 2026/01/22
+ * ターゲットを設定できるようになった
+ * ターゲットはビヘイビアツリーに使用
+ * 
+ * 2026/01/23
+ * 固有名詞が設定できるようになった
  */
 
+// 多重インクルードガード
 #pragma once
 
 // 基底クラス
 #include <CCC/Objects/PawnBase.h>
 
+// ステートマシン用の状態数列
+#include "EnemyPawnLeaderStates.h"
+
+// 前方宣言
 class PawnManager;
 
+// メッセンジャーで扱う構造体
+struct AddressedPayload
+{
+	CCC::Interfaces::IObject* p_Addressed;	// 宛名
+	EnemyPawnLeaderStates     p_Payload;	// 郵便物
+};
+
+/// <summary>
+/// 敵ポーン隊長オブジェクトクラス
+/// </summary>
 class EnemyPawnLeader :
 	public CCC::Bases::PawnBase
 {
@@ -31,7 +52,16 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	EnemyPawnLeader(const DirectX::SimpleMath::Vector3& spawnPosition, PawnManager* p_Manager);
+	/// <param name="spawnPosition">スポーン地点</param>
+	/// <param name="p_Manager">ポーン管理オブジェクトクラスへのポインタ</param>
+	/// <param name="p_Target">ターゲットへのポインタ</param>
+	/// <param name="name">このエネミーの固有名詞</param>
+	EnemyPawnLeader(
+		const DirectX::SimpleMath::Vector3& spawnPosition,
+		PawnManager*                        p_Manager,
+		CCC::Bases::PawnBase*               p_Target,
+		const std::string&                  name
+	);
 
 	/// <summary>
 	/// デストラクタ
@@ -54,22 +84,34 @@ public:
 	/// </summary>
 	float GetFormationStability() const;
 
+	/// <summary>
+	/// ターゲットオブジェクトの取得
+	/// </summary>
+	CCC::Bases::PawnBase* GetTarget();
+
 
 
 	// ---------------------------------------------------------------------- //
 	// メンバ変数
 	// ---------------------------------------------------------------------- //
 private:
+	// ポーン管理オブジェクトクラスへのポインタ
+	PawnManager* mp_PawnManager;
+
 	// ポーンオブジェクト郡へのポインタ配列
 	std::vector<CCC::Bases::PawnBase*> m_PawnPointers;
 
-	// 攻撃の状態
-	int m_Attack;
+	// ターゲットのオブジェクへのポインタ
+	CCC::Bases::PawnBase* mp_Target;
+
+	// 現在の状態
+	EnemyPawnLeaderStates m_State;
+
+	// 名前
+	std::string m_Name;
 
 	// 移動しているか
 	bool m_IsMove;
-
-	PawnManager* mp_PawnManager;
 
 
 
@@ -195,6 +237,13 @@ public:
 	/// </summary>
 	float GetSkillGauge() const {
 		return m_SkillGauge;
+	}
+
+	/// <summary>
+	/// スキルの状態へのポインタを取得
+	/// </summary>
+	EnemyPawnLeader::SkillStates* GetSkillStatePointer() {
+		return &m_SkillState;
 	}
 };
 

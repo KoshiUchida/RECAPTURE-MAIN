@@ -12,13 +12,20 @@
  * 
  * 2026/01/18
  * 「Aボタン」の入力を追加
+ * メッセンジャー実装の初期段階としてAボタンを送信する機能を実装
  */
 
+// プリコンパイル済みヘッダー
 #include "pch.h"
+
+// クラス定義元
 #include "InputManager.h"
 
+// メッセンジャー
 #include <CCC/Messenger/MessageType.h>
 #include <CCC/Messenger/MessengerHub.h>
+
+#include <Main/DisplayInfo.h>
 
 namespace CCC::Managers
 {
@@ -57,6 +64,8 @@ namespace CCC::Managers
 	// パブリック関数
 	// ---------------------------------------------------------------------- //
 
+	InputManager::~InputManager() = default;
+
 	void InputManager::Update()
 	{
 		// マウスの状態を取得する
@@ -78,7 +87,9 @@ namespace CCC::Managers
 		{
 			CCC::Messenger::MessengerHub::GetInstance()->Receive(
 				CCC::Messenger::MessageType::INPUT_A,
-				CCC::Messenger::MessengerHub::PayLoad{ DirectX::SimpleMath::Vector2(m_MouseState.x, m_MouseState.y) }
+				CCC::Messenger::MessengerHub::PayLoad{
+					DirectX::SimpleMath::Vector2(static_cast<float>(m_MouseState.x) / DisplayInfo::Width * DisplayInfo::ScreenWidth, static_cast<float>(m_MouseState.y) / DisplayInfo::Height * DisplayInfo::ScreenHeight)
+			}
 			);
 		}
 	}

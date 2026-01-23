@@ -102,17 +102,18 @@ private:
 	// シェーダリソース
 	CCC::Resources::PixelShaderResource*    mp_GaugePS;		// ゲージ用ピクセルシェーダ
 	CCC::Resources::PixelShaderResource*    mp_WarningPS;	// 警告表示用ピクセルシェーダ
+	CCC::Resources::PixelShaderResource*    mp_DefaultPS;	// デフォルトピクセルシェーダ
 	CCC::Resources::GeometryShaderResource* mp_DisplayGS;
 	CCC::Resources::VertexShaderResource*   mp_DisplayVS;
 
 	// 管理クラス
 	CCC::Managers::ResourceManager* mp_ResourceManager;	// リソース管理クラス
 
-	// ゲージピクセルシェーダ用の定数バッファ
-	Microsoft::WRL::ComPtr<ID3D11Buffer> m_GaugeBuffer;
-
-	// Warningピクセルシェーダ用の定数バッファ
-	Microsoft::WRL::ComPtr<ID3D11Buffer> m_WarningBuffer;
+	
+	// 定数バッファ
+	Microsoft::WRL::ComPtr<ID3D11Buffer> m_GaugeBuffer;		// ゲージピクセルシェーダ用の定数バッファ
+	Microsoft::WRL::ComPtr<ID3D11Buffer> m_WarningBuffer;	// Warningピクセルシェーダ用の定数バッファ
+	Microsoft::WRL::ComPtr<ID3D11Buffer> m_CommonBuffer;	// デフォルトピクセルシェーダ用の定数バッファ
 
 	//	プリミティブバッチ
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>> m_PrimitiveBatch;

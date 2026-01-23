@@ -18,6 +18,7 @@
 // プリコンパイル済みヘッダー
 #include "pch.h"
 
+// クラス定義元
 #include "MessengerHub.h"
 
 namespace CCC::Messenger

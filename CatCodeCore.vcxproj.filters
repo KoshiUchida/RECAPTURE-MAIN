@@ -47,10 +47,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="StepTimer.h">
+    <ClInclude Include="DX\StepTimer.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="DeviceResources.h">
+    <ClInclude Include="DX\DeviceResources.h">
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="CCC\Managers\SceneManager.h">
@@ -221,10 +221,32 @@
     <ClInclude Include="CCC\Scenes\TitleScene.h" />
     <ClInclude Include="CCC\Objects\ButtomUIBase.h" />
     <ClInclude Include="CCC\Scenes\ResultScene.h" />
+    <ClInclude Include="DX\ReadData.h" />
+    <ClInclude Include="CCC\Objects\TextureRenderer.h" />
+    <ClInclude Include="CCC\Managers\GameContextManager.h" />
+    <ClInclude Include="CCC\Interfaces\INode.h" />
+    <ClInclude Include="CCC\Interfaces\IBlackboard.h" />
+    <ClInclude Include="CCC\BehaviorTree\Bases\CompositeNodeBase.h" />
+    <ClInclude Include="CCC\BehaviorTree\Bases\DecoratorNodeBase.h" />
+    <ClInclude Include="CCC\BehaviorTree\Composites\SelectorNode.h" />
+    <ClInclude Include="CCC\BehaviorTree\Composites\SequenceNode.h" />
+    <ClInclude Include="CCC\BehaviorTree\EnemyPawnLeaderBT\Tasks\CalculateDistanceToTargetTask.h" />
+    <ClInclude Include="CCC\BehaviorTree\EnemyPawnLeaderBT\EnemyPawnLeaderBlackboard.h" />
+    <ClInclude Include="CCC\Objects\MainScene\EnemyPawnLeader\EnemyPawnLeaderStates.h" />
+    <ClInclude Include="CCC\BehaviorTree\EnemyPawnLeaderBT\Tasks\RequestChangeStateTask.h" />
+    <ClInclude Include="CCC\BehaviorTree\EnemyPawnLeaderBT\Decorators\IfInDistance.h" />
+    <ClInclude Include="CCC\BehaviorTree\EnemyPawnLeaderBT\Decorators\IfOutDistance.h" />
+    <ClInclude Include="CCC\BehaviorTree\EnemyPawnLeaderBT\Tasks\ChengeToWait.h" />
+    <ClInclude Include="CCC\BehaviorTree\EnemyPawnLeaderBT\Tasks\ChangeToChase.h" />
+    <ClInclude Include="CCC\Objects\MainScene\EnemyPawnLeader\EnemyPawnLeaderBT.h" />
+    <ClInclude Include="CCC\BehaviorTree\EnemyPawnLeaderBT\Tasks\IfInAttackDistance.h" />
+    <ClInclude Include="CCC\BehaviorTree\EnemyPawnLeaderBT\Tasks\CanAttack.h" />
+    <ClInclude Include="CCC\BehaviorTree\EnemyPawnLeaderBT\Decorators\IfBeNotAttaking.h" />
+    <ClInclude Include="CCC\BehaviorTree\EnemyPawnLeaderBT\Tasks\ChangeToAttack.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="DeviceResources.cpp">
+    <ClCompile Include="DX\DeviceResources.cpp">
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="CCC\Managers\SceneManager.cpp">
@@ -359,6 +381,9 @@
     <ClCompile Include="CCC\Scenes\TitleScene.cpp" />
     <ClCompile Include="CCC\Objects\ButtomUIBase.cpp" />
     <ClCompile Include="CCC\Scenes\ResultScene.cpp" />
+    <ClCompile Include="CCC\Objects\TextureRenderer.cpp" />
+    <ClCompile Include="CCC\Managers\GameContextManager.cpp" />
+    <ClCompile Include="CCC\Objects\MainScene\EnemyPawnLeader\EnemyPawnLeaderBT.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -378,6 +403,7 @@
     <None Include="Shaders\Common.hlsli">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="Utility\ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\DefaultVS.hlsl">

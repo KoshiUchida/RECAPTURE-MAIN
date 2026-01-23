@@ -5,6 +5,9 @@
 #include "pch.h"
 #include <Main/Game.h>
 
+// ディスプレイ情報
+#include <Main/DisplayInfo.h>
+
 using namespace DirectX;
 
 #ifdef __clang__
@@ -43,6 +46,18 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 #else
     s_fullscreen = true;
 #endif
+
+    // ディスプレイ情報の更新
+    if (s_fullscreen)
+    {
+        DisplayInfo::ScreenWidth = GetSystemMetrics(SM_CXSCREEN);
+        DisplayInfo::ScreenHeight = GetSystemMetrics(SM_CYSCREEN);
+    }
+    else
+    {
+        DisplayInfo::ScreenWidth = DisplayInfo::Width;
+        DisplayInfo::ScreenHeight = DisplayInfo::Height;
+    }
 
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
@@ -101,13 +116,12 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
         GetClientRect(hwnd, &rc);
 
-        DirectX::Mouse::Get().SetWindow(hwnd);
-        DirectX::Mouse::Get().SetMode(DirectX::Mouse::MODE_ABSOLUTE);
-
-
         g_game->Initialize(hwnd, rc.right - rc.left, rc.bottom - rc.top);
 
         if (s_fullscreen) g_game->SetFullscreenState(TRUE);
+
+        DirectX::Mouse::Get().SetWindow(hwnd);
+        DirectX::Mouse::Get().SetMode(DirectX::Mouse::MODE_ABSOLUTE);
     }
 
     // Main message loop

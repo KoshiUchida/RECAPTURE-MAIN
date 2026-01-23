@@ -61,6 +61,7 @@ StabilityUI::StabilityUI() :
 	mp_Broken         ( nullptr ),
 	mp_GaugePS        ( nullptr ),
 	mp_WarningPS      ( nullptr ),
+	mp_DefaultPS      ( nullptr ),
 	mp_DisplayGS      ( nullptr ),
 	mp_DisplayVS      ( nullptr ),
 	mp_ResourceManager( CCC::Managers::ResourceManager::GetInstance() ),
@@ -77,6 +78,7 @@ StabilityUI::StabilityUI() :
 	mp_Death     = mp_ResourceManager->GetResource<CCC::Resources::TextureResource       >("Stability_Death"  );
 	mp_GaugePS   = mp_ResourceManager->GetResource<CCC::Resources::PixelShaderResource   >("GaugePS"          );
 	mp_WarningPS = mp_ResourceManager->GetResource<CCC::Resources::PixelShaderResource   >("WarningPS"        );
+	mp_DefaultPS = mp_ResourceManager->GetResource<CCC::Resources::PixelShaderResource   >("DefaultPS"        );
 	mp_DisplayGS = mp_ResourceManager->GetResource<CCC::Resources::GeometryShaderResource>("DisplayGS"        );
 	mp_DisplayVS = mp_ResourceManager->GetResource<CCC::Resources::VertexShaderResource  >("DefaultVS"        );
 }
@@ -106,6 +108,7 @@ void StabilityUI::Initialize()
 	desc.StructureByteStride = 0;
 	device->CreateBuffer(&desc, nullptr, &m_GaugeBuffer);
 	device->CreateBuffer(&desc, nullptr, &m_WarningBuffer);
+	device->CreateBuffer(&desc, nullptr, &m_CommonBuffer);
 
 
 	//	インプットレイアウトの作成
@@ -168,7 +171,7 @@ void StabilityUI::Render()
 	// ---------------------------------------------------------------------- //
 
 	//	頂点情報(板ポリゴンの４頂点の座標情報）
-	DirectX::DX11::VertexPositionColorTexture vertex[2] =
+	DirectX::DX11::VertexPositionColorTexture vertex[4] =
 	{
 		// ゲージの表示
 		DirectX::DX11::VertexPositionColorTexture(
@@ -176,10 +179,22 @@ void StabilityUI::Render()
 			barColor,
 			DirectX::SimpleMath::Vector2::Zero
 		),
-		// 警告の表示
+		// 警告・崩壊の表示
 		DirectX::DX11::VertexPositionColorTexture(
 			DirectX::SimpleMath::Vector3(225.0f, DisplayInfo::Height - 45.0f, 0.0f),
 			barColor,
+			DirectX::SimpleMath::Vector2::Zero
+		),
+		// フレームの表示
+		DirectX::DX11::VertexPositionColorTexture(
+			DirectX::SimpleMath::Vector3(235.0f, DisplayInfo::Height - 45.0f, 0.0f),
+			DirectX::Colors::Black,
+			DirectX::SimpleMath::Vector2::Zero
+		),
+		// ラベルの表示
+		DirectX::DX11::VertexPositionColorTexture(
+			DirectX::SimpleMath::Vector3(135.0f, DisplayInfo::Height - 95.0f, 0.0f),
+			DirectX::Colors::Black,
 			DirectX::SimpleMath::Vector2::Zero
 		),
 	};
@@ -189,25 +204,9 @@ void StabilityUI::Render()
 	cbuff.matWorld      = DirectX::SimpleMath::Matrix::Identity;
 	cbuff.matView       = DirectX::SimpleMath::Matrix::Identity;
 	cbuff.matProjection = DirectX::SimpleMath::Matrix::Identity;
-	cbuff.screenAndTextureSize = DirectX::SimpleMath::Vector4(
-		DisplayInfo::Width,
-		DisplayInfo::Height,
-		mp_Bar->GetWidth() * 0.5f,
-		mp_Bar->GetHeight() * 0.5f
-	);
-	cbuff.diffuse = DirectX::SimpleMath::Vector4(m_Stability, m_Time, 1, 1);
-
-	//	受け渡し用バッファの内容更新(ConstBufferからID3D11Bufferへの変換）
-	context->UpdateSubresource(m_GaugeBuffer.Get(), 0, NULL, &cbuff, 0, 0);
-
-	//	シェーダーにバッファを渡す
-	ID3D11Buffer* cb[1] = { m_GaugeBuffer.Get() };
-	context->VSSetConstantBuffers(0, 1, cb);
-	context->GSSetConstantBuffers(0, 1, cb);
-	context->PSSetConstantBuffers(0, 1, cb);
 
 	//	画像用サンプラーの登録
-	ID3D11SamplerState* sampler[1] = { state->LinearWrap()};
+	ID3D11SamplerState* sampler[1] = { state->LinearWrap() };
 	context->PSSetSamplers(0, 1, sampler);
 
 	//	半透明描画指定
@@ -225,7 +224,9 @@ void StabilityUI::Render()
 	//	シェーダをセットする
 	context->VSSetShader(mp_DisplayVS->Get(), nullptr, 0);
 	context->GSSetShader(mp_DisplayGS->Get(), nullptr, 0);
-	context->PSSetShader(mp_GaugePS  ->Get(), nullptr, 0);
+	
+	//	インプットレイアウトの登録
+	context->IASetInputLayout(m_InputLayout.Get());
 
 
 
@@ -233,10 +234,26 @@ void StabilityUI::Render()
 	// ---------------------------------------------------------------------- //
 	// 描画
 	// ---------------------------------------------------------------------- //
-	context->PSSetShaderResources(0, 1, mp_Bar->GetAddressOf());
 
-	//	インプットレイアウトの登録
-	context->IASetInputLayout(m_InputLayout.Get());
+	cbuff.screenAndTextureSize = DirectX::SimpleMath::Vector4(
+		DisplayInfo::Width,
+		DisplayInfo::Height,
+		mp_Bar->GetWidth() * 0.5f,
+		mp_Bar->GetHeight() * 0.5f
+	);
+	cbuff.diffuse = DirectX::SimpleMath::Vector4(m_Stability, m_Time, 1, 1);
+
+	//	受け渡し用バッファの内容更新(ConstBufferからID3D11Bufferへの変換）
+	context->UpdateSubresource(m_GaugeBuffer.Get(), 0, NULL, &cbuff, 0, 0);
+
+	//	シェーダーにバッファを渡す
+	ID3D11Buffer* cb[1] = { m_GaugeBuffer.Get() };
+	context->VSSetConstantBuffers(0, 1, cb);
+	context->GSSetConstantBuffers(0, 1, cb);
+	context->PSSetConstantBuffers(0, 1, cb);
+
+	context->PSSetShader(mp_GaugePS->Get(), nullptr, 0);
+	context->PSSetShaderResources(0, 1, mp_Bar->GetAddressOf());
 
 	//	板ポリゴンを描画
 	m_PrimitiveBatch->Begin();
@@ -244,67 +261,107 @@ void StabilityUI::Render()
 	m_PrimitiveBatch->End();
 
 
-	//	シェーダの登録を解除しておく
-	context->VSSetShader(nullptr, nullptr, 0);
-	context->GSSetShader(nullptr, nullptr, 0);
-	context->PSSetShader(nullptr, nullptr, 0);
-
-
 
 
 	// バー以外の描画
-	spriteBatch->Begin();
-
-	spriteBatch->Draw(
-		mp_Frame->Get(),
-		DirectX::SimpleMath::Vector2(25.0f, DisplayInfo::Height - 75.0f),
-		nullptr,
-		DirectX::Colors::White,
-		0.0f,
-		DirectX::SimpleMath::Vector2::Zero,
-		DirectX::SimpleMath::Vector2(0.5f, 0.5f)
+	//	シェーダーに渡す追加のバッファを作成する。(ConstBuffer）
+	cbuff.screenAndTextureSize = DirectX::SimpleMath::Vector4(
+		DisplayInfo::Width,
+		DisplayInfo::Height,
+		mp_Frame->GetWidth() * 0.5f,
+		mp_Frame->GetHeight() * 0.5f
 	);
+	cbuff.diffuse = DirectX::SimpleMath::Vector4::One;
 
-	spriteBatch->Draw(
-		mp_Label->Get(),
-		DirectX::SimpleMath::Vector2(25.0f, DisplayInfo::Height - 145.0f),
-		nullptr,
-		DirectX::Colors::White,
-		0.0f,
-		DirectX::SimpleMath::Vector2::Zero,
-		DirectX::SimpleMath::Vector2(0.5f, 0.5f)
+	//	受け渡し用バッファの内容更新(ConstBufferからID3D11Bufferへの変換）
+	context->UpdateSubresource(m_CommonBuffer.Get(), 0, NULL, &cbuff, 0, 0);
+
+	//	シェーダーにバッファを渡す
+	cb[0] = { m_CommonBuffer.Get() };
+	context->VSSetConstantBuffers(0, 1, cb);
+	context->GSSetConstantBuffers(0, 1, cb);
+	context->PSSetConstantBuffers(0, 1, cb);
+
+	//	シェーダをセットする
+	context->PSSetShader(mp_DefaultPS->Get(), nullptr, 0);
+
+	// 警告の場合
+	context->PSSetShaderResources(0, 1, mp_Frame->GetAddressOf());
+
+	//	板ポリゴンを描画
+	m_PrimitiveBatch->Begin();
+	m_PrimitiveBatch->Draw(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST, &vertex[2], 1);
+	m_PrimitiveBatch->End();
+
+
+	//	シェーダーに渡す追加のバッファを作成する。(ConstBuffer）
+	cbuff.screenAndTextureSize = DirectX::SimpleMath::Vector4(
+		DisplayInfo::Width,
+		DisplayInfo::Height,
+		mp_Label->GetWidth() * 0.5f,
+		mp_Label->GetHeight() * 0.5f
 	);
+	cbuff.diffuse = DirectX::SimpleMath::Vector4::One;
+
+	//	受け渡し用バッファの内容更新(ConstBufferからID3D11Bufferへの変換）
+	context->UpdateSubresource(m_CommonBuffer.Get(), 0, NULL, &cbuff, 0, 0);
+
+	//	シェーダーにバッファを渡す
+	cb[0] = { m_CommonBuffer.Get() };
+	context->VSSetConstantBuffers(0, 1, cb);
+	context->GSSetConstantBuffers(0, 1, cb);
+	context->PSSetConstantBuffers(0, 1, cb);
+
+	// 警告の場合
+	context->PSSetShaderResources(0, 1, mp_Label->GetAddressOf());
+
+	//	板ポリゴンを描画
+	m_PrimitiveBatch->Begin();
+	m_PrimitiveBatch->Draw(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST, &vertex[3], 1);
+	m_PrimitiveBatch->End();
 
 
-	// バー上の表示の色
-	DirectX::SimpleMath::Color StabilityStateColor = DirectX::SimpleMath::Color(1.0f, 1.0f, 1.0f);
+	
 
 	// 崩壊していたら
 	if (stabilityState == PawnLeader::StabilityStates::Broken)
 	{
-		StabilityStateColor.w = CCC::Ease::InOutExpo(std::sinf(m_Time * 12.0f) * 0.5f + 0.5f);
-
-		spriteBatch->Draw(
-			mp_Broken->Get(),
-			DirectX::SimpleMath::Vector2(25.0f, DisplayInfo::Height - 75.0f),
-			nullptr,
-			StabilityStateColor,
-			0.0f,
-			DirectX::SimpleMath::Vector2::Zero,
-			DirectX::SimpleMath::Vector2(0.5f, 0.5f)
+		//	シェーダーに渡す追加のバッファを作成する。(ConstBuffer）
+		cbuff.screenAndTextureSize = DirectX::SimpleMath::Vector4(
+			DisplayInfo::Width,
+			DisplayInfo::Height,
+			mp_Broken->GetWidth() * 0.5f,
+			mp_Broken->GetHeight() * 0.5f
 		);
+		cbuff.diffuse = DirectX::SimpleMath::Vector4(m_Stability, m_Time, 1, 1);
+
+		//	受け渡し用バッファの内容更新(ConstBufferからID3D11Bufferへの変換）
+		context->UpdateSubresource(m_WarningBuffer.Get(), 0, NULL, &cbuff, 0, 0);
+
+		//	シェーダーにバッファを渡す
+		cb[0] = { m_WarningBuffer.Get() };
+		context->VSSetConstantBuffers(0, 1, cb);
+		context->GSSetConstantBuffers(0, 1, cb);
+		context->PSSetConstantBuffers(0, 1, cb);
+
+		//	シェーダをセットする
+		context->PSSetShader(mp_WarningPS->Get(), nullptr, 0);
+
+		// 警告の場合
+		context->PSSetShaderResources(0, 1, mp_Broken->GetAddressOf());
+
+		//	板ポリゴンを描画
+		m_PrimitiveBatch->Begin();
+		m_PrimitiveBatch->Draw(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST, &vertex[1], 1);
+		m_PrimitiveBatch->End();
 	}
 
-	spriteBatch->End();
 
 
 	// 警告の場合
 	if (stabilityState == PawnLeader::StabilityStates::Warning)
 	{
 		//	シェーダーに渡す追加のバッファを作成する。(ConstBuffer）
-		cbuff.matWorld = DirectX::SimpleMath::Matrix::Identity;
-		cbuff.matView = DirectX::SimpleMath::Matrix::Identity;
-		cbuff.matProjection = DirectX::SimpleMath::Matrix::Identity;
 		cbuff.screenAndTextureSize = DirectX::SimpleMath::Vector4(
 			DisplayInfo::Width,
 			DisplayInfo::Height,
@@ -322,44 +379,23 @@ void StabilityUI::Render()
 		context->GSSetConstantBuffers(0, 1, cb);
 		context->PSSetConstantBuffers(0, 1, cb);
 
-		//	画像用サンプラーの登録
-		sampler[0] = { state->LinearWrap() };
-		context->PSSetSamplers(0, 1, sampler);
-
-		//	半透明描画指定
-		blendstate = state->NonPremultiplied();
-
-		//	透明判定処理
-		context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);
-
-		//	深度バッファに書き込み参照する
-		context->OMSetDepthStencilState(state->DepthDefault(), 0);
-
-		//	カリングは左周り
-		context->RSSetState(state->CullNone());
-
 		//	シェーダをセットする
-		context->VSSetShader(mp_DisplayVS->Get(), nullptr, 0);
-		context->GSSetShader(mp_DisplayGS->Get(), nullptr, 0);
 		context->PSSetShader(mp_WarningPS->Get(), nullptr, 0);
 
 		// 警告の場合
 		context->PSSetShaderResources(0, 1, mp_Warning->GetAddressOf());
 
-		//	インプットレイアウトの登録
-		context->IASetInputLayout(m_InputLayout.Get());
-
 		//	板ポリゴンを描画
 		m_PrimitiveBatch->Begin();
 		m_PrimitiveBatch->Draw(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST, &vertex[1], 1);
 		m_PrimitiveBatch->End();
-
-
-		//	シェーダの登録を解除しておく
-		context->VSSetShader(nullptr, nullptr, 0);
-		context->GSSetShader(nullptr, nullptr, 0);
-		context->PSSetShader(nullptr, nullptr, 0);
 	}
+
+
+	//	シェーダの登録を解除しておく
+	context->VSSetShader(nullptr, nullptr, 0);
+	context->GSSetShader(nullptr, nullptr, 0);
+	context->PSSetShader(nullptr, nullptr, 0);
 
 
 
@@ -371,13 +407,13 @@ void StabilityUI::Render()
 	{
 		spriteBatch->Begin();
 
-		StabilityStateColor.w = 0.3f;
+		//StabilityStateColor.w = 0.3f;
 
 		spriteBatch->Draw(
 			mp_Death->Get(),
 			DirectX::SimpleMath::Vector2(25.0f, DisplayInfo::Height - 85.0f),
 			nullptr,
-			StabilityStateColor,
+			DirectX::Colors::Black,
 			0.0f,
 			DirectX::SimpleMath::Vector2::Zero,
 			DirectX::SimpleMath::Vector2(0.5f, 0.5f)

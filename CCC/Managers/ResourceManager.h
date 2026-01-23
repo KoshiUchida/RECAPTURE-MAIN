@@ -5,24 +5,28 @@
  *
  * @author CatCode
  *
- * @date   2025/01/05
+ * @date   2026/01/21
  * 
  * リソースを管理するためのクラス
  * 主な機能はリソースの読み込み、破棄、提供である。
  * 必ず、SetResources関数を使いGameクラスで
  * 必要なリソースをセットしなければいけない
  * 
- * 2025/01/05
+ * 2026/01/05
  * StepTimerへのポインタを保持するようになった
  * リソース設定関数に必須な引値、StepTimerを追加
+ * 
+ * 2026/01/21
+ * DirectX提供ライブラリをDXフォルダに移動するに伴い
+ * インクルードのディレクトリを変更
  */
 
 #pragma once
 #ifndef RESOURCE_MANAGER_DEFINED
 #define RESOURCE_MANAGER_DEFINED
 
-#include "DeviceResources.h"
-#include "StepTimer.h"
+#include <DX/DeviceResources.h>
+#include <DX/StepTimer.h>
 
 #include <CCC/Interfaces/IResource.h>
 

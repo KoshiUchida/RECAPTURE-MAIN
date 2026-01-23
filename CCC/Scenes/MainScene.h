@@ -5,7 +5,7 @@
  *
  * @author CatCode
  *
- * @date    2026/01/18
+ * @date    2026/01/23
  * 
  * 2025/12/19
  * 作成
@@ -17,6 +17,12 @@
  * 
  * 2026/01/18
  * コメントを追加
+ * 
+ * 2026/01/22
+ * ビヘイビアツリーの状態変化を見るためにm_BTを追加
+ * 
+ * 2026/01/23
+ * 勝敗判定のために敵オブジェクトを保持する変数を追加
  */
 
 // 多重インクルードガード
@@ -40,6 +46,7 @@ namespace CCC::Managers
     class SceneManager;
 }
 class PawnLeader;
+class EnemyPawnLeader;
 
 /// <summary>
 /// サンプルシーン
@@ -121,7 +128,14 @@ private:
         Main,
     } m_CameraMode;
 
-
+    // ポーン隊長オブジェクトクラスへのポインタ
     PawnLeader* mp_PawnLeader;
+
+    // ビヘイビアツリーの状態のデバッグ表示
+    std::wstring m_BT;
+
+    // 敵
+    EnemyPawnLeader* mp_EnemyFirst;
+    EnemyPawnLeader* mp_EnemySecond;
 };
 

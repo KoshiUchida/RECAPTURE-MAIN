@@ -18,12 +18,22 @@ namespace DisplayInfo
 	/// <summary>
 	/// ディスプレイの横幅
 	/// </summary>
-	static constexpr int Width  = 1280;
+	static constexpr int Width  = 1920;
 	
 	/// <summary>
 	/// ディスプレイの縦幅
 	/// </summary>
-	static constexpr int Height = 720;
+	static constexpr int Height = 1080;
+
+	/// <summary>
+	/// スクリーンの横幅
+	/// </summary>
+	static int ScreenWidth = 1920;
+
+	/// <summary>
+	/// スクリーンの縦幅
+	/// </summary>
+	static int ScreenHeight = 1080;
 
 	/// <summary>
 	/// 画面比率

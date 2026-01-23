@@ -92,10 +92,11 @@ namespace CCC::Managers
 		// タイトルシーンで使用するリソース
 		// ---------------------------------------------------------------------- //
 		
-		// UI
-		CreateResource<CCC::Resources::TextureResource>("NewGame" , L"Resources/Textures/NewGameButtom.png" );
-		CreateResource<CCC::Resources::TextureResource>("QuitGame", L"Resources/Textures/QuitGameButtom.png");
-		CreateResource<CCC::Resources::TextureResource>("Setting" , L"Resources/Textures/SettingButtom.png" );
+		// UIlog
+		CreateResource<CCC::Resources::TextureResource>("TitleLogo", L"Resources/Textures/TitleLogo.png"     , "TitleScene");
+		CreateResource<CCC::Resources::TextureResource>("NewGame"  , L"Resources/Textures/NewGameButtom.png" , "TitleScene");
+		CreateResource<CCC::Resources::TextureResource>("QuitGame" , L"Resources/Textures/QuitGameButtom.png", "TitleScene");
+		CreateResource<CCC::Resources::TextureResource>("Setting"  , L"Resources/Textures/SettingButtom.png" , "TitleScene");
 
 
 		// ---------------------------------------------------------------------- //

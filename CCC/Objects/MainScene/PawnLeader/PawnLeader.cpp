@@ -5,7 +5,7 @@
  *
  * @author CatCode
  *
- * @date   2026/01/18
+ * @date   2026/01/19
  * 
  * 2026/01/05
  * 隊員の陣形所定位置平均を求める機能の実装
@@ -19,6 +19,9 @@
  * 
  * 2026/01/18
  * 陣形が死ぬとリザルトシーンに遷移することを要求するように改修
+ * 
+ * 2026/01/19
+ * 陣形が死ぬと「敗北」をゲームデータに入力。
  */
 
 // プリコンパイル済みヘッダー
@@ -34,6 +37,7 @@
 #include <CCC/Managers/InputManager.h>
 #include <CCC/Managers/ObjectManager.h>
 #include <CCC/Managers/CameraManager.h>
+#include <CCC/Managers/GameContextManager.h>
 
 // メッセンジャー
 #include <CCC/Messenger/MessengerHub.h>
@@ -388,6 +392,11 @@ void PawnLeader::Process(float elapsedTime)
 		{
 			m_StabilityState = StabilityStates::Death;
 
+			// ゲームデータに「敗北」を送る
+			CCC::Managers::GameContextManager::GetInstance()->
+				SetGameData("PlayerIsWin", false);
+
+			// リザルトシーンに遷移することを要求
 			CCC::Messenger::MessengerHub::GetInstance()->
 				Receive(
 					CCC::Messenger::MessageType::Request_ResultScene,

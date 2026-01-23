@@ -5,10 +5,13 @@
  *
  * @author CatCode
  *
- * @date    2026/01/18
+ * @date    2026/01/19
  *
  * 2026/01/18
  * 作成
+ * 
+ * 2026/01/19
+ * メッセンジャーの種別名の変に伴い、ゲーム終了ボタンの記述を変更
  */
 
 // プリコンパイル済みヘッダー
@@ -31,6 +34,7 @@
 
 // このシーンで使用するオブジェクト
 #include <CCC/Objects//ButtomUIBase.h>
+#include <CCC/Objects/TextureRenderer.h>
 
 
 
@@ -54,6 +58,7 @@ void TitleScene::Initialize()
 	// ---------------------------------------------------------------------- //
 
 	CCC::Messenger::MessengerHub* p_mh = CCC::Messenger::MessengerHub::GetInstance();
+
 	p_mh->Subscribe(CCC::Messenger::MessageType::Buttom_Start_Released,
 		[](const CCC::Messenger::MessengerHub::PayLoad& is)
 		{
@@ -63,7 +68,7 @@ void TitleScene::Initialize()
 				p_sm->RequestSceneChange("MainScene");
 			}
 		});
-	p_mh->Subscribe(CCC::Messenger::MessageType::Buttom_End_Released,
+	p_mh->Subscribe(CCC::Messenger::MessageType::Buttom_QuitGame_Released,
 		[](const CCC::Messenger::MessengerHub::PayLoad& is)
 		{
 			if (const bool* p = std::any_cast<bool>(&is.item))
@@ -81,6 +86,11 @@ void TitleScene::Initialize()
 	// オブジェクト管理クラスの取得
 	CCC::Managers::ObjectManager* p_om = CCC::Managers::ObjectManager::GetInstance();
 
+	p_om->CreateObject<CCC::Bases::TextureRenderer>(
+		"Logo",
+		DirectX::SimpleMath::Vector2(DisplayInfo::Width * 0.5f, DisplayInfo::Height * 0.3f),
+		0.5f, "TitleLogo"
+	);
 	p_om->CreateObject<CCC::Bases::ButtomUIBase>(
 		"StartButtom",
 		DirectX::SimpleMath::Vector2(DisplayInfo::Width * 0.5f, DisplayInfo::Height * 0.7f),
@@ -96,7 +106,7 @@ void TitleScene::Initialize()
 		0.5f, "QuitGame",
 		CCC::Messenger::MessageType::NONE,
 		CCC::Messenger::MessageType::NONE,
-		CCC::Messenger::MessageType::Buttom_End_Released
+		CCC::Messenger::MessageType::Buttom_QuitGame_Released
 	);
 }
 
@@ -114,5 +124,5 @@ void TitleScene::Finalize()
 {
 	CCC::Messenger::MessengerHub* p_mh = CCC::Messenger::MessengerHub::GetInstance();
 	p_mh->Unsubscribe(CCC::Messenger::MessageType::Buttom_Start_Released);
-	p_mh->Unsubscribe(CCC::Messenger::MessageType::Buttom_End_Released);
+	p_mh->Unsubscribe(CCC::Messenger::MessageType::Buttom_QuitGame_Released);
 }

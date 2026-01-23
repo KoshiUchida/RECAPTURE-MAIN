@@ -1,11 +1,15 @@
 //
 // Game.h
+// 
+// 2026/01/21
+// DirectX提供ライブラリをDXフォルダに移動
+// それに伴い、インクルードのディレクトリ名を変更
 //
 
 #pragma once
 
-#include "DeviceResources.h"
-#include "StepTimer.h"
+#include <DX/DeviceResources.h>
+#include <DX/StepTimer.h>
 
 #include <CCC/Debug/DebugFont.h>
 

@@ -5,7 +5,7 @@
  *
  * @author CatCode
  *
- * @date    2026/01/06
+ * @date    2026/01/23
  * 
  * 2025/12/19
  * 作成
@@ -19,6 +19,12 @@
  * 
  * 2026/01/18
  * コメントを追加
+ * 
+ * 2026/01/22
+ * BTによる状態の変化をデバッグ表示
+ * 
+ * 2026/01/23
+ * 敵オブジェクトを複製
  */
 
 // プリコンパイル済みヘッダー
@@ -38,6 +44,7 @@
 #include <CCC/Managers/ObjectManager.h>
 #include <CCC/Managers/InputManager.h>
 #include <CCC/Managers/SceneManager.h>
+#include <CCC/Managers/GameContextManager.h>
 
 
 // メッセンジャー
@@ -55,9 +62,9 @@
 #include <CCC/Objects/MainScene/Floor.h>
 #include <CCC/Objects/MainScene/PawnLeader/PawnLeader.h>
 #include <CCC/Objects/MainScene/EnemyPawnLeader/EnemyPawnLeader.h>
+#include <CCC/Objects/MainScene/EnemyPawnLeader/EnemyPawnLeaderBT.h>
 #include <CCC/Objects/MainScene/UI/StabilityUI.h>
 #include <CCC/Objects/MainScene/UI/SkillGaugeUI.h>
-
 
 
 
@@ -71,7 +78,9 @@ MainScene::MainScene() :
 	mp_InputManager   ( CCC::Managers::InputManager   ::GetInstance() ),
 	mp_SceneManager   ( CCC::Managers::SceneManager   ::GetInstance() ),
 	m_CameraMode      ( CameraMode::Main ),
-	mp_PawnLeader     ( nullptr )
+	mp_PawnLeader     ( nullptr ),
+	mp_EnemyFirst     ( nullptr ),
+	mp_EnemySecond    ( nullptr )
 {
 }
 
@@ -107,7 +116,7 @@ void MainScene::Initialize()
 	);
 
 	// カメラモードを初期化
-	DirectX::Mouse::Get().SetMode(DirectX::Mouse::MODE_RELATIVE);
+	Mouse::Get().SetMode(DirectX::Mouse::MODE_RELATIVE);
 
 
 
@@ -116,7 +125,10 @@ void MainScene::Initialize()
 	// メッセンジャーに登録
 	// ---------------------------------------------------------------------- //
 
+	//  メッセンジャーハブを取得
 	CCC::Messenger::MessengerHub* p_mh = CCC::Messenger::MessengerHub::GetInstance();
+	
+	// リザルトシーンに遷移することを要求するメッセージ
 	p_mh->Subscribe(CCC::Messenger::MessageType::Request_ResultScene,
 		[](const CCC::Messenger::MessengerHub::PayLoad& is)
 		{
@@ -124,6 +136,28 @@ void MainScene::Initialize()
 			{
 				CCC::Managers::SceneManager* p_sm = CCC::Managers::SceneManager::GetInstance();
 				p_sm->RequestSceneChange("ResultScene");
+			}
+		});
+
+	// 敵の隊長Pawnの状態変化があったらデバッグ表示用として保存する処理
+	p_mh->Subscribe(CCC::Messenger::MessageType::RequestToEnemyPawnLeader_State,
+		[this](const CCC::Messenger::MessengerHub::PayLoad& is)
+		{
+			if (const AddressedPayload* p = std::any_cast<AddressedPayload>(&is.item))
+			{
+				switch (p->p_Payload)
+				{
+				case EnemyPawnLeaderStates::Chase:
+					m_BT = L"Chase";
+					break;
+				case EnemyPawnLeaderStates::Attack:
+					m_BT = L"Attack";
+					break;
+				case EnemyPawnLeaderStates::Wait:
+				default:
+					m_BT = L"Wait";
+					break;
+				}
 			}
 		});
 
@@ -146,8 +180,25 @@ void MainScene::Initialize()
 	mp_PawnLeader = p_om->CreateObject<PawnLeader>("PawnLeader", p_PawnManager);
 	mp_PawnLeader->SetPosition(DirectX::SimpleMath::Vector3(0.0f, 0.0f, 5.0f));
 
-	// 敵リーダーポーンの生成
-	p_om->CreateObject<EnemyPawnLeader>("EnemyLeader", DirectX::SimpleMath::Vector3(10.0f, 0.0f, -10.0f), p_PawnManager);
+	// 敵リーダーポーン１の生成
+	mp_EnemyFirst = p_om->CreateObject<EnemyPawnLeader>(
+		"EnemyFirst",
+		DirectX::SimpleMath::Vector3(20.0f, 0.0f, -10.0f),
+		p_PawnManager,
+		mp_PawnLeader,
+		"First");
+	// BTの生成
+	p_om->CreateObject<EnemyPawnLeaderBT>("EnemyFirstBT", mp_EnemyFirst);
+
+	// 敵リーダーポーン２の生成
+	mp_EnemySecond = p_om->CreateObject<EnemyPawnLeader>(
+		"EnemySecond",
+		DirectX::SimpleMath::Vector3(-20.0f, 0.0f, 30.0f),
+		p_PawnManager,
+		mp_PawnLeader,
+		"Second");
+	// BTの生成
+	p_om->CreateObject<EnemyPawnLeaderBT>("EnemySecondBT", mp_EnemySecond);
 	
 	// カメラの生成
 	p_om->CreateObject<MainCamera>("MainCamera")->SetTarget(mp_PawnLeader);
@@ -174,16 +225,33 @@ void MainScene::Initialize()
 			device, context,
 			L"Resources\\Font\\SegoeUI_18.spritefont"
 		);
+
+	// 敵の隊長Pawnの状態のデバッグ表示
+	m_BT = L"";
 }
 
-void MainScene::Update(float elapsedTime)
+void MainScene::Update(float)
 {
-	// ---------------------------------------------------------------------- //
-	// 更新処理
-	// ---------------------------------------------------------------------- //
+	// 勝利判定
+	if (mp_EnemyFirst->GetStabilityState() == EnemyPawnLeader::StabilityStates::Death &&
+		mp_EnemySecond->GetStabilityState() == EnemyPawnLeader::StabilityStates::Death)
+	{
+		// ゲームデータに「勝利」を送る
+		CCC::Managers::GameContextManager::GetInstance()->
+			SetGameData("PlayerIsWin", true);
 
-	// 警告回避
-	elapsedTime;
+		// リザルトシーンに遷移することを要求
+		CCC::Messenger::MessengerHub::GetInstance()->
+			Receive(
+				CCC::Messenger::MessageType::Request_ResultScene,
+				CCC::Messenger::MessengerHub::PayLoad(true)
+			);
+	}
+
+
+	// ---------------------------------------------------------------------- //
+	// デバッグ関連の更新
+	// ---------------------------------------------------------------------- //
 
 	// デバッグカメラの更新
 	m_DebugCamera->Update();
@@ -215,6 +283,7 @@ void MainScene::Render()
 	// オブジェクト管理クラスの取得
 	CCC::Managers::ObjectManager* p_om = CCC::Managers::ObjectManager::GetInstance();
 
+	// ビュー行列の取得
 	switch (m_CameraMode)
 	{
 	case MainScene::CameraMode::Debug:
@@ -303,6 +372,9 @@ void MainScene::Render()
 	bool isAttack = mp_PawnLeader->IsAttacking();
 	m_DebugFont->AddString(0, 420, DirectX::Colors::White, L"IsAttack : %s", isAttack ? L"TRUE" : L"FALSE");
 
+	// BTの判断をデバッグ表示
+	m_DebugFont->AddString(0, 500, DirectX::Colors::White, L"Behavior Tree : %s", m_BT.c_str());
+
 	//	デバッグフォントの描画
 	m_DebugFont->Render(mp_ResourceManager->GetCommonStates());
 
@@ -311,6 +383,8 @@ void MainScene::Render()
 
 void MainScene::Finalize()
 {
+	// 登録したメッセージを削除する
 	CCC::Messenger::MessengerHub* p_mh = CCC::Messenger::MessengerHub::GetInstance();
 	p_mh->Unsubscribe(CCC::Messenger::MessageType::Request_ResultScene);
+	p_mh->Unsubscribe(CCC::Messenger::MessageType::RequestToEnemyPawnLeader_State);
 }

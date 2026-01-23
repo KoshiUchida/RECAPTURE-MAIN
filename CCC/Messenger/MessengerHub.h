@@ -23,7 +23,7 @@
 #include <memory>
 #include <functional>
 #include <any>
-#include <list>
+#include <vector>
 
 // メッセンジャーの種別
 #include "MessageType.h"
@@ -83,17 +83,28 @@ namespace CCC
 		private:
 			// メッセンジャーの送信先リスト
 			using Messege = std::function<void(PayLoad)>;
-			using MessageMap = std::unordered_map<CCC::Messenger::MessageType, std::list<Messege>>;
+			using MessageMap = std::unordered_map<CCC::Messenger::MessageType, std::vector<Messege>>;
 			std::unique_ptr<MessageMap> m_Subscribers;
 			
 		public:
-			// 登録
+			/// <summary>
+			/// メッセージの登録
+			/// </summary>
+			/// <param name="type">メッセージの種別</param>
+			/// <param name="function">メッセージに対する処理</param>
 			void Subscribe(const CCC::Messenger::MessageType& type, std::function<void(PayLoad)> function);
 
-			// メッセンジャーの受信と処理
+			/// <summary>
+			/// メッセンジャーの受信と処理
+			/// </summary>
+			/// <param name="type">メッセージの種別</param>
+			/// <param name="payload">郵便物</param>
 			void Receive(const CCC::Messenger::MessageType& type, const PayLoad& payload);
 
-			// 解除
+			/// <summary>
+			/// メッセージの解除
+			/// </summary>
+			/// <param name="type">解除する種別</param>
 			void Unsubscribe(const CCC::Messenger::MessageType& type);
 		};
 	}

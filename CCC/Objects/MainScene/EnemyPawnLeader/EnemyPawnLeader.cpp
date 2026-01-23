@@ -5,7 +5,7 @@
  *
  * @author CatCode
  *
- * @date   2026/01/18
+ * @date   2026/01/23
  *
  * 敵部隊を指揮する敵ポーンリーダーオブジェクトクラス
  *
@@ -13,7 +13,22 @@
  * 作成
  *
  * 2026/01/18
+ * Initialize関数
  * 陣形が死ぬとリザルトシーンに遷移することを要求するように改修
+ * 
+ * 2026/01/22
+ * Initialize関数
+ * 状態の変化を受け取るメッセージ登録を追加
+ * 
+ * Update関数
+ * 状態によってターゲットを追跡する処理を追加
+ * 
+ * 2026/01/23
+ * 固有名詞が設定できるようになった
+ * 
+ * Update関数
+ * 状態によってターゲットを攻撃する処理を追加
+ * 陣形が死ぬとリザルトシーンに遷移することを要求するよう処理を破棄
  */
 
 // プリコンパイル済みヘッダー
@@ -26,6 +41,7 @@
 #include "EnemyPawnLeaderParameter.h"
 
 // コンポーネント
+#include <CCC/Components/Transform.h>
 #include <CCC/Objects/PawnCollider.h>
 
  // 管理クラス
@@ -46,21 +62,30 @@
  // パブリック関数
  // ---------------------------------------------------------------------- //
 
-EnemyPawnLeader::EnemyPawnLeader(const DirectX::SimpleMath::Vector3& spawnPosition, PawnManager* p_Manager) :
+EnemyPawnLeader::EnemyPawnLeader(
+	const DirectX::SimpleMath::Vector3& spawnPosition,
+	PawnManager*                        p_Manager,
+	CCC::Bases::PawnBase*               p_Target,
+	const std::string&                  name
+) :
 	PawnBase(TeamID::Enemy),
-	mp_PawnManager(p_Manager),
-	m_Attack(0),
+	mp_PawnManager   (p_Manager),
+	mp_Target        (p_Target),
 	m_AverageUnitDiff(0.0f),
-	m_StabilityState(StabilityStates::Stable),
-	m_IsBroken(false),
-	m_BrokenTime(0.0f),
-	m_RecoveryTime(0.0f),
-	m_SkillState(SkillStates::Recovering),
-	m_SkillGauge(0.0f),
-	m_IsMove(false)
+	m_StabilityState (StabilityStates::Stable),
+	m_IsBroken       (false),
+	m_BrokenTime     (0.0f),
+	m_RecoveryTime   (0.0f),
+	m_SkillState     (SkillStates::Recovering),
+	m_SkillGauge     (0.0f),
+	m_IsMove         (false),
+	m_State          (EnemyPawnLeaderStates::Wait),
+	m_Name           (name)
 {
+	// コンポネートの追加
 	this->AddComponent<CCC::Components::PawnCollider>("Collider", this, 1.0f, p_Manager);
 
+	// 初期生成時の座標を保存
 	this->SetPosition(spawnPosition);
 }
 
@@ -85,10 +110,10 @@ void EnemyPawnLeader::Initialize()
 	// オブジェクト管理クラスの取得
 	CCC::Managers::ObjectManager* p_om = CCC::Managers::ObjectManager::GetInstance();
 
-	for (int i = 0; i < PawnLeaderParameter::NUMBER_PAWN; i++)
+	for (int i = 0; i < EnemyPawnLeaderParameter::NUMBER_PAWN; i++)
 	{
 		// ポーンの生成
-		Pawn* p_Pawn = p_om->CreateObject<Pawn>("EnemyPawn" + std::to_string(i), TeamID::Enemy, mp_PawnManager);
+		Pawn* p_Pawn = p_om->CreateObject<Pawn>("EnemyPawn" + m_Name + std::to_string(i), TeamID::Enemy, mp_PawnManager);
 		p_Pawn->SetTarget(this);
 
 		// ポーンポインタ配列に追加
@@ -96,10 +121,33 @@ void EnemyPawnLeader::Initialize()
 	}
 
 	// 陣形の設定
-	FormationSquare(PawnLeaderParameter::SPACING_BETWEEN_PAWN);
+	FormationSquare(EnemyPawnLeaderParameter::SPACING_BETWEEN_PAWN);
 
 	// 位置リセット
 	PawnsPositionReset();
+
+
+
+	// ---------------------------------------------------------------------- //
+	// メッセージの作成
+	// ---------------------------------------------------------------------- //
+
+	// ハブの取得
+	CCC::Messenger::MessengerHub* messenger = CCC::Messenger::MessengerHub::GetInstance();
+
+	// ステート変化のメッセージの作成
+	messenger->Subscribe(CCC::Messenger::MessageType::RequestToEnemyPawnLeader_State,
+		[this](const CCC::Messenger::MessengerHub::PayLoad& is) {
+			if (const AddressedPayload* p = std::any_cast<AddressedPayload>(&is.item))
+			{
+				// 宛名が合っているかを確認
+				if (p->p_Addressed != this) return;
+
+				// 状態を受け取る
+				m_State = p->p_Payload;
+			}
+		}
+	);
 }
 
 void EnemyPawnLeader::Process(float elapsedTime)
@@ -111,34 +159,34 @@ void EnemyPawnLeader::Process(float elapsedTime)
 	{
 	case EnemyPawnLeader::SkillStates::Inactive:
 
-		//if (mp_InputManager->GetInputAs<bool>("Skill") && m_StabilityState == StabilityStates::Stable)
-		//{
-		//	m_SkillState = SkillStates::Active;
-		//	FormationWedge(PawnLeaderParameter::SPACING_BETWEEN_PAWN);
-		//	this->SetIsSkillActive(true);
+		if (m_State == EnemyPawnLeaderStates::Attack && m_StabilityState == StabilityStates::Stable)
+		{
+			m_SkillState = SkillStates::Active;
+			this->FormationWedge(EnemyPawnLeaderParameter::SPACING_BETWEEN_PAWN);
+			this->SetIsSkillActive(true);
 
 
-		//	float x = this->GetTransform()->GetRotateX();
-		//	m_SkillAngle = DirectX::SimpleMath::Vector3(-std::sinf(x), 0.0f, -std::cosf(x));
-		//}
+			float x = this->GetTransform()->GetPositionX();
+			m_SkillAngle = DirectX::SimpleMath::Vector3(-std::sinf(x), 0.0f, -std::cosf(x));
+		}
 
 		break;
 	case EnemyPawnLeader::SkillStates::Active:
 
-		m_SkillGauge -= PawnLeaderParameter::SkillGauge::CONSUMPTION_RATE * elapsedTime;
+		m_SkillGauge -= EnemyPawnLeaderParameter::SkillGauge::CONSUMPTION_RATE * elapsedTime;
 
 		if (m_SkillGauge <= 0.0f || m_StabilityState == StabilityStates::Broken)
 		{
 			m_SkillGauge = 0.0f;
 			m_SkillState = SkillStates::Recovering;
-			FormationSquare(PawnLeaderParameter::SPACING_BETWEEN_PAWN);
+			this->FormationSquare(EnemyPawnLeaderParameter::SPACING_BETWEEN_PAWN);
 			this->SetIsSkillActive(false);
 		}
 
 		break;
 	case EnemyPawnLeader::SkillStates::Recovering:
 
-		m_SkillGauge += PawnLeaderParameter::SkillGauge::RECOVERY_RATE * this->GetFormationStability() * elapsedTime;
+		m_SkillGauge += EnemyPawnLeaderParameter::SkillGauge::RECOVERY_RATE * this->GetFormationStability() * elapsedTime;
 
 		if (m_SkillGauge >= 1.0f)
 		{
@@ -159,71 +207,38 @@ void EnemyPawnLeader::Process(float elapsedTime)
 	// 移動機能
 	// ---------------------------------------------------------------------- //
 
-	//// もし、操作が入ったら現在の回転からベロシティを設定する
-	//bool moveInput = mp_InputManager->GetInputAs<bool>("MoveInput");
-	//if (!m_IsMove && moveInput)
-	//{
-	//	float rotationX = this->GetTransform()->GetRotateX();
-	//	SetVelocity(DirectX::SimpleMath::Vector3(-std::sinf(rotationX), 0.0f, -std::cosf(rotationX)));
-	//	m_IsMove = true;
-	//}
-	//else if (m_IsMove && !moveInput)
-	//{
-	//	m_IsMove = false;
-	//}
+	if (m_State == EnemyPawnLeaderStates::Chase)
+	{
+		// 目標ベロシティ
+		DirectX::SimpleMath::Vector3 DesiredVelocity;
+
+		DesiredVelocity = mp_Target->GetPosition() - this->GetPosition();
+		DesiredVelocity.Normalize();
+		DesiredVelocity *= EnemyPawnLeaderParameter::MOVE_SPEED;
+
+		DirectX::SimpleMath::Vector3 DiffVelocity = DesiredVelocity - this->GetVelocity();
+
+		if (DiffVelocity != DirectX::SimpleMath::Vector3::Zero)
+			this->SetVelocity(this->GetVelocity() + DiffVelocity * elapsedTime);
+		else
+			this->SetVelocity(DesiredVelocity);
+	}
+	if (m_State == EnemyPawnLeaderStates::Attack)
+	{
+		// 目標ベロシティ
+		DirectX::SimpleMath::Vector3 DesiredVelocity
+			= m_SkillAngle * EnemyPawnLeaderParameter::RUN_SPEED;
 
 
-	//// 入力方向の取得
-	//const float horizontal = DirectX::XM_PI * static_cast<float>(mp_InputManager->GetInputAs<int>("Horizontal"));
-	//const float vertical = DirectX::XM_PI * static_cast<float>(mp_InputManager->GetInputAs<int>("Vertical"));
+		DirectX::SimpleMath::Vector3 DiffVelocity = DesiredVelocity - this->GetVelocity();
 
-	//float forwardInput = -static_cast<float>(vertical);
-	//float rightInput = static_cast<float>(horizontal);
-
-	//// もし、スキル発動中なら自動で前進する
-	//if (this->IsSkillActive())
-	//{
-	//	forwardInput = 1.0f;
-	//	m_SkillAngle += DirectX::SimpleMath::Vector3(-std::sinf(rightInput), 0.0f, -std::cosf(rightInput)) * elapsedTime;
-	//}
-
-
-	//// カメラ基準ベクトル取得
-	//const DirectX::SimpleMath::Vector3 forward = mp_CameraManager->GetForwardXZ();
-	//const DirectX::SimpleMath::Vector3 right = mp_CameraManager->GetRightXZ();
-
-	//DirectX::SimpleMath::Vector3 direction = DirectX::SimpleMath::Vector3::Zero;
-	//if (this->IsSkillActive())
-	//	direction = m_SkillAngle * forwardInput;
-	//else
-	//	direction = forward * forwardInput;
-
-	//// もし、スキル発動中または陣形安定度が崩壊しているのだったら旋回速度にデバフ
-	//if (this->IsSkillActive() || m_StabilityState == StabilityStates::Broken)
-	//	direction += right * rightInput * PawnLeaderParameter::SkillGauge::ROTATION_DEBUFF;
-	//else
-	//	direction += right * rightInput;
-
-	//direction.Normalize();
-
-	//// 目標ベロシティ
-	//DirectX::SimpleMath::Vector3 DesiredVelocity = direction;
-
-	//// 速度の設定
-	//if (this->IsSkillActive() || mp_InputManager->GetInputAs<bool>("Dash"))
-	//	DesiredVelocity *= PawnLeaderParameter::RUN_SPEED;
-	//else
-	//	DesiredVelocity *= PawnLeaderParameter::MOVE_SPEED;
-
-	//// もし、仕切る発動中なら速度にバフ
-	//if (this->IsSkillActive())
-	//	DesiredVelocity *= PawnLeaderParameter::SkillGauge::SPEED_BUFF;
-
-	//// ベロシティの変更
-	//if ((DesiredVelocity - GetVelocity()).Length() > PawnLeaderParameter::STOP_RADIUS)
-	//	AddVelocity((DesiredVelocity - GetVelocity()) * PawnLeaderParameter::VELOCITY_CHANGE_SPEED * elapsedTime);
-	//else
-	//	SetVelocity(DesiredVelocity);
+		if (DiffVelocity != DirectX::SimpleMath::Vector3::Zero)
+			this->SetVelocity(this->GetVelocity() + DiffVelocity * EnemyPawnLeaderParameter::SkillGauge::SPEED_BUFF * elapsedTime);
+		else
+			this->SetVelocity(DesiredVelocity);
+	}
+	if (m_State == EnemyPawnLeaderStates::Wait)
+		SetVelocity(DirectX::SimpleMath::Vector3::Zero);
 
 
 
@@ -238,10 +253,10 @@ void EnemyPawnLeader::Process(float elapsedTime)
 	if (this->GetVelocity() != DirectX::SimpleMath::Vector3::Zero)
 	{
 		// ダッシュ中かどうかでアニメーションを変更
-		//if (this->IsSkillActive() || mp_InputManager->GetInputAs<bool>("Dash"))
-		//	animation = "Paladin_Run";
-		//else
-		//	animation = "Paladin_Walk";
+		if (this->IsSkillActive())
+			animation = "Paladin_Run";
+		else
+			animation = "Paladin_Walk";
 	}
 	else
 	{
@@ -272,7 +287,7 @@ void EnemyPawnLeader::Process(float elapsedTime)
 
 			// 距離を計算して近ければ近くのポーンとして登録
 			float distance = (p_TargetPawn->GetPosition() - m_PawnPointers[j]->GetPosition()).Length();
-			if (distance < PawnLeaderParameter::NEIGHBOR_DISTANCE)
+			if (distance < EnemyPawnLeaderParameter::NEIGHBOR_DISTANCE)
 			{
 				p_TargetPawn->AddNeighbor(m_PawnPointers[j]);
 			}
@@ -300,7 +315,7 @@ void EnemyPawnLeader::Process(float elapsedTime)
 	{
 		m_IsBroken = true;
 	}
-	else if (m_IsBroken || stability < PawnLeaderParameter::StabilityState::BROKEN)
+	else if (m_IsBroken || stability < EnemyPawnLeaderParameter::StabilityState::BROKEN)
 	{
 		// 崩れている時間を進める
 		if (m_IsBroken) m_BrokenTime += elapsedTime;
@@ -312,11 +327,11 @@ void EnemyPawnLeader::Process(float elapsedTime)
 
 
 		// もし、安定度が安定～警告の範囲にあったら、一定時間維持することで崩壊の状態から回復できる
-		if (stability > PawnLeaderParameter::StabilityState::BROKEN)
+		if (stability > EnemyPawnLeaderParameter::StabilityState::BROKEN)
 		{
 			// 安定度で回復までの時間が反動する
 			m_RecoveryTime += stability * elapsedTime;
-			if (m_RecoveryTime > PawnLeaderParameter::StabilityState::RECOVERY_TIME)
+			if (m_RecoveryTime > EnemyPawnLeaderParameter::StabilityState::RECOVERY_TIME)
 			{
 				m_IsBroken = false;
 				m_RecoveryTime = 0.0f;
@@ -328,18 +343,12 @@ void EnemyPawnLeader::Process(float elapsedTime)
 
 
 		// もし、陣形所定位置との差分の平均値が上がりすぎると部隊は死ぬ
-		if (m_AverageUnitDiff > PawnLeaderParameter::DEATH_LIMIT)
+		if (m_AverageUnitDiff > EnemyPawnLeaderParameter::DEATH_LIMIT)
 		{
 			m_StabilityState = StabilityStates::Death;
-
-			CCC::Messenger::MessengerHub::GetInstance()->
-				Receive(
-					CCC::Messenger::MessageType::Request_ResultScene,
-					CCC::Messenger::MessengerHub::PayLoad(true)
-				);
 		}
 	}
-	else if (stability > PawnLeaderParameter::StabilityState::STABLE)
+	else if (stability > EnemyPawnLeaderParameter::StabilityState::STABLE)
 	{
 		m_StabilityState = StabilityStates::Stable;
 	}
@@ -355,17 +364,22 @@ float EnemyPawnLeader::GetFormationStability() const
 		return 0.0f;
 
 	// もし、安定する境界内なら1を返す
-	if (m_AverageUnitDiff <= PawnLeaderParameter::STABLE_LIMIT)
+	if (m_AverageUnitDiff <= EnemyPawnLeaderParameter::STABLE_LIMIT)
 		return 1.0f;
 
 	// もし、保てなくなる限界を突破していたら0を返す
-	if (m_AverageUnitDiff >= PawnLeaderParameter::BREAK_LIMIT)
+	if (m_AverageUnitDiff >= EnemyPawnLeaderParameter::BREAK_LIMIT)
 		return 0.0f;
 
 	// 安定分を引いて、安定度を計算する
 	return 1.0f -
-		(m_AverageUnitDiff - PawnLeaderParameter::STABLE_LIMIT) /
-		(PawnLeaderParameter::BREAK_LIMIT - PawnLeaderParameter::STABLE_LIMIT);
+		(m_AverageUnitDiff - EnemyPawnLeaderParameter::STABLE_LIMIT) /
+		(EnemyPawnLeaderParameter::BREAK_LIMIT - EnemyPawnLeaderParameter::STABLE_LIMIT);
+}
+
+CCC::Bases::PawnBase* EnemyPawnLeader::GetTarget()
+{
+	return mp_Target;
 }
 
 

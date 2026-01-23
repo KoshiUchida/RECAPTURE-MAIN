@@ -2,7 +2,6 @@
 #include "SkillGaugeUI.h"
 
 #include <Main/DisplayInfo.h>
-#include <CCC/Common/Easings.h>
 
 // リソースクラス
 #include <CCC/ResourceClasses/TextureResource.h>
@@ -75,7 +74,7 @@ void SkillGaugeUI::Render()
 
 	spriteBatch->Draw(
 		mp_Bar->Get(),
-		DirectX::SimpleMath::Vector2(DisplayInfo::Width - 417.0f, DisplayInfo::Height - 62.0f),
+		DirectX::SimpleMath::Vector2(DisplayInfo::Width - 417.0f, DisplayInfo::Height - 72.0f),
 		nullptr,
 		DirectX::Colors::Black,
 		0.0f,
@@ -85,7 +84,7 @@ void SkillGaugeUI::Render()
 
 	spriteBatch->Draw(
 		mp_Bar->Get(),
-		DirectX::SimpleMath::Vector2(DisplayInfo::Width - 417.0f, DisplayInfo::Height - 62.0f),
+		DirectX::SimpleMath::Vector2(DisplayInfo::Width - 417.0f, DisplayInfo::Height - 72.0f),
 		nullptr,
 		barColor,
 		0.0f,
@@ -100,7 +99,7 @@ void SkillGaugeUI::Render()
 
 	spriteBatch->Draw(
 		mp_Frame->Get(),
-		DirectX::SimpleMath::Vector2(DisplayInfo::Width - 425.0f, DisplayInfo::Height - 67.0f),
+		DirectX::SimpleMath::Vector2(DisplayInfo::Width - 425.0f, DisplayInfo::Height - 77.0f),
 		nullptr,
 		DirectX::Colors::White,
 		0.0f,
@@ -110,7 +109,7 @@ void SkillGaugeUI::Render()
 
 	spriteBatch->Draw(
 		mp_Label_Gladius->Get(),
-		DirectX::SimpleMath::Vector2(DisplayInfo::Width - 380.0f, DisplayInfo::Height - 77.0f),
+		DirectX::SimpleMath::Vector2(DisplayInfo::Width - 380.0f, DisplayInfo::Height - 87.0f),
 		nullptr,
 		DirectX::Colors::White,
 		0.0f,
@@ -120,7 +119,7 @@ void SkillGaugeUI::Render()
 
 	spriteBatch->Draw(
 		mp_Bottom_Q->Get(),
-		DirectX::SimpleMath::Vector2(DisplayInfo::Width - 75.0f, DisplayInfo::Height - 75.0f),
+		DirectX::SimpleMath::Vector2(DisplayInfo::Width - 75.0f, DisplayInfo::Height - 85.0f),
 		nullptr,
 		DirectX::Colors::White,
 		0.0f,

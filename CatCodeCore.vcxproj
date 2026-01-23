@@ -182,18 +182,39 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CCC\BehaviorTree\Bases\CompositeNodeBase.h" />
+    <ClInclude Include="CCC\BehaviorTree\Bases\DecoratorNodeBase.h" />
+    <ClInclude Include="CCC\BehaviorTree\Composites\SelectorNode.h" />
+    <ClInclude Include="CCC\BehaviorTree\Composites\SequenceNode.h" />
+    <ClInclude Include="CCC\BehaviorTree\EnemyPawnLeaderBT\Decorators\IfBeNotAttaking.h" />
+    <ClInclude Include="CCC\BehaviorTree\EnemyPawnLeaderBT\Decorators\IfInDistance.h" />
+    <ClInclude Include="CCC\BehaviorTree\EnemyPawnLeaderBT\Decorators\IfOutDistance.h" />
+    <ClInclude Include="CCC\BehaviorTree\EnemyPawnLeaderBT\EnemyPawnLeaderBlackboard.h" />
+    <ClInclude Include="CCC\BehaviorTree\EnemyPawnLeaderBT\Tasks\CalculateDistanceToTargetTask.h" />
+    <ClInclude Include="CCC\BehaviorTree\EnemyPawnLeaderBT\Tasks\CanAttack.h" />
+    <ClInclude Include="CCC\BehaviorTree\EnemyPawnLeaderBT\Tasks\ChangeToAttack.h" />
+    <ClInclude Include="CCC\BehaviorTree\EnemyPawnLeaderBT\Tasks\IfInAttackDistance.h" />
+    <ClInclude Include="CCC\BehaviorTree\EnemyPawnLeaderBT\Tasks\RequestChangeStateTask.h" />
+    <ClInclude Include="CCC\BehaviorTree\EnemyPawnLeaderBT\Tasks\ChangeToChase.h" />
+    <ClInclude Include="CCC\Interfaces\IBlackboard.h" />
+    <ClInclude Include="CCC\Interfaces\INode.h" />
     <ClInclude Include="CCC\Objects\ButtomUIBase.h" />
     <ClInclude Include="CCC\Animation\AnimationStateBace.h" />
     <ClInclude Include="CCC\Common\Easings.h" />
     <ClInclude Include="CCC\Managers\RandomManager.h" />
     <ClInclude Include="CCC\Messenger\MessageType.h" />
     <ClInclude Include="CCC\Objects\MainScene\EnemyPawnLeader\EnemyPawnLeaderParameter.h" />
+    <ClInclude Include="CCC\Objects\MainScene\EnemyPawnLeader\EnemyPawnLeaderStates.h" />
     <ClInclude Include="CCC\Objects\MainScene\MainCamera\MainCameraParameter.h" />
     <ClInclude Include="CCC\Objects\MainScene\PawnLeader\PawnLeaderParameter.h" />
     <ClInclude Include="CCC\Objects\MainScene\Pawn\PawnParameter.h" />
     <ClInclude Include="CCC\DX\ReadData.h" />
     <ClInclude Include="CCC\Objects\MainScene\EnemyPawnLeader\EnemyPawnLeader.h" />
     <ClInclude Include="CCC\Objects\TeamID.h" />
+    <ClInclude Include="CCC\BehaviorTree\EnemyPawnLeaderBT\Tasks\ChengeToWait.h" />
+    <ClInclude Include="DX\ReadData.h" />
+    <ClInclude Include="CCC\Managers\GameContextManager.h" />
+    <ClInclude Include="CCC\Objects\MainScene\EnemyPawnLeader\EnemyPawnLeaderBT.h" />
     <ClInclude Include="Main\DisplayInfo.h" />
     <ClInclude Include="CCC\Interfaces\IState.h" />
     <ClInclude Include="CCC\Managers\InputManager.h" />
@@ -211,7 +232,7 @@
     <ClInclude Include="CCC\Animation\AnimationPlayer.h" />
     <ClInclude Include="CCC\Debug\DebugCamera.h" />
     <ClInclude Include="CCC\Debug\DebugFont.h" />
-    <ClInclude Include="DeviceResources.h" />
+    <ClInclude Include="DX\DeviceResources.h" />
     <ClInclude Include="Main\Game.h" />
     <ClInclude Include="CCC\Interfaces\IObject.h" />
     <ClInclude Include="CCC\Interfaces\IScene.h" />
@@ -244,11 +265,12 @@
     <ClInclude Include="CCC\Objects\MainScene\UI\SkillGaugeUI.h" />
     <ClInclude Include="CCC\ResourceClasses\PixelShaderResource.h" />
     <ClInclude Include="CCC\Scenes\ResultScene.h" />
-    <ClInclude Include="StepTimer.h" />
+    <ClInclude Include="DX\StepTimer.h" />
     <ClInclude Include="CCC\ResourceClasses\TextureResource.h" />
     <ClInclude Include="CCC\Components\Transform.h" />
     <ClInclude Include="CCC\ResourceClasses\VertexShaderResource.h" />
     <ClInclude Include="CCC\Scenes\TitleScene.h" />
+    <ClInclude Include="CCC\Objects\TextureRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCC\Objects\ButtomUIBase.cpp" />
@@ -267,8 +289,10 @@
     <ClCompile Include="CCC\Animation\AnimationPlayer.cpp" />
     <ClCompile Include="CCC\Debug\DebugCamera.cpp" />
     <ClCompile Include="CCC\Debug\DebugFont.cpp" />
-    <ClCompile Include="DeviceResources.cpp" />
+    <ClCompile Include="DX\DeviceResources.cpp" />
     <ClCompile Include="CCC\Objects\MainScene\EnemyPawnLeader\EnemyPawnLeader.cpp" />
+    <ClCompile Include="CCC\Managers\GameContextManager.cpp" />
+    <ClCompile Include="CCC\Objects\MainScene\EnemyPawnLeader\EnemyPawnLeaderBT.cpp" />
     <ClCompile Include="Main\Game.cpp" />
     <ClCompile Include="CCC\ResourceClasses\GeometryShaderResource.cpp" />
     <ClCompile Include="Main\Main.cpp" />
@@ -308,6 +332,7 @@
     <ClCompile Include="CCC\ResourceClasses\PixelShaderResource.cpp" />
     <ClCompile Include="CCC\Scenes\TitleScene.cpp" />
     <ClCompile Include="CCC\Scenes\ResultScene.cpp" />
+    <ClCompile Include="CCC\Objects\TextureRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -319,6 +344,7 @@
     <Manifest Include="settings.manifest" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Utility\ClassDiagram.cd" />
     <None Include="packages.config" />
     <None Include="Shaders\Common.hlsli" />
   </ItemGroup>

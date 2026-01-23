@@ -13,7 +13,7 @@
 
 #pragma once
 
-namespace PawnLeaderParameter
+namespace EnemyPawnLeaderParameter
 {
 	static constexpr float MOVE_SPEED = 2.5f;	// 通常移動速度
 	static constexpr float RUN_SPEED = 8.1f;	// ダッシュ速度

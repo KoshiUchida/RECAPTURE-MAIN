@@ -1,0 +1,509 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DX::DeviceResources" Collapsed="true">
+    <Position X="31.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>qgAIhAAAAAIWAJBEyAIBKAKQERAAAYrQIEWkBiyEIIo=</HashCode>
+      <FileName>DeviceResources.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DX::StepTimer" Collapsed="true">
+    <Position X="3.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACQEQAAAAQEQAABQEAIAIAAIAABQCAAgCAwBQJAAwAA=</HashCode>
+      <FileName>StepTimer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DX::com_exception" Collapsed="true">
+    <Position X="33.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAACAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>pch.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Managers::RandomManager">
+    <Position X="22.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAIAAAAAAQAAgAEAAAABAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>CCC\Managers\RandomManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Managers::InputManager">
+    <Position X="20.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQQAAAAAAAAQAQCAAwAAAAAABAAAAAMAAIAAIEAMAAA=</HashCode>
+      <FileName>CCC\Managers\InputManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Managers::ComponentManager">
+    <Position X="5" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAgBEAAAABAAAAAAAAAEAIAAAAAA=</HashCode>
+      <FileName>CCC\Managers\ComponentManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Managers::CameraManager">
+    <Position X="7.25" Y="21.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAAgAAAAAABAAgAAAQAAAJABAgAAA=</HashCode>
+      <FileName>CCC\Managers\CameraManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Managers::ObjectManager">
+    <Position X="8" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAKIAAAAgAAAAAABAAAAgAiIBAAAQAAAAA=</HashCode>
+      <FileName>CCC\Managers\ObjectManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Managers::SceneManager">
+    <Position X="16.75" Y="0.5" Width="1.5" />
+    <NestedTypes>
+      <Struct Name="CCC::Managers::SceneManager::Impl" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>CCC\Managers\SceneManager.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AIYAAAACgAAAAEAAAgAAAAAABAgAAAAAABAAAAAAAAQ=</HashCode>
+      <FileName>CCC\Managers\SceneManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Managers::ResourceManager">
+    <Position X="26.5" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQABgQAAAAAAAAHAIoAAOAgAFAIAAAAgAAAADgAIAIA=</HashCode>
+      <FileName>CCC\Managers\ResourceManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Managers::GameContextManager">
+    <Position X="24.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAGAIAAAAAAgAAAAEAJAAAEAAAAAAAAAAEAAA=</HashCode>
+      <FileName>CCC\Managers\GameContextManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Interfaces::IUpdataComponent">
+    <Position X="1.25" Y="19" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CCC\Interfaces\IUpdataComponent.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Interfaces::IState">
+    <Position X="16" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CCC\Interfaces\IState.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Interfaces::IComponent">
+    <Position X="3" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CCC\Interfaces\IComponent.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Interfaces::IObject">
+    <Position X="3.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAQAAAAAAAAAAAAAAkAAAABAAAAAAAAA=</HashCode>
+      <FileName>CCC\Interfaces\IObject.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Interfaces::IScene">
+    <Position X="12.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAQAAAAQAAAAAAAAAAAAAAgAAAABAAAAAAAAA=</HashCode>
+      <FileName>CCC\Interfaces\IScene.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Interfaces::IResource">
+    <Position X="21.25" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgACAAAAAAAAAAAAAAAAAAAAAAAIAACAAAAAAAAA=</HashCode>
+      <FileName>CCC\Interfaces\IResource.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Bases::ComponentBase">
+    <Position X="3" Y="16.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAAAAAAAAAAQAAAAAAAAAIAAABAA=</HashCode>
+      <FileName>CCC\Components\ComponentBase.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Bases::UpdataComponentBase">
+    <Position X="3" Y="19.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CCC\Components\UpdataComponentBase.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Bases::ObjectBase">
+    <Position X="5.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAQAAAAIAAAAAAAABAAAAACAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CCC\Objects\ObjectBase.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Bases::SceneBase">
+    <Position X="14.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAwAAAAAAAAABQAAAAAAAAAAAAAAggAAABAAAAAAAgA=</HashCode>
+      <FileName>CCC\Scenes\SceneBase.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Bases::PawnBase" Collapsed="true">
+    <Position X="9.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IATAAAAECLgAARAAAgDAAAiIAYAAgkRABJCAAiAAUQA=</HashCode>
+      <FileName>CCC\Objects\PawnBase.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Bases::ResourceBase">
+    <Position X="24" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgACAgAAAAAAAAIAAAAAAAIACAAAAACAAgAAAAAA=</HashCode>
+      <FileName>CCC\ResourceClasses\ResourceBase.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Bases::ButtomUIBase" Collapsed="true">
+    <Position X="3.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BBwAAAAAACUBQQAAAAEAAgAAAAAAwAABQBgEgAIQAgA=</HashCode>
+      <FileName>CCC\Objects\ButtomUIBase.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Bases::TextureRenderer" Collapsed="true">
+    <Position X="1.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BIwAAAAAACUAAQAAAAAAAgAAAAQAwAABABgAAAIQAgA=</HashCode>
+      <FileName>CCC\Objects\TextureRenderer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SampleSceneSec" Collapsed="true">
+    <Position X="15.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAQAAAAAAAAAAQAAAAAAAAAAAIAAgAAAABAAAAAAAAA=</HashCode>
+      <FileName>CCC\Scenes\SampleSceneSec.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Floor" Collapsed="true">
+    <Position X="1.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAQkAAAAAAAAAAAAAgAAAABAAAAAAAAA=</HashCode>
+      <FileName>CCC\Objects\MainScene\Floor.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MainCamera" Collapsed="true">
+    <Position X="3.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAgAAAAEUAAAAAIAAAAAQAAgAAAABAAACAAAAY=</HashCode>
+      <FileName>CCC\Objects\MainScene\MainCamera\MainCamera.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pawn" Collapsed="true">
+    <Position X="7.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IQAQAYEAAAABgQgEigAAECAgAUAkIoAAEEAAAAAIAYI=</HashCode>
+      <FileName>CCC\Objects\MainScene\Pawn\Pawn.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PawnLeader" Collapsed="true">
+    <Position X="9.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAgA4EAAECAAQAQAkAAABAAQRAgACBQAAAYCAAAA4Q=</HashCode>
+      <FileName>CCC\Objects\MainScene\PawnLeader\PawnLeader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PawnState">
+    <Position X="18.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAQAAAAEAKACAAgAAAAAAAAAAAAAAABAAAAAAAACFAA=</HashCode>
+      <FileName>CCC\Objects\MainScene\Pawn\States\PawnState.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PawnIdle" Collapsed="true">
+    <Position X="13.5" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAgAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>CCC\Objects\MainScene\Pawn\States\PawnIdle.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PawnMove" Collapsed="true">
+    <Position X="15.75" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AASAAAAAAAAAAAAAAAAAAAIAABAAAAAAAACAAAAAAAQ=</HashCode>
+      <FileName>CCC\Objects\MainScene\Pawn\States\PawnMove.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PawnAttack" Collapsed="true">
+    <Position X="18" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABQAAAAAAAAAgQAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CCC\Objects\MainScene\Pawn\States\PawnAttack.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MainScene" Collapsed="true">
+    <Position X="18" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAwAAAAAAAIAAQAQgEAAAgEAAAAAgAAgABAAAAAUAgQ=</HashCode>
+      <FileName>CCC\Scenes\MainScene.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StabilityUI" Collapsed="true">
+    <Position X="7.75" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>DBQAAIAAgAQAAQAAAGAAAgBCAQAAgAABgBADgAAYAgI=</HashCode>
+      <FileName>CCC\Objects\MainScene\UI\StabilityUI.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SkyDome" Collapsed="true">
+    <Position X="3.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAQAAAAAAAAAAAAAAgABAABAAARAAAAI=</HashCode>
+      <FileName>CCC\Objects\SkyDome.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SkillGaugeUI" Collapsed="true">
+    <Position X="10" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQCAAAAIAAAAQBAAGAAAgAAAQEAgAAAABAAAAAAAAI=</HashCode>
+      <FileName>CCC\Objects\MainScene\UI\SkillGaugeUI.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Game" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="1.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAwAAAAAQAQwAQMGAAAgggAAAAiAAABCAJAiAARIQAQ=</HashCode>
+      <FileName>Main\Game.h</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="EnemyPawnLeader" Collapsed="true">
+    <Position X="11.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgA4EAAECAAQAgAkAAABAAQRAgACBSAAEIAAAAAoA=</HashCode>
+      <FileName>CCC\Objects\MainScene\EnemyPawnLeader\EnemyPawnLeader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PawnManager" Collapsed="true">
+    <Position X="11.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAQAAQAAAABAABAAAgAAAARAAAAAAAAA=</HashCode>
+      <FileName>CCC\Objects\PawnManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PawnKnockback" Collapsed="true">
+    <Position X="20.25" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>CCC\Objects\MainScene\Pawn\States\PawnKnockback.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PawnStandUp" Collapsed="true">
+    <Position X="22.5" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAgAAAEAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CCC\Objects\MainScene\Pawn\States\PawnStandUp.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ResultScene" Collapsed="true">
+    <Position X="11.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAEAAAAQAAAAAAAAAAAAAAgAAAABAAAAAAAgA=</HashCode>
+      <FileName>CCC\Scenes\ResultScene.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TitleScene" Collapsed="true">
+    <Position X="13.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAQAAAAAAAIAAAAAAgIAAABAAAAAAAAA=</HashCode>
+      <FileName>CCC\Scenes\TitleScene.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Components::Transform">
+    <Position X="10.25" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIADAAAEECAAACAAEAAAAJRAAwAEAgAAIAAAAgABULQ=</HashCode>
+      <FileName>CCC\Components\Transform.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Components::Camera">
+    <Position X="5.25" Y="21.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIQCAAAAAAAQAAAAQAAIAAAAQCAACABQCAABABAAgAA=</HashCode>
+      <FileName>CCC\Components\Camera.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Components::PawnCollider">
+    <Position X="3" Y="21.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AASAAAAAACAIAAAAAAAAAgABAIAAgFQAAAIIAMwAAAQ=</HashCode>
+      <FileName>CCC\Objects\PawnCollider.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Resources::TextureResource">
+    <Position X="24" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgQCAAAAAAwDAAAAAAABAAAAAAAAAAAEAAEIAAAA=</HashCode>
+      <FileName>CCC\ResourceClasses\TextureResource.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Resources::PixelShaderResource">
+    <Position X="26.25" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgBCAAAAEAARAAAAAAAIAAAAAAEAAAAEAAABAAAA=</HashCode>
+      <FileName>CCC\ResourceClasses\PixelShaderResource.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Resources::GeometryShaderResource">
+    <Position X="28" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgACAAAAAAABABAAAAAAAAAAAAAAAAAEgAABAAAA=</HashCode>
+      <FileName>CCC\ResourceClasses\GeometryShaderResource.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Resources::VertexShaderResource">
+    <Position X="29.75" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgBKAAAAAAABAAAAAAAIAAAAAAMAAAAEAAABAAAA=</HashCode>
+      <FileName>CCC\ResourceClasses\VertexShaderResource.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Resources::AnimationResource">
+    <Position X="17.25" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAgACgEAAAAACIBIAAAAgAAQAAAAQAEAAQABAAAAA=</HashCode>
+      <FileName>CCC\ResourceClasses\AnimationResource.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Resources::ModelWithBoneResource">
+    <Position X="19" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAgACBAASBAAAAAAAAAAiAAAAAAAAIAAACAAAAAAA=</HashCode>
+      <FileName>CCC\ResourceClasses\ModelWithBoneResource.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Resources::ModelResource">
+    <Position X="21.5" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IgAAgACAAACAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CCC\ResourceClasses\ModelResource.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Debug::DebugCamera" Collapsed="true">
+    <Position X="29.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQCAIAAAAAQAAAAQAAIAAAAUABEYQAAAAAwQBAAAAA=</HashCode>
+      <FileName>CCC\Debug\DebugCamera.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Debug::DebugFont" Collapsed="true">
+    <Position X="31" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAggAAAAAABAIAAEAQAABAAAAAAAIBAAAAAAAAA=</HashCode>
+      <FileName>CCC\Debug\DebugFont.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Debug::DebugFont3D" Collapsed="true">
+    <Position X="31" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgiAAAAAAgAIAAAAAAAAAAACAAAABAAAAAQAAA=</HashCode>
+      <FileName>CCC\Debug\DebugFont.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Animations::AnimationStateBace">
+    <Position X="15.75" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AARAAgAAAAIBABAAABAAAADAAQAIgABAAJCIAQAAAQA=</HashCode>
+      <FileName>CCC\Animation\AnimationStateBace.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Animations::AnimationPlayer">
+    <Position X="15.5" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IBQAgAAxABAAAQAQAAAIECAAAAQAAAAAAAAAABABAAA=</HashCode>
+      <FileName>CCC\Animation\AnimationPlayer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCC::Messenger::MessengerHub">
+    <Position X="24" Y="5.25" Width="1.5" />
+    <NestedTypes>
+      <Struct Name="CCC::Messenger::MessengerHub::PayLoad" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>CCC\Messenger\MessengerHub.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAEAgAAAAAABAQCAAAQQAAAAAAAAAA=</HashCode>
+      <FileName>CCC\Messenger\MessengerHub.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="CCC::Resources::SDKANIMATION_FILE_HEADER" Collapsed="true">
+    <Position X="33.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>KIAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAEgI=</HashCode>
+      <FileName>CCC\ResourceClasses\AnimationResource.cpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CCC::Resources::SDKANIMATION_DATA" Collapsed="true">
+    <Position X="30" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQEAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CCC\ResourceClasses\AnimationResource.cpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CCC::Resources::SDKANIMATION_FRAME_DATA" Collapsed="true">
+    <Position X="30" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CCC\ResourceClasses\AnimationResource.cpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CCC::Animations::SDKANIMATION_FILE_HEADER" Collapsed="true">
+    <Position X="35.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>KIAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAEgI=</HashCode>
+      <FileName>CCC\Animation\AnimationPlayer.cpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CCC::Animations::SDKANIMATION_DATA" Collapsed="true">
+    <Position X="31.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQEAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CCC\Animation\AnimationPlayer.cpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CCC::Animations::SDKANIMATION_FRAME_DATA" Collapsed="true">
+    <Position X="31.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CCC\Animation\AnimationPlayer.cpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="DX::IDeviceNotify" Collapsed="true">
+    <Position X="30" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAEAAAAgAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DeviceResources.h</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="TeamID">
+    <Position X="14" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>CCC\Objects\TeamID.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CCC::Messenger::MessageType">
+    <Position X="25.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAgAgAQAAAAAAAAABIAAAAAAAAAAAAgA=</HashCode>
+      <FileName>CCC\Messenger\MessageType.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Yu Gothic UI" Size="9" />
+</ClassDiagram>

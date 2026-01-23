@@ -1,19 +1,18 @@
 /**
- * @file   ButtomUIBase.h
+ * @file   TextureRenderer.h
  *
- * @brief  ボタンUI基底オブジェクトクラスのヘッダファイル
+ * @brief  画像を描画するオブジェクトクラスのヘッダファイル
  *
  * @author CatCode
  *
- * @date   2026/01/18
- * ボタンUIを作る際の親クラス
- * メッセンジャーがある前提
+ * @date   2026/01/19
+ * 画像を指定の画面上に描画するだけのオブジェクト
  *
- * 2026/01/18
+ * 2026/01/19
  * 作成
  */
 
-// 多重インクルードガード
+ // 多重インクルードガード
 #pragma once
 
 // 親クラス
@@ -34,9 +33,6 @@
 #include <PrimitiveBatch.h>
 
 
-// メッセンジャー
-#include <CCC/Messenger/MessageType.h>
-
 namespace CCC
 {
 	// 前方宣言
@@ -51,18 +47,14 @@ namespace CCC
 	{
 		class ResourceManager;
 	}
-	namespace Messenger
-	{
-		class MessengerHub;
-	}
 
 
 	namespace Bases
 	{
 		/// <summary>
-		/// ボタンUIの基底オブジェクトクラス
+		/// テクスチャ描画オブジェクトクラス
 		/// </summary>
-		class ButtomUIBase :
+		class TextureRenderer :
 			public ObjectBase
 		{
 			// ---------------------------------------------------------------------- //
@@ -72,25 +64,19 @@ namespace CCC
 			/// <summary>
 			/// コンストラクタ
 			/// </summary>
-			/// <param name="position">画面上の表示座標</param>
+			/// <param name="position">画面上の表示位置</param>
 			/// <param name="size">サイズ</param>
 			/// <param name="texture">テクスチャリソースの登録名</param>
-			/// <param name="pressedMessage">押したときのメッセージ</param>
-			/// <param name="pushingMessage">押しているときのメッセージ</param>
-			/// <param name="releasedMessage">離したときのメッセージ</param>
-			ButtomUIBase(
+			TextureRenderer(
 				const DirectX::SimpleMath::Vector2& position,
 				float                               size,
-				const std::string&                  texture,
-				const CCC::Messenger::MessageType& pressedMessage,
-				const CCC::Messenger::MessageType& pushingMessage,
-				const CCC::Messenger::MessageType& releasedMessage
+				const std::string&                  texture
 			);
-			
+
 			/// <summary>
 			/// デストラクタ
 			/// </summary>
-			virtual ~ButtomUIBase();
+			virtual ~TextureRenderer();
 
 			/// <summary>
 			/// 初期化処理
@@ -138,10 +124,10 @@ namespace CCC
 
 			// テクスチャリソースクラス
 			CCC::Resources::TextureResource* mp_Default;	// 何も操作がされていない時のテクスチャ
-			
+
 			// シェーダリソース
-			CCC::Resources::PixelShaderResource*    mp_DefaultPS;
-			CCC::Resources::VertexShaderResource*	mp_DefaultVS;
+			CCC::Resources::PixelShaderResource* mp_DefaultPS;
+			CCC::Resources::VertexShaderResource* mp_DefaultVS;
 			CCC::Resources::GeometryShaderResource* mp_DisplayGS;
 
 			// ボタンピクセルシェーダ用の定数バッファ
@@ -152,31 +138,6 @@ namespace CCC
 
 			//	入力レイアウト
 			Microsoft::WRL::ComPtr<ID3D11InputLayout> m_InputLayout;
-
-
-			// ---------------------------------------------------------------------- //
-			// ボタン機能
-			// ---------------------------------------------------------------------- //
-		private:
-			bool m_RequestPress;	// 押すことをリクエスト
-			bool m_IsPushing;		// 押しているか
-
-		public:
-			/// <summary>
-			/// ボタンを押す
-			/// </summary>
-			void Press();
-
-
-
-			// ---------------------------------------------------------------------- //
-			// メッセンジャー
-			// ---------------------------------------------------------------------- //
-		private:
-			CCC::Messenger::MessengerHub* mp_MessengerHub;	// メッセンジャーハブへのポインタ
-			CCC::Messenger::MessageType m_PressedMessege;	// 押したときのメッセージ
-			CCC::Messenger::MessageType m_PushingMessege;	// 押しているときのメッセージ
-			CCC::Messenger::MessageType m_ReleasedMessege;	// 離したときのメッセージ
 
 
 
