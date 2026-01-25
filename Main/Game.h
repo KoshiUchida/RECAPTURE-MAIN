@@ -64,6 +64,9 @@ public:
     // 画面モードを設定する関数（TRUE：フルスクリーン）
     void SetFullscreenState(BOOL value);
 
+    // デバイスリソースを取得する関数
+    DX::DeviceResources* GetDeviceResources();
+
 private:
 
     void Update(DX::StepTimer const& timer);

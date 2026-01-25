@@ -120,7 +120,13 @@ namespace CCC::Managers
 		template<class T>
 		T GetInputAs(const std::string& name)
 		{
-			return std::any_cast<T>(GetInput(name));
+			try {
+				return std::any_cast<T>(GetInput(name));
+			}
+			catch (...) {
+				return T{};
+			}
+			
 		}
 
 

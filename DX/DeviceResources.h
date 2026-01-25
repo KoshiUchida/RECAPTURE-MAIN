@@ -3,6 +3,7 @@
 //
 
 #pragma once
+#include <atomic>
 
 namespace DX
 {
@@ -120,5 +121,14 @@ namespace DX
 
         // The IDeviceNotify can be held directly as it owns the DeviceResources.
         IDeviceNotify*                                  m_deviceNotify;
+
+
+        // 全画面モードでCAPS LOCKを押した後に文字キーを入力すると例外処理になる問題の解決策
+        public:
+            void RequestResize() noexcept;
+            bool ConsumeResizeRequest() noexcept;
+
+       private:
+           std::atomic_bool m_pendingResize;
     };
 }

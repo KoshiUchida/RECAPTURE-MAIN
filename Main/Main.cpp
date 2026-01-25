@@ -187,6 +187,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             game->OnDisplayChange();
         }
+
+        if (g_game)
+            g_game->GetDeviceResources()->RequestResize();
         break;
 
     case WM_MOVE:
@@ -237,6 +240,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 game->OnDeactivated();
             }
         }
+
+
+        if (g_game)
+            g_game->GetDeviceResources()->RequestResize();
         break;
 
     case WM_POWERBROADCAST:
@@ -271,6 +278,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_ACTIVATE:
         Keyboard::ProcessMessage(message, wParam, lParam);
         Mouse   ::ProcessMessage(message, wParam, lParam);
+        if (g_game)
+            g_game->GetDeviceResources()->RequestResize();
         break;
 
     case WM_SYSKEYDOWN:
@@ -295,6 +304,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_XBUTTONUP:
     case WM_MOUSEHOVER:
         Mouse::ProcessMessage(message, wParam, lParam);
+        break;
+
+    case WM_SIZE:
+    case WM_DPICHANGED:
+        if (g_game)
+            g_game->GetDeviceResources()->RequestResize();
         break;
     }
 

@@ -165,8 +165,7 @@ void EnemyPawnLeader::Process(float elapsedTime)
 			this->FormationWedge(EnemyPawnLeaderParameter::SPACING_BETWEEN_PAWN);
 			this->SetIsSkillActive(true);
 
-
-			float x = this->GetTransform()->GetPositionX();
+			float x = this->GetTransform()->GetRotateX();
 			m_SkillAngle = DirectX::SimpleMath::Vector3(-std::sinf(x), 0.0f, -std::cosf(x));
 		}
 
@@ -219,7 +218,7 @@ void EnemyPawnLeader::Process(float elapsedTime)
 		DirectX::SimpleMath::Vector3 DiffVelocity = DesiredVelocity - this->GetVelocity();
 
 		if (DiffVelocity != DirectX::SimpleMath::Vector3::Zero)
-			this->SetVelocity(this->GetVelocity() + DiffVelocity * elapsedTime);
+			this->SetVelocity(this->GetVelocity() + DiffVelocity * 0.5f * elapsedTime);
 		else
 			this->SetVelocity(DesiredVelocity);
 	}

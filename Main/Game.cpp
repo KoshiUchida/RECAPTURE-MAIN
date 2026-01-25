@@ -59,6 +59,12 @@ void Game::Initialize(HWND window, int width, int height)
 // 基本的なゲームループの実行
 void Game::Tick()
 {
+    if (m_deviceResources->ConsumeResizeRequest())
+    {
+        m_deviceResources->CreateWindowSizeDependentResources();
+        CreateWindowSizeDependentResources(); // Game側の依存リソースがあるなら
+    }
+
     m_timer.Tick([&]()
     {
         Update(m_timer);
@@ -211,6 +217,10 @@ void Game::SetFullscreenState(BOOL value)
     m_fullscreen = value;
     m_deviceResources->GetSwapChain()->SetFullscreenState(m_fullscreen, nullptr);
     if (value) m_deviceResources->CreateWindowSizeDependentResources();
+}
+DX::DeviceResources* Game::GetDeviceResources()
+{
+    return m_deviceResources.get();
 }
 #pragma endregion
 

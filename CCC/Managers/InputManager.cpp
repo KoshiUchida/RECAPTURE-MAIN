@@ -75,6 +75,7 @@ namespace CCC::Managers
 		m_KeyboardState = mp_Keyboard->GetState();
 
 
+
 		if (this->GetInputAs<bool>("Attack"))
 		{
 			CCC::Messenger::MessengerHub::GetInstance()->Receive(
@@ -190,6 +191,10 @@ namespace CCC::Managers
 
 	std::any InputManager::GetInput(const std::string& name)
 	{
-		return m_Inputs[name]();
+		auto it = m_Inputs.find(name);
+		if (it == m_Inputs.end())
+			return {};
+
+		return it->second();
 	}
 }

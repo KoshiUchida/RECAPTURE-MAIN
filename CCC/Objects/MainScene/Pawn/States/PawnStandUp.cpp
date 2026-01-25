@@ -32,7 +32,7 @@ PawnStandUp::PawnStandUp(Pawn* p_Owner) :
 
 PawnStandUp::~PawnStandUp()
 {
-	this->GetOwner()->GetComponent<CCC::Components::PawnCollider>("Collider")->SetActive(false);
+	this->GetOwner()->GetComponent<CCC::Components::PawnCollider>("Collider")->SetActive(true);
 }
 
 void PawnStandUp::Update(float elapsedTime)

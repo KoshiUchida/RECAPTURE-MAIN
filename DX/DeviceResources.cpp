@@ -77,7 +77,8 @@ DeviceResources::DeviceResources(
         m_outputSize{0, 0, 1, 1},
         m_colorSpace(DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709),
         m_options(flags | c_FlipPresent),
-        m_deviceNotify(nullptr)
+        m_deviceNotify(nullptr),
+        m_pendingResize(false)
 {
 }
 
@@ -455,19 +456,55 @@ void DeviceResources::HandleDeviceLost()
 // Present the contents of the swap chain to the screen.
 void DeviceResources::Present()
 {
-    HRESULT hr = E_FAIL;
-    if (m_options & c_AllowTearing)
+    DXGI_SWAP_CHAIN_DESC desc{};
+    m_swapChain->GetDesc(&desc);
+
+    BOOL fullscreen = FALSE;
+    m_swapChain->GetFullscreenState(&fullscreen, nullptr);
+
+    UINT sync = 1;
+    UINT flags = 0;
+    if (!fullscreen && (m_options & c_AllowTearing))
     {
-        // Recommended to always use tearing if supported when using a sync interval of 0.
-        hr = m_swapChain->Present(0, DXGI_PRESENT_ALLOW_TEARING);
+        sync = 0;
+        flags = DXGI_PRESENT_ALLOW_TEARING;
     }
-    else
+
+    const HRESULT hr = m_swapChain->Present(sync, flags);
+
+    if (hr == DXGI_STATUS_OCCLUDED)
+        return;
+
+    // If the device was removed either by a disconnection or a driver upgrade, we
+    // must recreate all device resources.
+    if (hr == DXGI_ERROR_DEVICE_REMOVED || hr == DXGI_ERROR_DEVICE_RESET)
     {
-        // The first argument instructs DXGI to block until VSync, putting the application
-        // to sleep until the next VSync. This ensures we don't waste any cycles rendering
-        // frames that will never be displayed to the screen.
-        hr = m_swapChain->Present(1, 0);
+#ifdef _DEBUG
+        char buff[128]{};
+        const HRESULT reason = m_d3dDevice ? m_d3dDevice->GetDeviceRemovedReason() : hr;
+        sprintf_s(buff, "Device Lost on Present: hr=0x%08lX reason=0x%08lX\n", hr, reason);
+        OutputDebugStringA(buff);
+#endif
+
+        HandleDeviceLost();
+        return;
     }
+    
+    if (FAILED(hr))
+    {
+        HRESULT reason = m_d3dDevice ? m_d3dDevice->GetDeviceRemovedReason() : S_OK;
+
+        char buf[512]{};
+        sprintf_s(buf,
+            "Present call: fullscreen=%d sync=%u flags=0x%X Buffers=%u SwapEffect=%u SwapFlags=0x%X\n",
+            fullscreen ? 1 : 0, sync, flags,
+            desc.BufferCount, (unsigned)desc.SwapEffect, desc.Flags);
+        OutputDebugStringA(buf);
+
+        ThrowIfFailed(hr);
+    }
+
+
 
     // Discard the contents of the render target.
     // This is a valid operation only when the existing contents will be entirely
@@ -475,32 +512,11 @@ void DeviceResources::Present()
     m_d3dContext->DiscardView(m_d3dRenderTargetView.Get());
 
     if (m_d3dDepthStencilView)
-    {
         // Discard the contents of the depth stencil.
         m_d3dContext->DiscardView(m_d3dDepthStencilView.Get());
-    }
 
-    // If the device was removed either by a disconnection or a driver upgrade, we
-    // must recreate all device resources.
-    if (hr == DXGI_ERROR_DEVICE_REMOVED || hr == DXGI_ERROR_DEVICE_RESET)
-    {
-#ifdef _DEBUG
-        char buff[64] = {};
-        sprintf_s(buff, "Device Lost on Present: Reason code 0x%08X\n",
-            static_cast<unsigned int>((hr == DXGI_ERROR_DEVICE_REMOVED) ? m_d3dDevice->GetDeviceRemovedReason() : hr));
-        OutputDebugStringA(buff);
-#endif
-        HandleDeviceLost();
-    }
-    else
-    {
-        ThrowIfFailed(hr);
-
-        if (!m_dxgiFactory->IsCurrent())
-        {
-            UpdateColorSpace();
-        }
-    }
+    if (!m_dxgiFactory->IsCurrent())
+        UpdateColorSpace();
 }
 
 void DeviceResources::CreateFactory()
@@ -601,6 +617,16 @@ void DeviceResources::GetHardwareAdapter(IDXGIAdapter1** ppAdapter)
     }
 
     *ppAdapter = adapter.Detach();
+}
+
+void DX::DeviceResources::RequestResize() noexcept
+{
+    m_pendingResize.store(true, std::memory_order_relaxed);
+}
+
+bool DX::DeviceResources::ConsumeResizeRequest() noexcept
+{
+    return m_pendingResize.exchange(false, std::memory_order_acq_rel);
 }
 
 // Sets the color space for the swap chain in order to handle HDR output.

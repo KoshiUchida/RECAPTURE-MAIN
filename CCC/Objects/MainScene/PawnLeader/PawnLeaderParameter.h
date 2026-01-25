@@ -52,7 +52,7 @@ namespace PawnLeaderParameter
 	namespace SkillGauge
 	{
 		static constexpr float RECOVERY_RATE    = 0.25f;	// １秒に対する回復率
-		static constexpr float CONSUMPTION_RATE = 0.1f;		// スキルの発動中の１秒に対するゲージ消費量
+		static constexpr float CONSUMPTION_RATE = 0.2f;		// スキルの発動中の１秒に対するゲージ消費量
 		static constexpr float ROTATION_DEBUFF  = 0.5f;		// スキル発動中の旋回速度のデバフ
 		static constexpr float SPEED_BUFF       = 1.5f;		// スキル発動中の速度バフ
 	}

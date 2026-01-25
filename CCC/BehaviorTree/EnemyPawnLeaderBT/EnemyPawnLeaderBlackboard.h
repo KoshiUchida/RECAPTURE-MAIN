@@ -47,7 +47,7 @@ struct EnemyPawnLeaderBlackboard :
 	float distanceToTarget = 0.0f;	// ターゲットとの距離
 
 
-	float attackDistance                        = 15.0f;	// 攻撃できる距離
+	float attackDistance                        = 20.0f;	// 攻撃できる距離
 	EnemyPawnLeader::SkillStates* p_SkillStates = nullptr;	// スキルの状態
 
 
