@@ -492,14 +492,15 @@ void DeviceResources::Present()
     
     if (FAILED(hr))
     {
-        HRESULT reason = m_d3dDevice ? m_d3dDevice->GetDeviceRemovedReason() : S_OK;
+        // 全画面モード中の例外処理問題のためのコード、現在必要がないため、警告回避のためにコメントアウト
+        //HRESULT reason = m_d3dDevice ? m_d3dDevice->GetDeviceRemovedReason() : S_OK;
 
-        char buf[512]{};
-        sprintf_s(buf,
-            "Present call: fullscreen=%d sync=%u flags=0x%X Buffers=%u SwapEffect=%u SwapFlags=0x%X\n",
-            fullscreen ? 1 : 0, sync, flags,
-            desc.BufferCount, (unsigned)desc.SwapEffect, desc.Flags);
-        OutputDebugStringA(buf);
+        //char buf[512]{};
+        //sprintf_s(buf,
+        //    "Present call: fullscreen=%d sync=%u flags=0x%X Buffers=%u SwapEffect=%u SwapFlags=0x%X\n",
+        //    fullscreen ? 1 : 0, sync, flags,
+        //    desc.BufferCount, (unsigned)desc.SwapEffect, desc.Flags);
+        //OutputDebugStringA(buf);
 
         ThrowIfFailed(hr);
     }

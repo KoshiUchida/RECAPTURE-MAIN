@@ -281,38 +281,6 @@ void PawnLeader::Process(float elapsedTime)
 
 
 
-
-	// ---------------------------------------------------------------------- //
-	// アニメーションの設定
-	// ---------------------------------------------------------------------- //
-
-	// アニメーションの設定
-	std::string animation;
-
-	// 攻撃中
-	if (this->IsAttacking())
-	{
-		animation = "Paladin_Slash";
-	}
-	// 方向ベクトルがゼロでなければ移動中
-	else if (this->GetVelocity() != DirectX::SimpleMath::Vector3::Zero)
-	{
-		// ダッシュ中かどうかでアニメーションを変更
-		if (this->IsSkillActive() || mp_InputManager->GetInputAs<bool>("Dash"))
-			animation = "Paladin_Run";
-		else
-			animation = "Paladin_Walk";
-	}
-	else
-	{
-		animation = "Paladin_Idle";
-	}
-
-	// アニメーションの変更要求
-	this->RequestAnimationChange(animation, 0.3f);
-
-
-
 	// ---------------------------------------------------------------------- //
 	// 隊員に対する更新処理
 	// ---------------------------------------------------------------------- //
@@ -412,6 +380,37 @@ void PawnLeader::Process(float elapsedTime)
 	{
 		m_StabilityState = StabilityStates::Warning;
 	}
+
+
+
+	// ---------------------------------------------------------------------- //
+	// アニメーションの設定
+	// ---------------------------------------------------------------------- //
+
+	// アニメーションの設定
+	std::string animation;
+
+	// 攻撃中
+	if (this->IsAttacking())
+	{
+		animation = "Paladin_Slash";
+	}
+	// 方向ベクトルがゼロでなければ移動中
+	else if (this->GetVelocity() != DirectX::SimpleMath::Vector3::Zero)
+	{
+		// ダッシュ中かどうかでアニメーションを変更
+		if (this->IsSkillActive() || mp_InputManager->GetInputAs<bool>("Dash"))
+			animation = "Paladin_Run";
+		else
+			animation = "Paladin_Walk";
+	}
+	else
+	{
+		animation = "Paladin_Idle";
+	}
+
+	// アニメーションの変更要求
+	this->RequestAnimationChange(animation, 0.3f);
 }
 
 void PawnLeader::SetCameraTransform(CCC::Bases::ObjectBase* p_Camera)
@@ -429,6 +428,18 @@ float PawnLeader::GetFormationStability() const
 	// もし、安定する境界内なら1を返す
 	if (m_AverageUnitDiff <= PawnLeaderParameter::STABLE_LIMIT)
 		return 1.0f;
+
+	if (m_SkillState == SkillStates::Active)
+	{
+		// もし、保てなくなる限界を突破していたら0を返す
+		if (m_AverageUnitDiff >= PawnLeaderParameter::BREAK_LIMIT * PawnLeaderParameter::SkillGauge::STABILITY_BUFF)
+			return 0.0f;
+
+		// 安定分を引いて、安定度を計算する
+		return 1.0f -
+			(m_AverageUnitDiff - PawnLeaderParameter::STABLE_LIMIT) /
+			(PawnLeaderParameter::BREAK_LIMIT * PawnLeaderParameter::SkillGauge::STABILITY_BUFF - PawnLeaderParameter::STABLE_LIMIT);
+	}
 
 	// もし、保てなくなる限界を突破していたら0を返す
 	if (m_AverageUnitDiff >= PawnLeaderParameter::BREAK_LIMIT)

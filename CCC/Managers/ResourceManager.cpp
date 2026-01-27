@@ -5,7 +5,7 @@
  *
  * @author CatCode
  *
- * @date   2026/01/19
+ * @date   2026/01/27
  * 
  * 使用を行うには必ずSetResource関数を行う必要がある。
  * 
@@ -40,6 +40,12 @@
  * 
  * 2026/01/19
  * リザルトシーン用のテクスチャを追加
+ * 
+ * 2026/01/27
+ * SE
+ * StartButtomの追加
+ * BGM
+ * Battle01の追加
  */
 
 // プリコンパイル済みヘッダー
@@ -59,6 +65,7 @@
 #include <CCC/ResourceClasses/VertexShaderResource.h>
 #include <CCC/ResourceClasses/GeometryShaderResource.h>
 #include <CCC/ResourceClasses/PixelShaderResource.h>
+#include <CCC/ResourceClasses/SoundEffectResource.h>
 
 namespace CCC::Managers
 {
@@ -85,6 +92,9 @@ namespace CCC::Managers
 		CreateResource<CCC::Resources::PixelShaderResource   >("GaugePS"  , L"Resources/Shaders/GaugePS.cso"  );
 		CreateResource<CCC::Resources::PixelShaderResource   >("WarningPS", L"Resources/Shaders/WarningPS.cso");
 
+		// サウンドエフェクト
+		CreateResource<CCC::Resources::SoundEffectResource>("SE_StartButtom", L"Resources/Sounds/SE/StartButtom.wav");
+		CreateResource<CCC::Resources::SoundEffectResource>("BGM_Battle01"  , L"Resources/Sounds/BGM/Battle01.wav"  );
 
 
 

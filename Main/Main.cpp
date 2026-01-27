@@ -1,6 +1,8 @@
 //
 // Main.cpp
 //
+// 2026/01/25
+// 画面モード遷移の際にウィンドウを再生成するように改修
 
 #include "pch.h"
 #include <Main/Game.h>
@@ -22,7 +24,7 @@ namespace
     std::unique_ptr<Game> g_game;
 }
 
-LPCWSTR g_szAppName = L"CatCodeCore";
+LPCWSTR g_szAppName = L"Recapture";
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 void ExitGame() noexcept;
@@ -50,12 +52,12 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
     // ディスプレイ情報の更新
     if (s_fullscreen)
     {
-        DisplayInfo::ScreenWidth = GetSystemMetrics(SM_CXSCREEN);
+        DisplayInfo::ScreenWidth  = GetSystemMetrics(SM_CXSCREEN);
         DisplayInfo::ScreenHeight = GetSystemMetrics(SM_CYSCREEN);
     }
     else
     {
-        DisplayInfo::ScreenWidth = DisplayInfo::Width;
+        DisplayInfo::ScreenWidth  = DisplayInfo::Width;
         DisplayInfo::ScreenHeight = DisplayInfo::Height;
     }
 

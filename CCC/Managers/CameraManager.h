@@ -13,12 +13,16 @@
  * ビュー行列からカメラの方向を取得する関数の実装
  */
 
+// 多重インクルードガード
 #pragma once
 
 namespace CCC
 {
 	namespace Managers
 	{
+		/// <summary>
+		/// カメラ管理クラス
+		/// </summary>
 		class CameraManager final
 		{
 			// ---------------------------------------------------------------------- //

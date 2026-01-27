@@ -5,7 +5,7 @@
  *
  * @author CatCode
  *
- * @date   2026/01/18
+ * @date   2026/01/27
  * テクスチャを保持するクラス
  * m_UseScene扱うシーン名を保持できるようになっている
  * 
@@ -17,103 +17,103 @@
  * 
  * 2026/01/18
  * 多重インクルードガードを修正
+ * 
+ * 2026/01/27
+ * namespaceの記述方法を変更
  */
 
 // 多重インクルードガード	
 #ifndef TEXTURE_RESOURCE_DEFINED
 #define TEXTURE_RESOURCE_DEFINED
 
-// リソースの基底クラス
+
+// 基底クラス
 #include <CCC/ResourceClasses/ResourceBase.h>
 
-namespace CCC
+namespace CCC::Resources
 {
-	namespace Resources
+	/// <summary>
+	/// テクスチャのリソースクラス
+	/// </summary>
+	class TextureResource final :
+		public Bases::ResourceBase
 	{
+		// ---------------------------------------------------------------------- //
+		// パブリック関数
+		// ---------------------------------------------------------------------- //
+	public:
 		/// <summary>
-		/// テクスチャのリソースクラス
+		/// コンストラクタ
 		/// </summary>
-		class TextureResource final :
-			public Bases::ResourceBase
+		TextureResource(const wchar_t* path, const std::string& useScene = "");
+
+		/// <summary>
+		///  デストラクタ
+		/// </summary>
+		virtual ~TextureResource();
+
+		/// <summary>
+		/// リソースの読み込み
+		/// </summary>
+		void Load() override;
+
+		/// <summary>
+		/// リソースの破棄
+		/// </summary>
+		void Unload() override;
+
+		/// <summary>
+		/// アドレスの取得
+		/// </summary>
+		ID3D11ShaderResourceView** GetAddressOf()
 		{
-		public:
-			// ---------------------------------------------------------------------- //
-			// パブリック関数
-			// ---------------------------------------------------------------------- //
+			return m_Texture.GetAddressOf();
+		}
 
-			/// <summary>
-			/// コンストラクタ
-			/// </summary>
-			TextureResource(const wchar_t* path, const std::string& useScene = "");
+		/// <summary>
+		/// テクスチャへのポインタの取得
+		/// </summary>
+		ID3D11ShaderResourceView* Get()
+		{
+			return m_Texture.Get();
+		}
 
-			/// <summary>
-			///  デストラクタ
-			/// </summary>
-			virtual ~TextureResource();
+		/// <summary>
+		/// 画像サイズの取得
+		/// </summary>
+		DirectX::XMUINT2 GetSize() const
+		{
+			return m_Size;
+		}
 
-			/// <summary>
-			/// リソースの読み込み
-			/// </summary>
-			void Load() override;
+		/// <summary>
+		/// 画像横幅サイズの取得
+		/// </summary>
+		UINT GetWidth() const
+		{
+			return GetSize().x;
+		}
 
-			/// <summary>
-			/// リソースの破棄
-			/// </summary>
-			void Unload() override;
-
-			/// <summary>
-			/// アドレスの取得
-			/// </summary>
-			ID3D11ShaderResourceView** GetAddressOf()
-			{
-				return m_Texture.GetAddressOf();
-			}
-
-			/// <summary>
-			/// テクスチャへのポインタの取得
-			/// </summary>
-			ID3D11ShaderResourceView* Get()
-			{
-				return m_Texture.Get();
-			}
-
-			/// <summary>
-			/// 画像サイズの取得
-			/// </summary>
-			DirectX::XMUINT2 GetSize() const
-			{
-				return m_Size;
-			}
-
-			/// <summary>
-			/// 画像横幅サイズの取得
-			/// </summary>
-			UINT GetWidth() const
-			{
-				return GetSize().x;
-			}
-
-			/// <summary>
-			/// 画像縦幅サイズの取得
-			/// </summary>
-			UINT GetHeight() const
-			{
-				return GetSize().y;
-			}
+		/// <summary>
+		/// 画像縦幅サイズの取得
+		/// </summary>
+		UINT GetHeight() const
+		{
+			return GetSize().y;
+		}
 
 
 
-			// ---------------------------------------------------------------------- //
-			// メンバ変数
-			// ---------------------------------------------------------------------- //
-		private:
-			// テクスチャ（リソース）
-			Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_Texture;
+		// ---------------------------------------------------------------------- //
+		// メンバ変数
+		// ---------------------------------------------------------------------- //
+	private:
+		// テクスチャ（リソース）
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_Texture;
 
-			// 画像サイズ
-			DirectX::XMUINT2 m_Size;
-		};
-	}
+		// 画像サイズ
+		DirectX::XMUINT2 m_Size;
+	};
 }
 
 #endif // !TEXTURE_RESOURCE_DEFINED

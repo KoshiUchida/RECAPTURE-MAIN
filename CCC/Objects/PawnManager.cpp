@@ -67,12 +67,15 @@ void PawnManager::Update(float elapsedTime)
 				DirectX::SimpleMath::Vector2 velocityDiff =
 					DirectX::SimpleMath::Vector2(p_JCollider->GetVelocity().x, p_JCollider->GetVelocity().z) -
 					DirectX::SimpleMath::Vector2(p_ICollider->GetVelocity().x, p_ICollider->GetVelocity().z);
-				velocityDiff.Normalize();
+				//velocityDiff.Normalize();
 
 				// Õ“Ë‚µ‚Ä‚­‚é‚©‚ğ“àÏ‚©‚ç‹‚ß‚é
 				if (velocityDiff.Dot(positionDiff) < 0.0f)
 				{
-					p_ICollider->SetOutsideForce(p_JCollider->GetVelocity());
+					p_ICollider->SetOutsideForce(DirectX::SimpleMath::Vector3(velocityDiff.x, 0.0f, velocityDiff.y)         * 95.0f * 0.017f +
+					                             p_ICollider->GetVelocity());
+					p_JCollider->SetOutsideForce(DirectX::SimpleMath::Vector3(velocityDiff.x, 0.0f, velocityDiff.y) * -1.0f * 95.0f * 0.017f +
+					                             p_JCollider->GetVelocity());
 				}
 			}
 		}

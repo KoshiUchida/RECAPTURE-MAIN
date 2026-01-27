@@ -97,6 +97,7 @@ void EnemyPawnLeader::Initialize()
 	AddAnimationPlayer("Paladin_Idle");
 	AddAnimationPlayer("Paladin_Walk");
 	AddAnimationPlayer("Paladin_Run");
+	AddAnimationPlayer("Paladin_Death");
 
 	// サイズを0.02に設定
 	SetScale(0.02);
@@ -138,6 +139,9 @@ void EnemyPawnLeader::Initialize()
 	// ステート変化のメッセージの作成
 	messenger->Subscribe(CCC::Messenger::MessageType::RequestToEnemyPawnLeader_State,
 		[this](const CCC::Messenger::MessengerHub::PayLoad& is) {
+			// 死んでいたらすぐに無視する
+			if (m_State == EnemyPawnLeaderStates::Death) return;
+
 			if (const AddressedPayload* p = std::any_cast<AddressedPayload>(&is.item))
 			{
 				// 宛名が合っているかを確認
@@ -152,6 +156,8 @@ void EnemyPawnLeader::Initialize()
 
 void EnemyPawnLeader::Process(float elapsedTime)
 {
+	if (m_State == EnemyPawnLeaderStates::Death) return;
+
 	// ---------------------------------------------------------------------- //
 	// 陣形スキル
 	// ---------------------------------------------------------------------- //
@@ -241,32 +247,6 @@ void EnemyPawnLeader::Process(float elapsedTime)
 
 
 
-
-	// ---------------------------------------------------------------------- //
-	// アニメーションの設定
-	// ---------------------------------------------------------------------- //
-
-	// アニメーションの設定
-	std::string animation;
-	// 方向ベクトルがゼロでなければ移動中
-	if (this->GetVelocity() != DirectX::SimpleMath::Vector3::Zero)
-	{
-		// ダッシュ中かどうかでアニメーションを変更
-		if (this->IsSkillActive())
-			animation = "Paladin_Run";
-		else
-			animation = "Paladin_Walk";
-	}
-	else
-	{
-		animation = "Paladin_Idle";
-	}
-
-	// アニメーションの変更要求
-	RequestAnimationChange(animation, 0.3f);
-
-
-
 	// ---------------------------------------------------------------------- //
 	// 隊員に対する更新処理
 	// ---------------------------------------------------------------------- //
@@ -345,6 +325,12 @@ void EnemyPawnLeader::Process(float elapsedTime)
 		if (m_AverageUnitDiff > EnemyPawnLeaderParameter::DEATH_LIMIT)
 		{
 			m_StabilityState = StabilityStates::Death;
+			m_State = EnemyPawnLeaderStates::Death;
+
+			for (auto* it : m_PawnPointers)
+			{
+				static_cast<Pawn*>(it)->RequestStateChange("Death");
+			}
 		}
 	}
 	else if (stability > EnemyPawnLeaderParameter::StabilityState::STABLE)
@@ -355,6 +341,37 @@ void EnemyPawnLeader::Process(float elapsedTime)
 	{
 		m_StabilityState = StabilityStates::Warning;
 	}
+
+
+
+
+	// ---------------------------------------------------------------------- //
+	// アニメーションの設定
+	// ---------------------------------------------------------------------- //
+
+	// アニメーションの設定
+	std::string animation;
+	// 死んでいたら
+	if (m_State == EnemyPawnLeaderStates::Death)
+	{
+		animation = "Paladin_Death";
+	}
+	// 方向ベクトルがゼロでなければ移動中
+	else if (this->GetVelocity() != DirectX::SimpleMath::Vector3::Zero)
+	{
+		// ダッシュ中かどうかでアニメーションを変更
+		if (this->IsSkillActive())
+			animation = "Paladin_Run";
+		else
+			animation = "Paladin_Walk";
+	}
+	else
+	{
+		animation = "Paladin_Idle";
+	}
+
+	// アニメーションの変更要求
+	RequestAnimationChange(animation, 0.3f);
 }
 
 float EnemyPawnLeader::GetFormationStability() const

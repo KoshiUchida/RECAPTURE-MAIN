@@ -5,7 +5,7 @@
  *
  * @author CatCode
  *
- * @date    2026/01/23
+ * @date    2026/01/28
  * 
  * 2025/12/19
  * 作成
@@ -25,6 +25,9 @@
  * 
  * 2026/01/23
  * 敵オブジェクトを複製
+ * 
+ * 2026/01/28
+ * BGM戦闘01の追加
  */
 
 // プリコンパイル済みヘッダー
@@ -118,15 +121,18 @@ void MainScene::Initialize()
 	// カメラモードを初期化
 	Mouse::Get().SetMode(DirectX::Mouse::MODE_RELATIVE);
 
+	// メッセンジャーハブの取得
+	CCC::Messenger::MessengerHub* p_mh = CCC::Messenger::MessengerHub::GetInstance();
+
+	// BGMの戦闘01を再生
+	p_mh->Receive(CCC::Messenger::MessageType::BGM_PLAY_BATTLE_01, CCC::Messenger::MessengerHub::PayLoad());
+
 
 
 
 	// ---------------------------------------------------------------------- //
 	// メッセンジャーに登録
 	// ---------------------------------------------------------------------- //
-
-	//  メッセンジャーハブを取得
-	CCC::Messenger::MessengerHub* p_mh = CCC::Messenger::MessengerHub::GetInstance();
 	
 	// リザルトシーンに遷移することを要求するメッセージ
 	p_mh->Subscribe(CCC::Messenger::MessageType::Request_ResultScene,
@@ -383,8 +389,13 @@ void MainScene::Render()
 
 void MainScene::Finalize()
 {
-	// 登録したメッセージを削除する
+	// メッセンジャーハブの取得
 	CCC::Messenger::MessengerHub* p_mh = CCC::Messenger::MessengerHub::GetInstance();
+
+	// BGMの戦闘01を停止
+	p_mh->Receive(CCC::Messenger::MessageType::BGM_STOP_BATTLE_01, CCC::Messenger::MessengerHub::PayLoad());
+
+	// 登録したメッセージを削除する
 	p_mh->Unsubscribe(CCC::Messenger::MessageType::Request_ResultScene);
 	p_mh->Unsubscribe(CCC::Messenger::MessageType::RequestToEnemyPawnLeader_State);
 }

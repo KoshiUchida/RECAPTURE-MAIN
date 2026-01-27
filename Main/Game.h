@@ -5,6 +5,9 @@
 // DirectX提供ライブラリをDXフォルダに移動
 // それに伴い、インクルードのディレクトリ名を変更
 //
+// 2026/01/27
+// オーディオ管理クラスの実装に伴い
+// その管理クラスの前方宣言とクラスへのポインタを保持する変数を追加
 
 #pragma once
 
@@ -21,6 +24,7 @@ namespace CCC::Managers
     class ComponentManager;
     class ObjectManager;
     class InputManager;
+    class AudioManager;
 }
 
 
@@ -86,18 +90,10 @@ private:
     // 全画面モードにするか
     BOOL m_fullscreen;
 
-    // シーン管理クラスの実体へのポインタ
-    CCC::Managers::SceneManager* mp_SceneManager;
-
-    // リソース管理クラスの実体へのポインタ
-    CCC::Managers::ResourceManager* mp_ResourceManager;
-
-    // コンポネート管理クラスの実体へのポインタ
-    CCC::Managers::ComponentManager* mp_ComponentManager;
-
-    // オブジェクト管理クラスの実体へのポインタ
-    CCC::Managers::ObjectManager* mp_ObjectManager;
-
-    // 入力管理クラスの実体へのポインタ
-    CCC::Managers::InputManager* mp_InputManager;
+    CCC::Managers::SceneManager*     mp_SceneManager;       // シーン管理クラスの実体へのポインタ
+    CCC::Managers::ResourceManager*  mp_ResourceManager;    // リソース管理クラスの実体へのポインタ
+    CCC::Managers::ComponentManager* mp_ComponentManager;   // コンポネート管理クラスの実体へのポインタ
+    CCC::Managers::ObjectManager*    mp_ObjectManager;      // オブジェクト管理クラスの実体へのポインタ
+    CCC::Managers::InputManager*     mp_InputManager;       // 入力管理クラスの実体へのポインタ
+    CCC::Managers::AudioManager*     mp_AudioManager;       // オーディオ管理クラスの実体へのポインタ
 };

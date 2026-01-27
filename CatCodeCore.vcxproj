@@ -182,6 +182,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CCC\Managers\AudioManager.h" />
     <ClInclude Include="CCC\BehaviorTree\Bases\CompositeNodeBase.h" />
     <ClInclude Include="CCC\BehaviorTree\Bases\DecoratorNodeBase.h" />
     <ClInclude Include="CCC\BehaviorTree\Composites\SelectorNode.h" />
@@ -255,6 +256,7 @@
     <ClInclude Include="CCC\Messenger\MessengerHub.h" />
     <ClInclude Include="CCC\Objects\MainScene\Pawn\States\PawnKnockback.h" />
     <ClInclude Include="CCC\Objects\MainScene\Pawn\States\PawnStandUp.h" />
+    <ClInclude Include="CCC\Objects\MainScene\Pawn\States\PawnDeath.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="CCC\Managers\ResourceManager.h" />
     <ClInclude Include="CCC\Scenes\SampleSceneSec.h" />
@@ -271,8 +273,10 @@
     <ClInclude Include="CCC\ResourceClasses\VertexShaderResource.h" />
     <ClInclude Include="CCC\Scenes\TitleScene.h" />
     <ClInclude Include="CCC\Objects\TextureRenderer.h" />
+    <ClInclude Include="CCC\ResourceClasses\SoundEffectResource.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CCC\Managers\AudioManager.cpp" />
     <ClCompile Include="CCC\Objects\ButtomUIBase.cpp" />
     <ClCompile Include="CCC\Animation\AnimationStateBace.cpp" />
     <ClCompile Include="CCC\Managers\RandomManager.cpp" />
@@ -313,6 +317,7 @@
     <ClCompile Include="CCC\Messenger\MessengerHub.cpp" />
     <ClCompile Include="CCC\Objects\MainScene\Pawn\States\PawnKnockback.cpp" />
     <ClCompile Include="CCC\Objects\MainScene\Pawn\States\PawnStandUp.cpp" />
+    <ClCompile Include="CCC\Objects\MainScene\Pawn\States\PawnDeath.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -333,6 +338,7 @@
     <ClCompile Include="CCC\Scenes\TitleScene.cpp" />
     <ClCompile Include="CCC\Scenes\ResultScene.cpp" />
     <ClCompile Include="CCC\Objects\TextureRenderer.cpp" />
+    <ClCompile Include="CCC\ResourceClasses\SoundEffectResource.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

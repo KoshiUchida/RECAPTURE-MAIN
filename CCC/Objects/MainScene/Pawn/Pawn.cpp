@@ -38,6 +38,7 @@
 #include "States/PawnAttack.h"
 #include "States/PawnKnockback.h"
 #include "States/PawnStandUp.h"
+#include "States/PawnDeath.h"
 
 Pawn::Pawn(const TeamID& teamID, PawnManager* p_PawnManager) :
 	PawnBase(teamID),
@@ -62,6 +63,7 @@ void Pawn::Initialize()
 	AddAnimationPlayer("Paladin_Slash");
 	AddAnimationPlayer("Paladin_FallingBackDeath");
 	AddAnimationPlayer("Paladin_StandUp");
+	AddAnimationPlayer("Paladin_Death");
 
 	// サイズを0.02に設定
 	SetScale(0.02);
@@ -88,6 +90,10 @@ void Pawn::Initialize()
 
 	m_Factories["StandUp"] = [this]() {
 		return std::make_unique<PawnStandUp>(this);
+		};
+
+	m_Factories["Death"] = [this]() {
+		return std::make_unique<PawnDeath>(this);
 		};
 
 	// ステートマシンの初期化

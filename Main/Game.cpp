@@ -14,6 +14,7 @@
 #include <CCC/Managers/ComponentManager.h>
 #include <CCC/Managers/ObjectManager.h>
 #include <CCC/Managers/InputManager.h>
+#include <CCC/Managers/AudioManager.h>
 
 extern void ExitGame() noexcept;
 
@@ -22,12 +23,13 @@ using namespace DirectX;
 using Microsoft::WRL::ComPtr;
 
 Game::Game() noexcept(false) :
-    m_fullscreen       { false },
-    mp_SceneManager    { CCC::Managers::SceneManager    ::GetInstance() },
-    mp_ResourceManager { CCC::Managers::ResourceManager ::GetInstance() },
-    mp_ComponentManager{ CCC::Managers::ComponentManager::GetInstance() },
-    mp_ObjectManager   { CCC::Managers::ObjectManager   ::GetInstance() },
-    mp_InputManager    { CCC::Managers::InputManager    ::GetInstance() }
+    m_fullscreen       ( false ),
+    mp_SceneManager    ( CCC::Managers::SceneManager    ::GetInstance() ),
+    mp_ResourceManager ( CCC::Managers::ResourceManager ::GetInstance() ),
+    mp_ComponentManager( CCC::Managers::ComponentManager::GetInstance() ),
+    mp_ObjectManager   ( CCC::Managers::ObjectManager   ::GetInstance() ),
+    mp_InputManager    ( CCC::Managers::InputManager    ::GetInstance() ),
+    mp_AudioManager    ( CCC::Managers::AudioManager    ::GetInstance() )
 {
     m_deviceResources = std::make_unique<DX::DeviceResources>();
     // TODO: Provide parameters for swapchain format, depth/stencil format, and backbuffer count.
@@ -89,6 +91,9 @@ void Game::Update(DX::StepTimer const& timer)
 
     // コンポネート管理クラスの更新処理
     mp_ComponentManager->Update(elapsedTime);
+
+    // オーディオ管理クラスの更新処理
+    mp_AudioManager->Update();
 }
 #pragma endregion
 

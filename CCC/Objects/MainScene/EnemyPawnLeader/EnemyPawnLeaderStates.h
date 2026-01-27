@@ -26,4 +26,5 @@ enum class EnemyPawnLeaderStates
 	Wait,	// ‘Ò‹@
 	Chase,	// ’ÇÕ
 	Attack,	// UŒ‚
+	Death,	// €–S
 };

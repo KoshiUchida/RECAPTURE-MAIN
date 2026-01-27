@@ -5,104 +5,118 @@
  *
  * @author CatCode
  *
- * @date   2025/12/08
+ * @date   2026/01/27
+ * 3Dモデル用のアニメーションを保持するクラス
+ * 
+ * 2025/12/08
+ * 作成
+ * 
+ * 2026/01/27
+ * 多重インクルードガードの方法を変更
  */
-#pragma once
+
+// 多重インクルードガード
+#ifndef ANIMATION_RESOURCE_DEFINED
+#define ANIMATION_RESOURCE_DEFINED
+
 
 // 基底クラス
 #include <CCC/ResourceClasses/ResourceBase.h>
 
+// C++標準ライブラリ
 #include <memory>
 
-namespace CCC
+namespace CCC::Resources
 {
-	namespace Resources
+	/// <summary>
+	/// モデルアニメーションリソースクラス
+	/// </summary>
+	class AnimationResource final :
+		public Bases::ResourceBase
 	{
-		class AnimationResource final:
-			public Bases::ResourceBase
-		{
-		public:
-			// ---------------------------------------------------------------------- //
-			// パブリック関数
-			// ---------------------------------------------------------------------- //
-			AnimationResource(const wchar_t* path, const std::string& useScene = "");
-			virtual ~AnimationResource();
-			void Load() override;
-			void Unload() override;
+	public:
+		// ---------------------------------------------------------------------- //
+		// パブリック関数
+		// ---------------------------------------------------------------------- //
+		AnimationResource(const wchar_t* path, const std::string& useScene = "");
+		virtual ~AnimationResource();
+		void Load() override;
+		void Unload() override;
 
-			/// <summary>
-			/// リソースデータの解放
-			/// </summary>
-			void Release() {
-				m_Data.reset();
-				m_DataSize = 0;
-			}
+		/// <summary>
+		/// リソースデータの解放
+		/// </summary>
+		void Release() {
+			m_Data.reset();
+			m_DataSize = 0;
+		}
 
-			/// <summary>
-			/// バインド
-			/// </summary>
-			/// <param name="p_ModelResource">モデルリソースへのポインタ</param>
-			bool Bind(CCC::Interfaces::IResource* p_ModelResource);
+		/// <summary>
+		/// バインド
+		/// </summary>
+		/// <param name="p_ModelResource">モデルリソースへのポインタ</param>
+		bool Bind(CCC::Interfaces::IResource* p_ModelResource);
 
 
 
-			/// <summary>
-			/// リソースが読み込まれているかどうか
-			/// </summary>
-			bool IsLoaded() const {
-				return m_Data != nullptr && m_DataSize > 0;
-			}
+		/// <summary>
+		/// リソースが読み込まれているかどうか
+		/// </summary>
+		bool IsLoaded() const {
+			return m_Data != nullptr && m_DataSize > 0;
+		}
 
-			/// <summary>
-			/// リソースデータへのポインタを取得
-			/// </summary>
-			uint8_t* GetData() const {
-				return m_Data.get();
-			}
+		/// <summary>
+		/// リソースデータへのポインタを取得
+		/// </summary>
+		uint8_t* GetData() const {
+			return m_Data.get();
+		}
 
-			/// <summary>
-			/// リソースデータのサイズを取得
-			/// </summary>
-			size_t GetDataSize() const {
-				return m_DataSize;
-			}
+		/// <summary>
+		/// リソースデータのサイズを取得
+		/// </summary>
+		size_t GetDataSize() const {
+			return m_DataSize;
+		}
 
-			/// <summary>
-			/// アニメーションの総時間を取得
-			/// </summary>
-			double GetDuration() const;
+		/// <summary>
+		/// アニメーションの総時間を取得
+		/// </summary>
+		double GetDuration() const;
 
-			/// <summary>
-			/// ボーン追跡用の内部ベクター（m_BoneToTrack）への参照を取得
-			/// </summary>
-			std::vector<uint32_t>& GetBoneToTrack() {
-				return m_BoneToTrack;
-			}
-
-
-
-		private:
-			// ---------------------------------------------------------------------- //
-			// メンバ関数
-			// ---------------------------------------------------------------------- //
-
-			HRESULT PrivLoad();
+		/// <summary>
+		/// ボーン追跡用の内部ベクター（m_BoneToTrack）への参照を取得
+		/// </summary>
+		std::vector<uint32_t>& GetBoneToTrack() {
+			return m_BoneToTrack;
+		}
 
 
 
-		private:
-			// ---------------------------------------------------------------------- //
-			// メンバ変数
-			// ---------------------------------------------------------------------- //
+	private:
+		// ---------------------------------------------------------------------- //
+		// メンバ関数
+		// ---------------------------------------------------------------------- //
 
-			// アニメーションデータ
-			std::unique_ptr<uint8_t[]>  m_Data;
-			// アニメーションデータサイズ
-			size_t                      m_DataSize;
-			// ボーンからトラックへのマッピング
-			std::vector<uint32_t>       m_BoneToTrack;
-			// バインド済みフラグ
-			bool                        m_IsBinded;
-		};
-	}
+		HRESULT PrivLoad();
+
+
+
+	private:
+		// ---------------------------------------------------------------------- //
+		// メンバ変数
+		// ---------------------------------------------------------------------- //
+
+		// アニメーションデータ
+		std::unique_ptr<uint8_t[]>  m_Data;
+		// アニメーションデータサイズ
+		size_t                      m_DataSize;
+		// ボーンからトラックへのマッピング
+		std::vector<uint32_t>       m_BoneToTrack;
+		// バインド済みフラグ
+		bool                        m_IsBinded;
+	};
 }
+
+#endif // !ANIMATION_RESOURCE_DEFINED

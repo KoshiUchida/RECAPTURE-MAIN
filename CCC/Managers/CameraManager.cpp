@@ -12,7 +12,10 @@
  * ビュー行列の逆行列を取得
  */
 
+// プリコンパイル済みヘッダー
 #include "pch.h"
+
+// クラス定義元
 #include "CameraManager.h"
 
 namespace CCC::Managers
@@ -26,6 +29,7 @@ namespace CCC::Managers
 
 	CameraManager::CameraManager()
 	{
+		// 初期化処理
 		m_View = DirectX::SimpleMath::Matrix::Identity;
 	}
 

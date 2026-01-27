@@ -243,6 +243,9 @@
     <ClInclude Include="CCC\BehaviorTree\EnemyPawnLeaderBT\Tasks\CanAttack.h" />
     <ClInclude Include="CCC\BehaviorTree\EnemyPawnLeaderBT\Decorators\IfBeNotAttaking.h" />
     <ClInclude Include="CCC\BehaviorTree\EnemyPawnLeaderBT\Tasks\ChangeToAttack.h" />
+    <ClInclude Include="CCC\Objects\MainScene\Pawn\States\PawnDeath.h" />
+    <ClInclude Include="CCC\Managers\AudioManager.h" />
+    <ClInclude Include="CCC\ResourceClasses\SoundEffectResource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -384,6 +387,9 @@
     <ClCompile Include="CCC\Objects\TextureRenderer.cpp" />
     <ClCompile Include="CCC\Managers\GameContextManager.cpp" />
     <ClCompile Include="CCC\Objects\MainScene\EnemyPawnLeader\EnemyPawnLeaderBT.cpp" />
+    <ClCompile Include="CCC\Objects\MainScene\Pawn\States\PawnDeath.cpp" />
+    <ClCompile Include="CCC\Managers\AudioManager.cpp" />
+    <ClCompile Include="CCC\ResourceClasses\SoundEffectResource.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

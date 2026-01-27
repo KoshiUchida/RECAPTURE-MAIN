@@ -5,7 +5,7 @@
  *
  * @author CatCode
  *
- * @date    2026/01/06
+ * @date    2026/01/25
  *
  * 2025/12/19
  * 作成
@@ -15,6 +15,9 @@
  * 
  * 2026/01/06
  * とまる認識の半径を0.8から0.5に変更
+ * 
+ * 2026/01/25
+ * 質量を追加
  */
 
 #pragma once
@@ -27,6 +30,7 @@ namespace PawnParameter
 	static constexpr float SLOWING_RADIUS      = 2.0f;	// 遅くなる半径
 	static constexpr float PREDICTION_TIME     = 0.5f;	// 目標座標を予測するためのどのぐらい先の時間を見るかの値（秒）
 	static constexpr float STOP_RADIUS         = 0.5f;	// 目標に到達したと判別する半径
+	static constexpr float MASS                = 95.0f;	// 質量
 	
 	// steering behiverのWanderの処理のための定数
 	static constexpr float CIRCLE_DISTANCE     = 0.1f;	// 他のPawnとの距離
