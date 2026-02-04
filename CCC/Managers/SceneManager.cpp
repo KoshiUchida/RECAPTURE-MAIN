@@ -208,7 +208,7 @@ namespace CCC::Managers
 		// ---------------------------------------------------------------------- //
 #if defined(_DEBUG)
 			// デバッグ時の開始シーン
-		SetStartScene("TitleScene");
+		SetStartScene("MainScene");
 #else
 			// リリース時の開始シーン
 		SetStartScene("TitleScene");

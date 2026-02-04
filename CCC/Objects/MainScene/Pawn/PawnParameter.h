@@ -5,7 +5,7 @@
  *
  * @author CatCode
  *
- * @date    2026/01/25
+ * @date    2026/01/28
  *
  * 2025/12/19
  * 作成
@@ -18,6 +18,10 @@
  * 
  * 2026/01/25
  * 質量を追加
+ * 
+ * 2026/01/28
+ * 防御中の耐久力を追加
+ * 防御の受け止められる回数を追加
  */
 
 #pragma once
@@ -43,4 +47,8 @@ namespace PawnParameter
 
 	// スキル発動中の速度補正
 	static constexpr float SPEED_BUFF = 1.5f;		// スキル発動中の速度バフ
+
+	// 防御中の耐久能力
+	static constexpr float DEFENCE_POWER = 12.0f;	// 耐久力
+	static constexpr int   DEFENCE_COUNT = 3;		// 耐久回数
 }

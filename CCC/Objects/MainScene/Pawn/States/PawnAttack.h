@@ -42,7 +42,7 @@ public:
 	/// <summary>
 	/// XVˆ—
 	/// </summary>
-	/// <param name="elapsedTime"></param>
+	/// <param name="elapsedTime">Œo‰ßŠÔ</param>
 	void Update(float elapsedTime) override final;
 
 private:

@@ -5,7 +5,7 @@
  *
  * @author CatCode
  *
- * @date   2026/01/07
+ * @date   2026/01/28
  * 
  * 部隊を指揮するポーンリーダーオブジェクトクラス
  * 
@@ -20,8 +20,13 @@
  * 
  * 2026/01/07
  * スキルの状態を実装
+ * 
+ * 2026/01/28
+ * ファランクス陣形の追加
+ * 上記の陣形スキルが発動中かのフラッグをメンバ変数に追加
  */
 
+// 多重インクルードガード
 #pragma once
 
  // 基底クラス
@@ -65,6 +70,11 @@ public:
 	/// </summary>
 	/// <param name="elapsedTime">経過時間</param>
 	void Process(float elapsedTime) override final;
+
+	/// <summary>
+	/// 座標の設定
+	/// </summary>
+	void SetPosition(const DirectX::SimpleMath::Vector3& position) override final;
 
 	/// <summary>
 	/// カメラのトランスフォームへのポインタを設定する
@@ -178,6 +188,16 @@ private:
 	/// </summary>
 	/// <param name="between">隊員間の距離</param>
 	void FormationWedge(float between);
+
+	/// <summary>
+	/// ファランクス
+	/// </summary>
+	/// <param name="between">隊員間の距離</param>
+	void FormationPhalanx(float between);
+
+private:
+	// ファランクスか？
+	bool m_ActiveSkillPhalanx;
 
 
 

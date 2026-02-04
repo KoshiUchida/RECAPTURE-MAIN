@@ -1,20 +1,26 @@
 /**
- * @file   Transform.h
+ * @file   Transform.cpp
  *
- * @brief  トランスフォームコンポネートクラスのヘッダファイル
+ * @brief  トランスフォームコンポネートクラスのソースファイル
  *
  * @author CatCode
  *
- * @date   2025/12/19
+ * @date   2026/02/04
  *
  * 座標・回転・大きさの管理をするコンポネート
  * 
  * 2025/12/19
  * ワールド座標の取得関数に
  * 回転を正規化する処理を追加
+ * 
+ * 2026/02/04
+ * メンバ変数m_Scaleが生成時に1倍になっていなかったため、コンストラクタで生成時の初期化処理を追加
  */
 
+// プリコンパイル済みヘッダー
 #include "pch.h"
+
+// クラス定義元
 #include "Transform.h"
 
 namespace CCC::Components
@@ -24,7 +30,10 @@ namespace CCC::Components
 	// ---------------------------------------------------------------------- //
 
 	Transform::Transform(CCC::Interfaces::IObject* p_Owner) noexcept :
-		ComponentBase(p_Owner)
+		ComponentBase(p_Owner),
+		m_Position(DirectX::SimpleMath::Vector3::Zero),
+		m_Rotate  (DirectX::SimpleMath::Vector3::Zero),
+		m_Scale   (DirectX::SimpleMath::Vector3::One)
 	{
 	}
 

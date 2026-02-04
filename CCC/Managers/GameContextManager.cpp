@@ -64,6 +64,9 @@ namespace CCC::Managers
 
 		// 勝敗
 		AddGameData("PlayerIsWin", false);
+
+		// デバッグデータ
+		AddGameData("BlockCount", 0);
 	}
 	
 

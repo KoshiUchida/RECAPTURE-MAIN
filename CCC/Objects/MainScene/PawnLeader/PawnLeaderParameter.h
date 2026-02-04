@@ -47,12 +47,13 @@ namespace PawnLeaderParameter
 	// 陣形の設定
 	static constexpr int   NUMBER_PAWN          = 36;	// 隊員数
 	static constexpr float SPACING_BETWEEN_PAWN = 1.5f;	// 隊員間の間隔
+	static constexpr int   FORMATION_DEPTH      = 3;	// 縦深の最低列数
 
 	// スキルゲージ関連
 	namespace SkillGauge
 	{
-		static constexpr float RECOVERY_RATE    = 0.25f;	// １秒に対する回復率
-		static constexpr float CONSUMPTION_RATE = 0.2f;		// スキルの発動中の１秒に対するゲージ消費量
+		static constexpr float RECOVERY_RATE    = 0.15f;	// １秒に対する回復率
+		static constexpr float CONSUMPTION_RATE = 0.1f;		// スキルの発動中の１秒に対するゲージ消費量
 		static constexpr float ROTATION_DEBUFF  = 0.5f;		// スキル発動中の旋回速度のデバフ
 		static constexpr float SPEED_BUFF       = 1.5f;		// スキル発動中の速度バフ
 		static constexpr float STABILITY_BUFF   = 1.5f;		// スキル発動中の陣形安定度補正

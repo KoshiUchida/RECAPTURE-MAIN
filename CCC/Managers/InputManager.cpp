@@ -5,7 +5,7 @@
  *
  * @author CatCode
  *
- * @date   2026/01/18
+ * @date   2026/01/28
  * 
  * 2026/01/08
  * コメント追加
@@ -13,6 +13,9 @@
  * 2026/01/18
  * 「Aボタン」の入力を追加
  * メッセンジャー実装の初期段階としてAボタンを送信する機能を実装
+ * 
+ * 2026/01/28
+ * 「スキル２ボタン」の入力を追加
  */
 
 // プリコンパイル済みヘッダー
@@ -170,6 +173,10 @@ namespace CCC::Managers
 
 		AddInputs("Skill", [this]() {
 			return m_KeyboardState.Q;
+			});
+
+		AddInputs("SkillSecond", [this]() {
+			return m_KeyboardState.E;
 			});
 
 		AddInputs("A", [this]() {

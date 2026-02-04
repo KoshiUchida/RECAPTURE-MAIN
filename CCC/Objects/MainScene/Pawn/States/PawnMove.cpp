@@ -22,6 +22,7 @@
 
 // コンポネートクラス
 #include <CCC/Components/Transform.h>
+#include <CCC/Objects/PawnCollider.h>
 
 // このステートマシンを持つクラス
 #include "../Pawn.h"
@@ -82,6 +83,15 @@ void PawnMove::RequestStateTransition()
 	// ---------------------------------------------------------------------- //
 	// 状態遷移
 	// ---------------------------------------------------------------------- //
+
+	// 「ノックバック」行き
+	// 外力があったら吹っ飛ぶ
+	DirectX::SimpleMath::Vector3 outSide = this->GetOwner()->GetComponent<CCC::Components::PawnCollider>("Collider")->GetOutsideForce();
+	if (outSide != DirectX::SimpleMath::Vector3::Zero)
+	{
+		this->GetOwner()->SetVelocity(outSide);
+		this->GetOwner()->RequestStateChange("Knockback");
+	}
 
 	// 「攻撃」行き
 	if (this->GetOwner()->GetTarget()->IsAttacking())

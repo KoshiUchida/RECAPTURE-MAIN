@@ -62,7 +62,8 @@
 #include <CCC/Objects/SkyDome.h>
 #include <CCC/Objects/PawnManager.h>
 #include <CCC/Objects/MainScene/MainCamera/MainCamera.h>
-#include <CCC/Objects/MainScene/Floor.h>
+//#include <CCC/Objects/MainScene/Floor.h>	マップモデルを追加したため、コメントアウト
+#include <CCC/Objects/MainScene/Map.h>
 #include <CCC/Objects/MainScene/PawnLeader/PawnLeader.h>
 #include <CCC/Objects/MainScene/EnemyPawnLeader/EnemyPawnLeader.h>
 #include <CCC/Objects/MainScene/EnemyPawnLeader/EnemyPawnLeaderBT.h>
@@ -177,14 +178,14 @@ void MainScene::Initialize()
 	CCC::Managers::ObjectManager* p_om = CCC::Managers::ObjectManager::GetInstance();
 
 	// 床の生成
-	p_om->CreateObject<Floor>("Floor");
+	p_om->CreateObject<Map>("Map");
 
 	// ポーンマネージャの生成
 	PawnManager* p_PawnManager = p_om->CreateObject<PawnManager>("PawnManager");
 
 	// リーダーポーンの生成
 	mp_PawnLeader = p_om->CreateObject<PawnLeader>("PawnLeader", p_PawnManager);
-	mp_PawnLeader->SetPosition(DirectX::SimpleMath::Vector3(0.0f, 0.0f, 5.0f));
+	mp_PawnLeader->SetPosition(DirectX::SimpleMath::Vector3(-120.0f, 0.0f, -30.0f));
 
 	// 敵リーダーポーン１の生成
 	mp_EnemyFirst = p_om->CreateObject<EnemyPawnLeader>(
@@ -380,6 +381,9 @@ void MainScene::Render()
 
 	// BTの判断をデバッグ表示
 	m_DebugFont->AddString(0, 500, DirectX::Colors::White, L"Behavior Tree : %s", m_BT.c_str());
+
+	// 防御成功回数をデバッグ表示
+	m_DebugFont->AddString(0, 600, DirectX::Colors::White, L"Block Count : %d", CCC::Managers::GameContextManager::GetInstance()->GetDataAs<int>("BlockCount"));
 
 	//	デバッグフォントの描画
 	m_DebugFont->Render(mp_ResourceManager->GetCommonStates());

@@ -125,7 +125,7 @@ namespace CCC
 
 
 		public:
-			void SetPosition(const DirectX::SimpleMath::Vector3& position);
+			virtual void SetPosition(const DirectX::SimpleMath::Vector3& position);
 
 			void SetRotate(const DirectX::SimpleMath::Vector3& rotate);
 

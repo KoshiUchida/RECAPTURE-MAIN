@@ -246,6 +246,8 @@
     <ClInclude Include="CCC\Objects\MainScene\Pawn\States\PawnDeath.h" />
     <ClInclude Include="CCC\Managers\AudioManager.h" />
     <ClInclude Include="CCC\ResourceClasses\SoundEffectResource.h" />
+    <ClInclude Include="CCC\Objects\MainScene\Pawn\States\PawnBlock.h" />
+    <ClInclude Include="CCC\Objects\MainScene\Map.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -390,6 +392,8 @@
     <ClCompile Include="CCC\Objects\MainScene\Pawn\States\PawnDeath.cpp" />
     <ClCompile Include="CCC\Managers\AudioManager.cpp" />
     <ClCompile Include="CCC\ResourceClasses\SoundEffectResource.cpp" />
+    <ClCompile Include="CCC\Objects\MainScene\Pawn\States\PawnBlock.cpp" />
+    <ClCompile Include="CCC\Objects\MainScene\Map.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

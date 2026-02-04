@@ -5,8 +5,8 @@
  *
  * @author CatCode
  *
- * @date   2026/01/27
- * 
+ * @date   2026/02/04
+ * !! リソースは必ずここで作成しなければならない !!
  * 使用を行うには必ずSetResource関数を行う必要がある。
  * 
  * 2026/01/05
@@ -46,6 +46,13 @@
  * StartButtomの追加
  * BGM
  * Battle01の追加
+ * 
+ * 2026/01/28
+ * Paladinモデル用のアニメーションの追加
+ * ・防御待機アニメーション
+ * 
+ * 2026/02/04
+ * マップモデルの追加
  */
 
 // プリコンパイル済みヘッダー
@@ -82,7 +89,7 @@ namespace CCC::Managers
 		// すべてのシーンで使用するリソース
 		// ---------------------------------------------------------------------- //
 		
-		// 天球のリソース
+		// 天球のモデル
 		CreateResource<CCC::Resources::ModelResource>("SkyDome", L"Resources/Models/SkyDome/SkyDome.sdkmesh");
 
 		// シェーダ
@@ -95,6 +102,9 @@ namespace CCC::Managers
 		// サウンドエフェクト
 		CreateResource<CCC::Resources::SoundEffectResource>("SE_StartButtom", L"Resources/Sounds/SE/StartButtom.wav");
 		CreateResource<CCC::Resources::SoundEffectResource>("BGM_Battle01"  , L"Resources/Sounds/BGM/Battle01.wav"  );
+
+		// マップのモデル
+		CreateResource<CCC::Resources::ModelResource>("Map", L"Resources/Models/Map/map.sdkmesh");
 
 
 
@@ -125,6 +135,7 @@ namespace CCC::Managers
 		CreateResource<CCC::Resources::AnimationResource>("Paladin_Death"           , L"Resources/Models/Paladin/Animations/Death.sdkmesh_anim"           , "MainScene");
 		CreateResource<CCC::Resources::AnimationResource>("Paladin_FallingBackDeath", L"Resources/Models/Paladin/Animations/FallingBackDeath.sdkmesh_anim", "MainScene");
 		CreateResource<CCC::Resources::AnimationResource>("Paladin_StandUp"         , L"Resources/Models/Paladin/Animations/StandUp.sdkmesh_anim"         , "MainScene");
+		CreateResource<CCC::Resources::AnimationResource>("Paladin_BlockIdle"       , L"Resources/Models/Paladin/Animations/BlockIdle.sdkmesh_anim"       , "MainScene");
 
 		// ゆかのリソース
 		CreateResource<CCC::Resources::ModelResource>("Floor", L"Resources/Models/Floor/Floor.sdkmesh", "MainScene");
@@ -201,7 +212,7 @@ namespace CCC::Managers
 		m_Proj = DirectX::SimpleMath::Matrix::CreatePerspectiveFieldOfView(
 			DirectX::XMConvertToRadians(45.0f),
 			static_cast<float>(rect.right) / static_cast<float>(rect.bottom),
-			0.1f, 2000.0f
+			0.1f, 3000.0f
 		);
 
 		// スプライトバッチの作成

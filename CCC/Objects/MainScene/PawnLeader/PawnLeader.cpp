@@ -5,7 +5,7 @@
  *
  * @author CatCode
  *
- * @date   2026/01/19
+ * @date   2026/01/28
  * 
  * 2026/01/05
  * 隊員の陣形所定位置平均を求める機能の実装
@@ -22,6 +22,10 @@
  * 
  * 2026/01/19
  * 陣形が死ぬと「敗北」をゲームデータに入力。
+ * 
+ * 2026/01/28
+ * ファランクス陣形の追加
+ * 上記の陣形スキル中に防御待機アニメーションを再生
  */
 
 // プリコンパイル済みヘッダー
@@ -61,7 +65,7 @@
 
 PawnLeader::PawnLeader(PawnManager* p_PawnManager) :
 	PawnBase(TeamID::Player),
-	mp_InputManager (CCC::Managers::InputManager::GetInstance()),
+	mp_InputManager(CCC::Managers::InputManager::GetInstance()),
 	mp_CameraManager(CCC::Managers::CameraManager::GetInstance()),
 	mp_CameraTransform(nullptr),
 	mp_PawnManager(p_PawnManager),
@@ -72,13 +76,15 @@ PawnLeader::PawnLeader(PawnManager* p_PawnManager) :
 	m_RecoveryTime(0.0f),
 	m_SkillState(SkillStates::Recovering),
 	m_SkillGauge(0.0f),
-	m_IsMove(false)
+	m_IsMove(false),
+	m_ActiveSkillPhalanx(false)
 {
 	this->AddComponent<CCC::Components::PawnCollider>("Collider", this, 1.0f, p_PawnManager);
 }
 
 PawnLeader::~PawnLeader()
 {
+	// TODO:メッセンジャーの登録解除に不安定要素があるためコメントアウト
 	//if (CCC::Messenger::MessengerHub* messenger = CCC::Messenger::MessengerHub::GetInstance())
 	//	messenger->Unsubscribe(CCC::Messenger::MessageType::INPUT_ATTACK);
 }
@@ -90,6 +96,7 @@ void PawnLeader::Initialize()
 	AddAnimationPlayer("Paladin_Walk");
 	AddAnimationPlayer("Paladin_Run");
 	AddAnimationPlayer("Paladin_Slash");
+	AddAnimationPlayer("Paladin_BlockIdle");
 
 	// サイズを0.02に設定
 	SetScale(0.02);
@@ -127,13 +134,11 @@ void PawnLeader::Initialize()
 
 	CCC::Messenger::MessengerHub* messenger = CCC::Messenger::MessengerHub::GetInstance();
 
-
+	// 攻撃するメッセージを作成
 	messenger->Subscribe(CCC::Messenger::MessageType::INPUT_ATTACK,
-		[this](const CCC::Messenger::MessengerHub::PayLoad& is) {
-			if (auto p = std::any_cast<bool>(&is.item))
-			{
-				if (*p) this->SetIsAttack(true);
-			}
+		[this](const CCC::Messenger::MessengerHub::PayLoad&) {
+			
+			this->SetIsAttack(true);
 		}
 	);
 }
@@ -161,10 +166,16 @@ void PawnLeader::Process(float elapsedTime)
 	{
 	case PawnLeader::SkillStates::Inactive:
 
-		if (!this->IsAttacking() && mp_InputManager->GetInputAs<bool>("Skill") && m_StabilityState == StabilityStates::Stable)
+		if (!this->IsAttacking() && (mp_InputManager->GetInputAs<bool>("Skill") || mp_InputManager->GetInputAs<bool>("SkillSecond")) && m_StabilityState == StabilityStates::Stable)
 		{
 			m_SkillState = SkillStates::Active;
-			FormationWedge(PawnLeaderParameter::SPACING_BETWEEN_PAWN);
+			if (mp_InputManager->GetInputAs<bool>("Skill"))
+				FormationWedge(PawnLeaderParameter::SPACING_BETWEEN_PAWN);
+			if (mp_InputManager->GetInputAs<bool>("SkillSecond"))
+			{
+				FormationPhalanx(PawnLeaderParameter::SPACING_BETWEEN_PAWN);
+				m_ActiveSkillPhalanx = true;
+			}
 			this->SetIsSkillActive(true);
 
 
@@ -183,6 +194,8 @@ void PawnLeader::Process(float elapsedTime)
 			m_SkillState = SkillStates::Recovering;
 			FormationSquare(PawnLeaderParameter::SPACING_BETWEEN_PAWN);
 			this->SetIsSkillActive(false);
+
+			m_ActiveSkillPhalanx = false;
 		}
 
 		break;
@@ -263,7 +276,9 @@ void PawnLeader::Process(float elapsedTime)
 		DirectX::SimpleMath::Vector3 DesiredVelocity = direction;
 
 		// 速度の設定
-		if (this->IsSkillActive() || mp_InputManager->GetInputAs<bool>("Dash"))
+		if (this->IsSkillActive() && m_ActiveSkillPhalanx)
+			DesiredVelocity *= 0.1f;
+		else if (this->IsSkillActive() || mp_InputManager->GetInputAs<bool>("Dash"))
 			DesiredVelocity *= PawnLeaderParameter::RUN_SPEED;
 		else
 			DesiredVelocity *= PawnLeaderParameter::MOVE_SPEED;
@@ -390,8 +405,13 @@ void PawnLeader::Process(float elapsedTime)
 	// アニメーションの設定
 	std::string animation;
 
+	// 防御中
+	if (m_ActiveSkillPhalanx)
+	{
+		animation = "Paladin_BlockIdle";
+	}
 	// 攻撃中
-	if (this->IsAttacking())
+	else if (this->IsAttacking())
 	{
 		animation = "Paladin_Slash";
 	}
@@ -411,6 +431,14 @@ void PawnLeader::Process(float elapsedTime)
 
 	// アニメーションの変更要求
 	this->RequestAnimationChange(animation, 0.3f);
+}
+
+void PawnLeader::SetPosition(const DirectX::SimpleMath::Vector3& position)
+{
+	this->GetTransform()->SetPosition(position);
+
+	// 隊員の座標をリセット
+	this->PawnsPositionReset();
 }
 
 void PawnLeader::SetCameraTransform(CCC::Bases::ObjectBase* p_Camera)
@@ -461,7 +489,7 @@ void PawnLeader::PawnsPositionReset()
 {
 	for (PawnBase* p_Pawn : m_PawnPointers)
 	{
-		p_Pawn->SetPosition(static_cast<Pawn*>(p_Pawn)->GetOffset());
+		p_Pawn->SetPosition(this->GetPosition() + static_cast<Pawn*>(p_Pawn)->GetOffset());
 	}
 }
 
@@ -585,5 +613,45 @@ void PawnLeader::FormationWedge(float between)
 
 		// 次のポーンに進む
 		count++;
+	}
+}
+
+void PawnLeader::FormationPhalanx(float between)
+{
+	// ポーンのインデックス
+	int count = 0;
+
+	// 総兵員数
+	int N = m_PawnPointers.size();
+
+	// 標準的な縦深
+	int D = m_PawnPointers.size() / 9;
+	if (D < PawnLeaderParameter::FORMATION_DEPTH) D = PawnLeaderParameter::FORMATION_DEPTH;
+
+	// 横幅の兵士の数
+	int W = N / D;
+
+	for (int i = 0; i < W; i++)
+	{
+		for (int j = 0; j < D; j++)
+		{
+			// ポインタ－の取得
+			Pawn* p_Pawn = static_cast<Pawn*>(m_PawnPointers[count]);
+
+			// 隊列の位置の設定
+			p_Pawn->SetOffset(
+				DirectX::SimpleMath::Vector3(
+					-static_cast<float>(W / 2) * between + between * static_cast<float>(i),
+					0.0f,
+					between * static_cast<float>(j)
+				)
+			);
+
+			// 次のポーンに進む
+			count++;
+
+			if (count >= m_PawnPointers.size())
+				return;
+		}
 	}
 }
