@@ -5,7 +5,7 @@
  *
  * @author CatCode
  *
- * @date    2026/01/28
+ * @date    2026/02/08
  * 
  * 2025/12/19
  * 作成
@@ -28,6 +28,9 @@
  * 
  * 2026/01/28
  * BGM戦闘01の追加
+ * 
+ * 2026/02/08
+ * エリアオブジェクトの追加
  */
 
 // プリコンパイル済みヘッダー
@@ -61,8 +64,8 @@
 // このシーンで使用するオブジェクト
 #include <CCC/Objects/SkyDome.h>
 #include <CCC/Objects/PawnManager.h>
+#include <CCC/Objects/AreaWall.h>
 #include <CCC/Objects/MainScene/MainCamera/MainCamera.h>
-//#include <CCC/Objects/MainScene/Floor.h>	マップモデルを追加したため、コメントアウト
 #include <CCC/Objects/MainScene/Map.h>
 #include <CCC/Objects/MainScene/PawnLeader/PawnLeader.h>
 #include <CCC/Objects/MainScene/EnemyPawnLeader/EnemyPawnLeader.h>
@@ -212,6 +215,15 @@ void MainScene::Initialize()
 
 	// 天球の生成
 	p_om->CreateObject<SkyDome>("SkyDome")->SetTarget(mp_PawnLeader);
+
+	// エリアウォールの生成
+	p_om->CreateObject<AreaWall>("AreaLine1",    0.0f, -60.0f,  300.0f,  10.0f);
+	p_om->CreateObject<AreaWall>("AreaLine2",  150.0f,   0.0f,   10.0f, 300.0f);
+	p_om->CreateObject<AreaWall>("AreaLine3", -130.0f,    0.0f,  10.0f, 300.0f);
+	p_om->CreateObject<AreaWall>("AreaLine4",    0.0f,  100.0f, 300.0f,  10.0f);
+	p_om->CreateObject<AreaWall>("AreaWall1",    0.0f,   15.0f, 270.0f,  30.0f);
+	p_om->CreateObject<AreaWall>("AreaWall2",    52.0,   40.0f,  30.0f,  40.0f);
+	p_om->CreateObject<AreaWall>("AreaWall3",    52.f,  100.0f,  30.0f,  40.0f);
 
 	// UIの生成
 	p_om->CreateObject<StabilityUI >("StabilityUI" )->SetTarget(mp_PawnLeader);
@@ -373,11 +385,6 @@ void MainScene::Render()
 		break;
 	}
 	m_DebugFont->AddString(0, 350, DirectX::Colors::White, L"SkillState : %s\nSkillGauge : %.2f", skillStateEvaluation.c_str(), skillGauge);
-
-
-	// 攻撃状態かをデバッグ憑依
-	bool isAttack = mp_PawnLeader->IsAttacking();
-	m_DebugFont->AddString(0, 420, DirectX::Colors::White, L"IsAttack : %s", isAttack ? L"TRUE" : L"FALSE");
 
 	// BTの判断をデバッグ表示
 	m_DebugFont->AddString(0, 500, DirectX::Colors::White, L"Behavior Tree : %s", m_BT.c_str());

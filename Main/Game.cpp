@@ -9,6 +9,8 @@
 #include <Main/DisplayInfo.h>
 
 // 管理クラスのインクルード
+#include <CCC/Managers/ManagersHub.h>
+#include <CCC/Interfaces/IColliderManager.h>
 #include <CCC/Managers/SceneManager.h>
 #include <CCC/Managers/ResourceManager.h>
 #include <CCC/Managers/ComponentManager.h>
@@ -24,6 +26,7 @@ using Microsoft::WRL::ComPtr;
 
 Game::Game() noexcept(false) :
     m_fullscreen       ( false ),
+    mp_ManagersHub     ( nullptr ),
     mp_SceneManager    ( CCC::Managers::SceneManager    ::GetInstance() ),
     mp_ResourceManager ( CCC::Managers::ResourceManager ::GetInstance() ),
     mp_ComponentManager( CCC::Managers::ComponentManager::GetInstance() ),
@@ -55,6 +58,15 @@ void Game::Initialize(HWND window, int width, int height)
 
     // リソース管理クラスのデータをセット
     mp_ResourceManager->SetResources(m_deviceResources.get(), &m_timer);
+
+    // コライダー管理クラスの生成
+    m_ColliderManager = std::make_unique<CCC::Managers::ColliderManager>();
+
+    // 管理クラスのハブを生成
+    CCC::Managers::ManagersHub::Generate(
+        m_ColliderManager.get()
+    );
+    mp_ManagersHub = CCC::Managers::ManagersHub::Get();
 }
 
 #pragma region Frame Update
@@ -91,6 +103,9 @@ void Game::Update(DX::StepTimer const& timer)
 
     // コンポネート管理クラスの更新処理
     mp_ComponentManager->Update(elapsedTime);
+
+    // コライダー管理クラスの更新処理
+    m_ColliderManager->Update();
 
     // オーディオ管理クラスの更新処理
     mp_AudioManager->Update();
@@ -156,6 +171,18 @@ void Game::Clear()
 void Game::OnActivated()
 {
     // TODO: Game is becoming active window.
+    if (m_fullscreen)
+    {
+        BOOL fullscreen = FALSE;
+        if (SUCCEEDED(m_deviceResources->GetSwapChain()->GetFullscreenState(&fullscreen, nullptr)))
+        {
+            // DXGIによってフォーカスロストで一時的にウィンドウ化されていた場合、復元する
+            if (!fullscreen)
+            {
+                m_deviceResources->GetSwapChain()->SetFullscreenState(TRUE, nullptr);
+            }
+        }
+    }
 }
 
 void Game::OnDeactivated()
@@ -185,12 +212,17 @@ void Game::OnWindowMoved()
 
     m_deviceResources->GetSwapChain()->GetFullscreenState(&fullscreen, nullptr);
 
-    // フルスクリーンが解除されてしまった時の処理（なくてもいい）
-    if (m_fullscreen != fullscreen)
+    // フルスクリーンじゃなくなったら（意図しないフォーカスロストなど）
+    if (m_fullscreen && !fullscreen)
+    {
+        // 意図した全画面状態を維持するため、m_fullscreen は上書きしない
+        m_deviceResources->CreateWindowSizeDependentResources();
+    }
+    else if (m_fullscreen != fullscreen)
     {
         m_fullscreen = fullscreen;
 
-        // ResizeBuffers関数を呼び出す
+        // ResizeBuffers関数呼び出し
         m_deviceResources->CreateWindowSizeDependentResources();
     }
 }

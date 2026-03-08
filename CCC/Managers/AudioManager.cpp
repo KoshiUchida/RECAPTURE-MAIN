@@ -85,6 +85,8 @@ namespace CCC::Managers
 					GetResource<CCC::Resources::SoundEffectResource>("BGM_Battle01")->GetResource()->Stop();
 			}
 		);
+
+		m_AudioEngine->SetMasterVolume(0.0f);
 	}
 
 	AudioManager* AudioManager::GetInstance()

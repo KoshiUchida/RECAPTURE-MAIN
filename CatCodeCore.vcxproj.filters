@@ -107,9 +107,6 @@
     <ClInclude Include="CCC\Animation\AnimationStateBace.h">
       <Filter>Animation</Filter>
     </ClInclude>
-    <ClInclude Include="CCC\Objects\MainScene\Floor.h">
-      <Filter>Scenes\MainScene</Filter>
-    </ClInclude>
     <ClInclude Include="CCC\Managers\ObjectManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
@@ -152,16 +149,10 @@
     <ClInclude Include="Main\Game.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="CCC\Objects\MainScene\Pawn\Pawn.h">
+    <ClInclude Include="CCC\Objects\Characters\States\AttackState.h">
       <Filter>Scenes\MainScene</Filter>
     </ClInclude>
-    <ClInclude Include="CCC\Objects\MainScene\Pawn\States\PawnAttack.h">
-      <Filter>Scenes\MainScene</Filter>
-    </ClInclude>
-    <ClInclude Include="CCC\Objects\PawnBase.h">
-      <Filter>Scenes\MainScene</Filter>
-    </ClInclude>
-    <ClInclude Include="CCC\Objects\MainScene\Pawn\States\PawnIdle.h">
+    <ClInclude Include="CCC\Objects\Characters\States\IdleState.h">
       <Filter>Scenes\MainScene</Filter>
     </ClInclude>
     <ClInclude Include="CCC\Objects\MainScene\PawnLeader\PawnLeader.h">
@@ -170,13 +161,10 @@
     <ClInclude Include="CCC\Objects\MainScene\PawnLeader\PawnLeaderParameter.h">
       <Filter>Scenes\MainScene</Filter>
     </ClInclude>
-    <ClInclude Include="CCC\Objects\MainScene\Pawn\States\PawnMove.h">
+    <ClInclude Include="CCC\Objects\Characters\States\ChaseState.h">
       <Filter>Scenes\MainScene</Filter>
     </ClInclude>
-    <ClInclude Include="CCC\Objects\MainScene\Pawn\PawnParameter.h">
-      <Filter>Scenes\MainScene</Filter>
-    </ClInclude>
-    <ClInclude Include="CCC\Objects\MainScene\Pawn\States\PawnState.h">
+    <ClInclude Include="CCC\Objects\Characters\States\StateBase.h">
       <Filter>Scenes\MainScene</Filter>
     </ClInclude>
     <ClInclude Include="CCC\ResourceClasses\VertexShaderResource.h">
@@ -216,8 +204,8 @@
     <ClInclude Include="CCC\Objects\PawnManager.h" />
     <ClInclude Include="CCC\Messenger\MessengerHub.h" />
     <ClInclude Include="CCC\Messenger\MessageType.h" />
-    <ClInclude Include="CCC\Objects\MainScene\Pawn\States\PawnKnockback.h" />
-    <ClInclude Include="CCC\Objects\MainScene\Pawn\States\PawnStandUp.h" />
+    <ClInclude Include="CCC\Objects\Characters\States\KnockbackState.h" />
+    <ClInclude Include="CCC\Objects\Characters\States\StandUpState.h" />
     <ClInclude Include="CCC\Scenes\TitleScene.h" />
     <ClInclude Include="CCC\Objects\ButtomUIBase.h" />
     <ClInclude Include="CCC\Scenes\ResultScene.h" />
@@ -243,11 +231,26 @@
     <ClInclude Include="CCC\BehaviorTree\EnemyPawnLeaderBT\Tasks\CanAttack.h" />
     <ClInclude Include="CCC\BehaviorTree\EnemyPawnLeaderBT\Decorators\IfBeNotAttaking.h" />
     <ClInclude Include="CCC\BehaviorTree\EnemyPawnLeaderBT\Tasks\ChangeToAttack.h" />
-    <ClInclude Include="CCC\Objects\MainScene\Pawn\States\PawnDeath.h" />
+    <ClInclude Include="CCC\Objects\Characters\States\DeathState.h" />
     <ClInclude Include="CCC\Managers\AudioManager.h" />
     <ClInclude Include="CCC\ResourceClasses\SoundEffectResource.h" />
-    <ClInclude Include="CCC\Objects\MainScene\Pawn\States\PawnBlock.h" />
+    <ClInclude Include="CCC\Objects\Characters\States\BlockState.h" />
     <ClInclude Include="CCC\Objects\MainScene\Map.h" />
+    <ClInclude Include="CCC\Interfaces\IColliderManager.h" />
+    <ClInclude Include="CCC\Managers\ColliderManager.h" />
+    <ClInclude Include="CCC\Components\Colliders\ColliderComponentBase.h" />
+    <ClInclude Include="CCC\Components\Colliders\ColliderType.h" />
+    <ClInclude Include="CCC\Components\Colliders\BoxCollider.h" />
+    <ClInclude Include="CCC\Managers\ManagersHub.h" />
+    <ClInclude Include="CCC\Objects\AreaWall.h" />
+    <ClInclude Include="CCC\Objects\Characters\Paladin\PaladinCharacter.h" />
+    <ClInclude Include="CCC\Objects\Characters\Paladin\PaladinParameter.h" />
+    <ClInclude Include="CCC\Objects\Characters\StateType.h" />
+    <ClInclude Include="CCC\Objects\MainScene\Pawn.h" />
+    <ClInclude Include="CCC\Objects\Characters\States\MoveState.h" />
+    <ClInclude Include="CCC\Objects\Characters\CharacterBase.h" />
+    <ClInclude Include="CCC\Objects\Characters\AnimationType.h" />
+    <ClInclude Include="CCC\Objects\Characters\Spikeman\SpikemanCharacter.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -299,9 +302,6 @@
     <ClCompile Include="CCC\Animation\AnimationStateBace.cpp">
       <Filter>Animation</Filter>
     </ClCompile>
-    <ClCompile Include="CCC\Objects\MainScene\Floor.cpp">
-      <Filter>Scenes\MainScene</Filter>
-    </ClCompile>
     <ClCompile Include="CCC\Managers\ObjectManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
@@ -335,25 +335,19 @@
     <ClCompile Include="Main\Game.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="CCC\Objects\MainScene\Pawn\Pawn.cpp">
+    <ClCompile Include="CCC\Objects\Characters\States\AttackState.cpp">
       <Filter>Scenes\MainScene</Filter>
     </ClCompile>
-    <ClCompile Include="CCC\Objects\MainScene\Pawn\States\PawnAttack.cpp">
-      <Filter>Scenes\MainScene</Filter>
-    </ClCompile>
-    <ClCompile Include="CCC\Objects\PawnBase.cpp">
-      <Filter>Scenes\MainScene</Filter>
-    </ClCompile>
-    <ClCompile Include="CCC\Objects\MainScene\Pawn\States\PawnIdle.cpp">
+    <ClCompile Include="CCC\Objects\Characters\States\IdleState.cpp">
       <Filter>Scenes\MainScene</Filter>
     </ClCompile>
     <ClCompile Include="CCC\Objects\MainScene\PawnLeader\PawnLeader.cpp">
       <Filter>Scenes\MainScene</Filter>
     </ClCompile>
-    <ClCompile Include="CCC\Objects\MainScene\Pawn\States\PawnMove.cpp">
+    <ClCompile Include="CCC\Objects\Characters\States\ChaseState.cpp">
       <Filter>Scenes\MainScene</Filter>
     </ClCompile>
-    <ClCompile Include="CCC\Objects\MainScene\Pawn\States\PawnState.cpp">
+    <ClCompile Include="CCC\Objects\Characters\States\StateBase.cpp">
       <Filter>Scenes\MainScene</Filter>
     </ClCompile>
     <ClCompile Include="CCC\ResourceClasses\VertexShaderResource.cpp">
@@ -381,19 +375,29 @@
     <ClCompile Include="CCC\Objects\PawnCollider.cpp" />
     <ClCompile Include="CCC\Objects\PawnManager.cpp" />
     <ClCompile Include="CCC\Messenger\MessengerHub.cpp" />
-    <ClCompile Include="CCC\Objects\MainScene\Pawn\States\PawnKnockback.cpp" />
-    <ClCompile Include="CCC\Objects\MainScene\Pawn\States\PawnStandUp.cpp" />
+    <ClCompile Include="CCC\Objects\Characters\States\KnockbackState.cpp" />
+    <ClCompile Include="CCC\Objects\Characters\States\StandUpState.cpp" />
     <ClCompile Include="CCC\Scenes\TitleScene.cpp" />
     <ClCompile Include="CCC\Objects\ButtomUIBase.cpp" />
     <ClCompile Include="CCC\Scenes\ResultScene.cpp" />
     <ClCompile Include="CCC\Objects\TextureRenderer.cpp" />
     <ClCompile Include="CCC\Managers\GameContextManager.cpp" />
     <ClCompile Include="CCC\Objects\MainScene\EnemyPawnLeader\EnemyPawnLeaderBT.cpp" />
-    <ClCompile Include="CCC\Objects\MainScene\Pawn\States\PawnDeath.cpp" />
+    <ClCompile Include="CCC\Objects\Characters\States\DeathState.cpp" />
     <ClCompile Include="CCC\Managers\AudioManager.cpp" />
     <ClCompile Include="CCC\ResourceClasses\SoundEffectResource.cpp" />
-    <ClCompile Include="CCC\Objects\MainScene\Pawn\States\PawnBlock.cpp" />
+    <ClCompile Include="CCC\Objects\Characters\States\BlockState.cpp" />
     <ClCompile Include="CCC\Objects\MainScene\Map.cpp" />
+    <ClCompile Include="CCC\Managers\ColliderManager.cpp" />
+    <ClCompile Include="CCC\Components\Colliders\ColliderComponentBase.cpp" />
+    <ClCompile Include="CCC\Components\Colliders\BoxCollider.cpp" />
+    <ClCompile Include="CCC\Managers\ManagersHub.cpp" />
+    <ClCompile Include="CCC\Objects\AreaWall.cpp" />
+    <ClCompile Include="CCC\Objects\Characters\Paladin\PaladinCharacter.cpp" />
+    <ClCompile Include="CCC\Objects\MainScene\Pawn.cpp" />
+    <ClCompile Include="CCC\Objects\Characters\States\MoveState.cpp" />
+    <ClCompile Include="CCC\Objects\Characters\CharacterBase.cpp" />
+    <ClCompile Include="CCC\Objects\Characters\Spikeman\SpikemanCharacter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

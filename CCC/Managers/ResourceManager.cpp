@@ -5,7 +5,7 @@
  *
  * @author CatCode
  *
- * @date   2026/02/04
+ * @date   2026/02/08
  * !! リソースは必ずここで作成しなければならない !!
  * 使用を行うには必ずSetResource関数を行う必要がある。
  * 
@@ -53,6 +53,12 @@
  * 
  * 2026/02/04
  * マップモデルの追加
+ * 
+ * 2026/02/08
+ * BoxColliderのデバッグ表示用のモデルを追加
+ * 
+ * 2026/03/08
+ * Spikemanのモデルとアニメーションを追加
  */
 
 // プリコンパイル済みヘッダー
@@ -106,6 +112,9 @@ namespace CCC::Managers
 		// マップのモデル
 		CreateResource<CCC::Resources::ModelResource>("Map", L"Resources/Models/Map/map.sdkmesh");
 
+		// ボックスコライダーのモデル
+		CreateResource<CCC::Resources::ModelResource>("BoxCollider", L"Resources/Models/BoxCollider.sdkmesh");
+
 
 
 		// ---------------------------------------------------------------------- //
@@ -124,18 +133,29 @@ namespace CCC::Managers
 		// ---------------------------------------------------------------------- //
 		
 		// パラディンのリソース
-		CreateResource<CCC::Resources::ModelWithBoneResource>("Paladin"             , L"Resources/Models/Paladin/Paladin.sdkmesh"                         , "MainScene");
-		CreateResource<CCC::Resources::AnimationResource>("Paladin_Idle"            , L"Resources/Models/Paladin/Animations/Idle.sdkmesh_anim"            , "MainScene");
-		CreateResource<CCC::Resources::AnimationResource>("Paladin_Walk"            , L"Resources/Models/Paladin/Animations/Walk.sdkmesh_anim"            , "MainScene");
-		CreateResource<CCC::Resources::AnimationResource>("Paladin_Walk_Left"       , L"Resources/Models/Paladin/Animations/SideWalk_Left.sdkmesh_anim"   , "MainScene");
-		CreateResource<CCC::Resources::AnimationResource>("Paladin_Walk_Right"      , L"Resources/Models/Paladin/Animations/SideWalk_Right.sdkmesh_anim"  , "MainScene");
-		CreateResource<CCC::Resources::AnimationResource>("Paladin_Walk_Back"       , L"Resources/Models/Paladin/Animations/BackWalk.sdkmesh_anim"        , "MainScene");
-		CreateResource<CCC::Resources::AnimationResource>("Paladin_Run"             , L"Resources/Models/Paladin/Animations/Run.sdkmesh_anim"             , "MainScene");
-		CreateResource<CCC::Resources::AnimationResource>("Paladin_Slash"           , L"Resources/Models/Paladin/Animations/Slash.sdkmesh_anim"           , "MainScene");
-		CreateResource<CCC::Resources::AnimationResource>("Paladin_Death"           , L"Resources/Models/Paladin/Animations/Death.sdkmesh_anim"           , "MainScene");
-		CreateResource<CCC::Resources::AnimationResource>("Paladin_FallingBackDeath", L"Resources/Models/Paladin/Animations/FallingBackDeath.sdkmesh_anim", "MainScene");
-		CreateResource<CCC::Resources::AnimationResource>("Paladin_StandUp"         , L"Resources/Models/Paladin/Animations/StandUp.sdkmesh_anim"         , "MainScene");
-		CreateResource<CCC::Resources::AnimationResource>("Paladin_BlockIdle"       , L"Resources/Models/Paladin/Animations/BlockIdle.sdkmesh_anim"       , "MainScene");
+		CreateResource<CCC::Resources::ModelWithBoneResource>("Paladin"             , L"Resources/Models/Paladin/Paladin.sdkmesh"                         );
+		CreateResource<CCC::Resources::AnimationResource>("Paladin_Idle"            , L"Resources/Models/Paladin/Animations/Idle.sdkmesh_anim"            );
+		CreateResource<CCC::Resources::AnimationResource>("Paladin_Walk"            , L"Resources/Models/Paladin/Animations/Walk.sdkmesh_anim"            );
+		CreateResource<CCC::Resources::AnimationResource>("Paladin_Walk_Left"       , L"Resources/Models/Paladin/Animations/SideWalk_Left.sdkmesh_anim"   );
+		CreateResource<CCC::Resources::AnimationResource>("Paladin_Walk_Right"      , L"Resources/Models/Paladin/Animations/SideWalk_Right.sdkmesh_anim"  );
+		CreateResource<CCC::Resources::AnimationResource>("Paladin_Walk_Back"       , L"Resources/Models/Paladin/Animations/BackWalk.sdkmesh_anim"        );
+		CreateResource<CCC::Resources::AnimationResource>("Paladin_Run"             , L"Resources/Models/Paladin/Animations/Run.sdkmesh_anim"             );
+		CreateResource<CCC::Resources::AnimationResource>("Paladin_Slash"           , L"Resources/Models/Paladin/Animations/Slash.sdkmesh_anim"           );
+		CreateResource<CCC::Resources::AnimationResource>("Paladin_Death"           , L"Resources/Models/Paladin/Animations/Death.sdkmesh_anim"           );
+		CreateResource<CCC::Resources::AnimationResource>("Paladin_FallingBackDeath", L"Resources/Models/Paladin/Animations/FallingBackDeath.sdkmesh_anim");
+		CreateResource<CCC::Resources::AnimationResource>("Paladin_StandUp"         , L"Resources/Models/Paladin/Animations/StandUp.sdkmesh_anim"         );
+		CreateResource<CCC::Resources::AnimationResource>("Paladin_BlockIdle"       , L"Resources/Models/Paladin/Animations/BlockIdle.sdkmesh_anim"       );
+
+		// スパイクマンのリソース
+		CreateResource<CCC::Resources::ModelWithBoneResource>("Spikeman"            , L"Resources/Models/Spikeman/Spikeman.sdkmesh"                           );
+		CreateResource<CCC::Resources::AnimationResource    >("Spikeman_Idle"       , L"Resources/Models/Spikeman/Animations/SpikemanIdle.sdkmesh_anim"       );
+		CreateResource<CCC::Resources::AnimationResource    >("Spikeman_Walk"       , L"Resources/Models/Spikeman/Animations/SpikemanWalk.sdkmesh_anim"       );
+		CreateResource<CCC::Resources::AnimationResource    >("Spikeman_Run"        , L"Resources/Models/Spikeman/Animations/SpikemanRun.sdkmesh_anim"        );
+		CreateResource<CCC::Resources::AnimationResource    >("Spikeman_Attack"     , L"Resources/Models/Spikeman/Animations/SpikemanAttack.sdkmesh_anim"     );
+		CreateResource<CCC::Resources::AnimationResource    >("Spikeman_Block"      , L"Resources/Models/Spikeman/Animations/SpikemanBlock.sdkmesh_anim"      );
+		CreateResource<CCC::Resources::AnimationResource    >("Spikeman_Death"      , L"Resources/Models/Spikeman/Animations/SpikemanDeath.sdkmesh_anim"      );
+		CreateResource<CCC::Resources::AnimationResource    >("Spikeman_FallingBack", L"Resources/Models/Spikeman/Animations/SpikemanFallingBack.sdkmesh_anim");
+		CreateResource<CCC::Resources::AnimationResource    >("Spikeman_StandUp"    , L"Resources/Models/Spikeman/Animations/SpikemanStandUp.sdkmesh_anim"    );
 
 		// ゆかのリソース
 		CreateResource<CCC::Resources::ModelResource>("Floor", L"Resources/Models/Floor/Floor.sdkmesh", "MainScene");

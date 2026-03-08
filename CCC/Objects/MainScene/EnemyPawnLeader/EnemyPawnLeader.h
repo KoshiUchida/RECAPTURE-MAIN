@@ -23,8 +23,8 @@
 // 多重インクルードガード
 #pragma once
 
-// 基底クラス
-#include <CCC/Objects/PawnBase.h>
+// 継承元クラス
+#include <CCC/Objects/Characters/Paladin/PaladinCharacter.h>
 
 // ステートマシン用の状態数列
 #include "EnemyPawnLeaderStates.h"
@@ -43,7 +43,7 @@ struct AddressedPayload
 /// 敵ポーン隊長オブジェクトクラス
 /// </summary>
 class EnemyPawnLeader :
-	public CCC::Bases::PawnBase
+	public PaladinCharacter
 {
 	// ---------------------------------------------------------------------- //
 	// パブリック関数
@@ -59,7 +59,7 @@ public:
 	EnemyPawnLeader(
 		const DirectX::SimpleMath::Vector3& spawnPosition,
 		PawnManager*                        p_Manager,
-		CCC::Bases::PawnBase*               p_Target,
+		CCC::Bases::CharacterBase*                   p_Target,
 		const std::string&                  name
 	);
 
@@ -69,9 +69,9 @@ public:
 	~EnemyPawnLeader();
 
 	/// <summary>
-	/// 初期化処理
+	/// この派生クラスの初期化処理
 	/// </summary>
-	void Initialize() override final;
+	void Start() override final;
 
 	/// <summary>
 	/// この派生クラスの更新処理
@@ -80,14 +80,9 @@ public:
 	void Process(float elapsedTime) override final;
 
 	/// <summary>
-	/// 陣形安定度の取得
+	/// 陣形安定度の設定
 	/// </summary>
-	float GetFormationStability() const;
-
-	/// <summary>
-	/// ターゲットオブジェクトの取得
-	/// </summary>
-	CCC::Bases::PawnBase* GetTarget();
+	float GetFormationStability() const override;
 
 
 
@@ -99,10 +94,7 @@ private:
 	PawnManager* mp_PawnManager;
 
 	// ポーンオブジェクト郡へのポインタ配列
-	std::vector<CCC::Bases::PawnBase*> m_PawnPointers;
-
-	// ターゲットのオブジェクへのポインタ
-	CCC::Bases::PawnBase* mp_Target;
+	std::vector < CCC::Bases::CharacterBase* > m_PawnPointers;
 
 	// 現在の状態
 	EnemyPawnLeaderStates m_State;

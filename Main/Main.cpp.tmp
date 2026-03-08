@@ -44,7 +44,6 @@ extern "C"
 int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
 {
     // プログラム開始時に外面モードを選択させる。
-    ImmDisableIME((DWORD) -1);
     static bool s_fullscreen = false;
 
 #if defined(_DEBUG)
@@ -161,7 +160,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     static bool s_in_sizemove = false;
     static bool s_in_suspend = false;
     static bool s_minimized = false;
-    ImmDisableIME((DWORD) -1);
     static bool s_fullscreen = false;
     // TODO: Set s_fullscreen to true if defaulting to fullscreen.
 

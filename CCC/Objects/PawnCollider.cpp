@@ -3,17 +3,24 @@
 
 #include "PawnManager.h"
 
+#include <CCC/Objects/Characters/Paladin/PaladinCharacter.h>
+
+// 関連のあるコンポネートクラス	
+#include <CCC/Components/Transform.h>
+
 namespace CCC::Components
 {
-	PawnCollider::PawnCollider(CCC::Bases::PawnBase* p_Owner, float colliderRadius, PawnManager* p_Manager) :
+	PawnCollider::PawnCollider(CCC::Interfaces::IObject* p_Owner, float colliderRadius, PawnManager* p_Manager) :
 		UpdataComponentBase(p_Owner),
 		m_Active(true),
 		m_Radius(colliderRadius),
 		m_TeamID(),
 		m_CoolTime(0.0f)
 	{
-		m_Position     = DirectX::SimpleMath::Vector2(p_Owner->GetPosition().x, p_Owner->GetPosition().z);
-		m_TeamID       = p_Owner->GetTeamID();
+		PaladinCharacter* owner = static_cast<PaladinCharacter*>(p_Owner);
+
+		m_Position     = DirectX::SimpleMath::Vector2(owner->GetTransform()->GetPosition().x, owner->GetTransform()->GetPosition().z);
+		m_TeamID       = owner->GetTeamID();
 		m_Velocity     = DirectX::SimpleMath::Vector3::Zero;
 		m_OutsideForce = DirectX::SimpleMath::Vector3::Zero;
 
@@ -37,13 +44,13 @@ namespace CCC::Components
 
 
 		// オーナーの取得
-		CCC::Bases::PawnBase* p_Owner = static_cast<CCC::Bases::PawnBase*>(this->GetOwner());
+		PaladinCharacter* owner = static_cast<PaladinCharacter*>(this->GetOwner());
 
 		// オーナーの座標を保持
-		m_Position = DirectX::SimpleMath::Vector2(p_Owner->GetPosition().x, p_Owner->GetPosition().z);
+		m_Position = DirectX::SimpleMath::Vector2(owner->GetTransform()->GetPosition().x, owner->GetTransform()->GetPosition().z);
 
 		// オーナーのベロシティを保持
-		m_Velocity = p_Owner->GetVelocity();
+		m_Velocity = owner->GetVelocity();
 	}
 
 	DirectX::SimpleMath::Vector3 PawnCollider::GetOutsideForce()

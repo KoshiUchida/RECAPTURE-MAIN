@@ -19,6 +19,7 @@
 // 管理クラスの前方宣言
 namespace CCC::Managers
 {
+    class ManagersHub;
     class SceneManager;
     class ResourceManager;
     class ComponentManager;
@@ -26,6 +27,7 @@ namespace CCC::Managers
     class InputManager;
     class AudioManager;
 }
+#include <CCC/Managers/ColliderManager.h>
 
 
 // A basic game implementation that creates a D3D11 device and
@@ -90,10 +92,12 @@ private:
     // 全画面モードにするか
     BOOL m_fullscreen;
 
+    CCC::Managers::ManagersHub*      mp_ManagersHub;    // 管理クラスのハブ
     CCC::Managers::SceneManager*     mp_SceneManager;       // シーン管理クラスの実体へのポインタ
     CCC::Managers::ResourceManager*  mp_ResourceManager;    // リソース管理クラスの実体へのポインタ
     CCC::Managers::ComponentManager* mp_ComponentManager;   // コンポネート管理クラスの実体へのポインタ
     CCC::Managers::ObjectManager*    mp_ObjectManager;      // オブジェクト管理クラスの実体へのポインタ
     CCC::Managers::InputManager*     mp_InputManager;       // 入力管理クラスの実体へのポインタ
     CCC::Managers::AudioManager*     mp_AudioManager;       // オーディオ管理クラスの実体へのポインタ
+    std::unique_ptr<CCC::Managers::ColliderManager> m_ColliderManager;  // コライダー管理クラス
 };

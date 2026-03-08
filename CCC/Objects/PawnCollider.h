@@ -3,8 +3,6 @@
 // 基底クラス
 #include <CCC/Components/UpdataComponentBase.h>
 
-#include "PawnBase.h"
-
 #include "TeamID.h"
 
 // 前方宣言
@@ -26,7 +24,7 @@ namespace CCC
 			/// </summary>
 			/// <param name="p_Owner">保持するPawn基底オブジェクトクラスへのポインタ</param>
 			/// <param name="colliderRadius">コライダーの半径</param>
-			PawnCollider(CCC::Bases::PawnBase* p_Owner, float colliderRadius, PawnManager* p_Manager);
+			PawnCollider(CCC::Interfaces::IObject* p_Owner, float colliderRadius, PawnManager* p_Manager);
 
 			/// <summary>
 			/// デストラクタ

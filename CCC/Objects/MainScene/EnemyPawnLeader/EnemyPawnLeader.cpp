@@ -43,6 +43,7 @@
 // コンポーネント
 #include <CCC/Components/Transform.h>
 #include <CCC/Objects/PawnCollider.h>
+#include <CCC/Components/Colliders/BoxCollider.h>
 
  // 管理クラス
 #include <CCC/Managers/ObjectManager.h>
@@ -52,7 +53,8 @@
 #include <CCC/Messenger/MessageType.h>
 
 // 関係のあるオブジェクトクラス
-#include <CCC/Objects/MainScene/Pawn/Pawn.h>
+#include <CCC/Objects/Characters/CharacterBase.h>
+#include <CCC/Objects/MainScene/Pawn.h>
 #include <CCC/Objects/PawnManager.h>
 
 // チームIDの数列
@@ -65,12 +67,11 @@
 EnemyPawnLeader::EnemyPawnLeader(
 	const DirectX::SimpleMath::Vector3& spawnPosition,
 	PawnManager*                        p_Manager,
-	CCC::Bases::PawnBase*               p_Target,
+	CCC::Bases::CharacterBase*                   p_Target,
 	const std::string&                  name
 ) :
-	PawnBase(TeamID::Enemy),
+	PaladinCharacter(TeamID::Enemy, p_Manager),
 	mp_PawnManager   (p_Manager),
-	mp_Target        (p_Target),
 	m_AverageUnitDiff(0.0f),
 	m_StabilityState (StabilityStates::Stable),
 	m_IsBroken       (false),
@@ -82,28 +83,20 @@ EnemyPawnLeader::EnemyPawnLeader(
 	m_State          (EnemyPawnLeaderStates::Wait),
 	m_Name           (name)
 {
+	this->SetTarget(p_Target);
+
 	// コンポネートの追加
 	this->AddComponent<CCC::Components::PawnCollider>("Collider", this, 1.0f, p_Manager);
+	//this->AddComponent<CCC::Components::BoxCollider>("ColliderT", this, this->GetTransform(), false, 3.0f, 3.0f); コライダーのテストのため実装していたもののためコメントアウト
 
 	// 初期生成時の座標を保存
-	this->SetPosition(spawnPosition);
+	this->GetComponent<CCC::Components::Transform>("Transform")->SetPosition(spawnPosition);
 }
 
 EnemyPawnLeader::~EnemyPawnLeader() = default;
 
-void EnemyPawnLeader::Initialize()
+void EnemyPawnLeader::Start()
 {
-	// モデルステートにアニメーションプレイヤーを追加
-	AddAnimationPlayer("Paladin_Idle");
-	AddAnimationPlayer("Paladin_Walk");
-	AddAnimationPlayer("Paladin_Run");
-	AddAnimationPlayer("Paladin_Death");
-
-	// サイズを0.02に設定
-	SetScale(0.02);
-
-
-
 	// ---------------------------------------------------------------------- //
 	// 部隊の生成
 	// ---------------------------------------------------------------------- //
@@ -114,7 +107,7 @@ void EnemyPawnLeader::Initialize()
 	for (int i = 0; i < EnemyPawnLeaderParameter::NUMBER_PAWN; i++)
 	{
 		// ポーンの生成
-		Pawn* p_Pawn = p_om->CreateObject<Pawn>("EnemyPawn" + m_Name + std::to_string(i), TeamID::Enemy, mp_PawnManager);
+		CCC::Bases::CharacterBase* p_Pawn = p_om->CreateObject<Pawn>("EnemyPawn" + m_Name + std::to_string(i), TeamID::Enemy, mp_PawnManager);
 		p_Pawn->SetTarget(this);
 
 		// ポーンポインタ配列に追加
@@ -122,10 +115,10 @@ void EnemyPawnLeader::Initialize()
 	}
 
 	// 陣形の設定
-	FormationSquare(EnemyPawnLeaderParameter::SPACING_BETWEEN_PAWN);
+	this->FormationSquare(EnemyPawnLeaderParameter::SPACING_BETWEEN_PAWN);
 
 	// 位置リセット
-	PawnsPositionReset();
+	this->PawnsPositionReset();
 
 
 
@@ -217,7 +210,7 @@ void EnemyPawnLeader::Process(float elapsedTime)
 		// 目標ベロシティ
 		DirectX::SimpleMath::Vector3 DesiredVelocity;
 
-		DesiredVelocity = mp_Target->GetPosition() - this->GetPosition();
+		DesiredVelocity = this->GetTarget()->GetTransform()->GetPosition() - this->GetTransform()->GetPosition();
 		DesiredVelocity.Normalize();
 		DesiredVelocity *= EnemyPawnLeaderParameter::MOVE_SPEED;
 
@@ -257,7 +250,7 @@ void EnemyPawnLeader::Process(float elapsedTime)
 	// ポーンに近くのポーンを知らせる
 	for (int i = 0; i < m_PawnPointers.size(); ++i)
 	{
-		Pawn* p_TargetPawn = static_cast<Pawn*>(m_PawnPointers[i]);
+		CCC::Bases::CharacterBase* p_TargetPawn = static_cast<CCC::Bases::CharacterBase*>(m_PawnPointers[i]);
 
 		for (int j = 0; j < m_PawnPointers.size(); ++j)
 		{
@@ -265,7 +258,7 @@ void EnemyPawnLeader::Process(float elapsedTime)
 			if (i == j) continue;
 
 			// 距離を計算して近ければ近くのポーンとして登録
-			float distance = (p_TargetPawn->GetPosition() - m_PawnPointers[j]->GetPosition()).Length();
+			float distance = (p_TargetPawn->GetTransform()->GetPosition() - m_PawnPointers[j]->GetTransform()->GetPosition()).Length();
 			if (distance < EnemyPawnLeaderParameter::NEIGHBOR_DISTANCE)
 			{
 				p_TargetPawn->AddNeighbor(m_PawnPointers[j]);
@@ -329,7 +322,7 @@ void EnemyPawnLeader::Process(float elapsedTime)
 
 			for (auto* it : m_PawnPointers)
 			{
-				static_cast<Pawn*>(it)->RequestStateChange("Death");
+				static_cast<CCC::Bases::CharacterBase*>(it)->RequestStateChange(CCC::StateType::Death);
 			}
 		}
 	}
@@ -341,37 +334,6 @@ void EnemyPawnLeader::Process(float elapsedTime)
 	{
 		m_StabilityState = StabilityStates::Warning;
 	}
-
-
-
-
-	// ---------------------------------------------------------------------- //
-	// アニメーションの設定
-	// ---------------------------------------------------------------------- //
-
-	// アニメーションの設定
-	std::string animation;
-	// 死んでいたら
-	if (m_State == EnemyPawnLeaderStates::Death)
-	{
-		animation = "Paladin_Death";
-	}
-	// 方向ベクトルがゼロでなければ移動中
-	else if (this->GetVelocity() != DirectX::SimpleMath::Vector3::Zero)
-	{
-		// ダッシュ中かどうかでアニメーションを変更
-		if (this->IsSkillActive())
-			animation = "Paladin_Run";
-		else
-			animation = "Paladin_Walk";
-	}
-	else
-	{
-		animation = "Paladin_Idle";
-	}
-
-	// アニメーションの変更要求
-	RequestAnimationChange(animation, 0.3f);
 }
 
 float EnemyPawnLeader::GetFormationStability() const
@@ -393,11 +355,6 @@ float EnemyPawnLeader::GetFormationStability() const
 		(EnemyPawnLeaderParameter::BREAK_LIMIT - EnemyPawnLeaderParameter::STABLE_LIMIT);
 }
 
-CCC::Bases::PawnBase* EnemyPawnLeader::GetTarget()
-{
-	return mp_Target;
-}
-
 
 
 // ---------------------------------------------------------------------- //
@@ -406,9 +363,9 @@ CCC::Bases::PawnBase* EnemyPawnLeader::GetTarget()
 
 void EnemyPawnLeader::PawnsPositionReset()
 {
-	for (PawnBase* p_Pawn : m_PawnPointers)
+	for (CCC::Bases::CharacterBase* p_Pawn : m_PawnPointers)
 	{
-		p_Pawn->SetPosition(this->GetPosition() + static_cast<Pawn*>(p_Pawn)->GetOffset());
+		p_Pawn->GetTransform()->SetPosition(this->GetTransform()->GetPosition() + static_cast<CCC::Bases::CharacterBase*>(p_Pawn)->GetOffset());
 	}
 }
 
@@ -426,7 +383,7 @@ void EnemyPawnLeader::FormationSquare(float between)
 		for (int j = 1; j <= length; j++)
 		{
 			// ポインタ－の取得
-			Pawn* p_Pawn = static_cast<Pawn*>(m_PawnPointers[count]);
+			CCC::Bases::CharacterBase* p_Pawn = static_cast<CCC::Bases::CharacterBase*>(m_PawnPointers[count]);
 
 			// 隊列の位置の設定
 			p_Pawn->SetOffset(
@@ -450,7 +407,7 @@ void EnemyPawnLeader::FormationSquare(float between)
 	while (count < size)
 	{
 		// ポインタ－の取得
-		Pawn* p_Pawn = static_cast<Pawn*>(m_PawnPointers[count]);
+		CCC::Bases::CharacterBase* p_Pawn = static_cast<CCC::Bases::CharacterBase*>(m_PawnPointers[count]);
 
 		// 隊列の位置の設定
 		p_Pawn->SetOffset(
@@ -467,22 +424,16 @@ void EnemyPawnLeader::FormationSquare(float between)
 
 void EnemyPawnLeader::FormationWedge(float between)
 {
-	// ポーンのインデックス
-	int count = 0;
-
-	// 三角形の一列の人数
-	int width = 2;
-	// 現在の横の位置
-	int widthIndex = 1;
-
-	// ポーンの総数
-	int size = static_cast<int>(m_PawnPointers.size());
+	int count      = 0;											// ポーンのインデックス
+	int width      = 2;											// 三角形の一列の人数
+	int widthIndex = 1;											// 現在の横の位置
+	int size       = static_cast<int>(m_PawnPointers.size());	// ポーンの総数
 
 	// 楔形にならべる
 	while (count < size)
 	{
 		// ポインタ－の取得
-		Pawn* p_Pawn = static_cast<Pawn*>(m_PawnPointers[count]);
+		CCC::Bases::CharacterBase* p_Pawn = static_cast<CCC::Bases::CharacterBase*>(m_PawnPointers[count]);
 
 		// 隊列の位置の設定
 		p_Pawn->SetOffset(
@@ -516,7 +467,7 @@ void EnemyPawnLeader::FormationWedge(float between)
 	while (count < size)
 	{
 		// ポインタ－の取得
-		Pawn* p_Pawn = static_cast<Pawn*>(m_PawnPointers[count]);
+		CCC::Bases::CharacterBase* p_Pawn = static_cast<CCC::Bases::CharacterBase*>(m_PawnPointers[count]);
 
 		// 隊列の位置の設定
 		p_Pawn->SetOffset(

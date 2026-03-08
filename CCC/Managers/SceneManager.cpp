@@ -366,7 +366,7 @@ namespace CCC::Managers
 
 			//#if defined(_DEBUG)
 							// TODO:入力管理のクラスができたら修正ないしは削除する
-							// ESCキーで強制終了 このゴミ機能が
+							// ESCキーで強制終了
 			if (DirectX::Keyboard::Get().GetState().Escape)
 				End();
 			//#endif

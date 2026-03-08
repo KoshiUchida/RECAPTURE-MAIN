@@ -29,8 +29,8 @@
 // 多重インクルードガード
 #pragma once
 
- // 基底クラス
-#include <CCC/Objects/PawnBase.h>
+ // 継承元クラス
+#include <CCC/Objects/Characters/Paladin/PaladinCharacter.h>
 
  // 前方宣言
 namespace CCC::Managers
@@ -44,7 +44,7 @@ class PawnManager;
 /// ポーンリーダーオブジェクトクラス
 /// </summary>
 class PawnLeader :
-	public CCC::Bases::PawnBase
+	public PaladinCharacter
 {
 	// ---------------------------------------------------------------------- //
 	// パブリック関数
@@ -63,7 +63,7 @@ public:
 	/// <summary>
 	/// 初期化処理
 	/// </summary>
-	void Initialize() override final;
+	void Start() override final;
 
 	/// <summary>
 	/// この派生クラスの更新処理
@@ -72,19 +72,19 @@ public:
 	void Process(float elapsedTime) override final;
 
 	/// <summary>
-	/// 座標の設定
-	/// </summary>
-	void SetPosition(const DirectX::SimpleMath::Vector3& position) override final;
-
-	/// <summary>
 	/// カメラのトランスフォームへのポインタを設定する
 	/// </summary>
 	void SetCameraTransform(CCC::Bases::ObjectBase* p_Camera);
 
 	/// <summary>
+	/// 座標の設定
+	/// </summary>
+	void SetPosition(const DirectX::SimpleMath::Vector3& position);
+
+	/// <summary>
 	/// 陣形安定度の取得
 	/// </summary>
-	float GetFormationStability() const;
+	float GetFormationStability() const override;
 
 
 	// ---------------------------------------------------------------------- //
@@ -98,7 +98,7 @@ private:
 	CCC::Managers::CameraManager* mp_CameraManager;
 
 	// ポーンオブジェクト郡へのポインタ配列
-	std::vector<CCC::Bases::PawnBase*> m_PawnPointers;
+	std::vector<CCC::Bases::CharacterBase*> m_PawnPointers;
 
 	// カメラのトランスフォーム
 	CCC::Components::Transform* mp_CameraTransform;
